@@ -124,19 +124,93 @@ export const LoginPage = () => {
 
 ```
 
-- We need a model to bind to our login page like:
+- We need a model to bind to our login form like:
 
 ### ./src/models/loginCredential.ts
 ```javascript
+export class LoginCredential {
+  login: string;
+  password: string;
+
+  constructor() {
+    this.login = '';
+    this.password = '';
+  }
+}
+
 ```
 
-- Now it's time to give state to our **Login Page**:
+- And build our _Form Component_:
+
+### ./src/pages/login/components/form.tsx
+```javascript
+import * as React from 'react';
+import {LoginCredential} from '../../../models/loginCredential';
+
+interface Props {
+  loginCredential: LoginCredential;
+  updateLoginInfo: (fieldName: string, value: string) => void;
+}
+
+export const FormComponent = (props: Props) => {
+  const updateLoginInfo = (event) => {
+    const fieldName = event.target.name;
+    const value = event.target.value;
+    props.updateLoginInfo(fieldName, value);
+  };
+
+  return (
+    <div className="panel-body">
+      <form role="form">
+        <div className="form-group">
+          <label htmlFor="login">
+            Login
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            label="login"
+            placeholder="Login"
+            name="login"
+            value={props.loginCredential.login}
+            onChange={updateLoginInfo.bind(this)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            label="Password"
+            placeholder="Password"
+            name="password"
+            value={props.loginCredential.password}
+            onChange={updateLoginInfo.bind(this)}
+          />
+        </div>
+        <button
+          type="submit"
+          className="btn btn-lg btn-success btn-block"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  );
+};
+
+```
+
+- Now it's time to give state to our **Login Page** and pass properties to **FormComponent**:
 
 ### ./src/pages/login/page.tsx
 ```javascript
 import * as React from 'react';
 import {HeaderComponent} from './components/header';
 + import {LoginCredential} from '../../models/loginCredential';
++ import {FormComponent} from './components/form';
 
 + interface State {
 +   loginCredential: LoginCredential;
@@ -144,17 +218,38 @@ import {HeaderComponent} from './components/header';
 
 - export const LoginPage = () => {
 + export class LoginPage extends React.Component <{}, State> {  
++   constructor() {
++     super();
++      
++     this.state = {
++       loginCredential: new LoginCredential(),
++     };
++   }
++
++   private updateLoginInfo(fieldName: string, value: string) {
++     this.setState({
++       loginCredential: {
++         ...this.state.loginCredential,
++         [fieldName]: value,
++       }
++     });
++   }
++
 +   public render() {
-    return (
-      <div className="row">
-        <div className="col-md-4 col-md-offset-4">
-          <div className="panel panel-default">
-            <HeaderComponent />
-            <div>Form Component</div>
+      return (
+        <div className="row">
+          <div className="col-md-4 col-md-offset-4">
+            <div className="panel panel-default">
+              <HeaderComponent />
+-              <div>Form Component</div>
++              <FormComponent
++                loginCredential={this.state.loginCredential}
++                updateLoginInfo={this.updateLoginInfo.bind(this)}
++              />
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
   }
 };
 

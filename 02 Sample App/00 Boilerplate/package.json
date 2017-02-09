@@ -1,0 +1,28 @@
+{
+  "name": "sample-app",
+  "version": "1.0.0",
+  "description": "Sample working with React,TypeScript and Webpack 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lemoncode/react-training-ts.git"
+  },
+  "keywords": [
+    "react",
+    "training",
+    "typescript"
+  ],
+  "author": "Lemoncode",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lemoncode/react-training-ts/issues"
+  },
+  "homepage": "https://github.com/Lemoncode/react-training-ts#readme",
+  "devDependencies": {
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
+  }
+}

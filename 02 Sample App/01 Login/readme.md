@@ -39,13 +39,23 @@ export const LoginPage = () => {
 ```
 - Create _./src/app.tsx_ file like App entry point where calls to pages:
 
+### ./src/appStyles.css
+```css
+.app {
+  margin-top: 20px;
+}
+
+```
+
+### ./src/app.tsx
 ```javascript
 import * as React from 'react';
 import {LoginPage} from './pages/login/page';
+const classNames: any = require('./appStyles');
 
 export const App = () => {
   return (
-    <div className="container-fluid">
+    <div className={`container-fluid ${classNames.app}`}>
      <LoginPage />
     </div>
   );

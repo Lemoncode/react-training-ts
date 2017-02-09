@@ -204,14 +204,22 @@ our webpack configuration (handling CSS, TypeScript...).
   ```
 
 - Let's create our first React component:
+### ./src/helloStyles.css
+```css
+.test-class {
+  color: red;
+}
+
+```
 
 ### ./src/hello.tsx
 ```javascript
 import * as React from 'react';
+const classNames: any = require('./helloStyles');
 
 export const HelloComponent = () => {
   return (
-    <h1>Hello from React</h1>
+    <h1 className={classNames.testClass}>Hello from React</h1>
   );
 }
 

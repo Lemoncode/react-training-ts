@@ -22,6 +22,10 @@
   },
   "homepage": "https://github.com/Lemoncode/react-training-ts#readme",
   "devDependencies": {
+    "@types/react": "^15.0.8",
+    "@types/react-dom": "^0.14.23",
+    "@types/react-router": "^3.0.2",
+    "@types/toastr": "^2.1.32",
     "awesome-typescript-loader": "^3.0.4-rc.0",
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
@@ -32,5 +36,14 @@
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "lc-form-validation": "^0.1.7",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
+    "toastr": "^2.1.2"
   }
 }

@@ -92,35 +92,85 @@ our webpack configuration (handling CSS, TypeScript...).
  npm install bootstrap --save
  ```
 
+- Let's install React and ReactDOM to work with ReactJS and typings for ts development:
+
+ ```
+ npm install react react-dom --save
+ npm install @types/react @types/react-dom --save-dev
+ ```
+
+- Let's install React Router, it's a complete routing library for React and typings for ts development:
+
+ ```
+ npm install react-router --save
+ npm install @types/react-router --save-dev
+ ```
+
+- Let's install lc-form-validation, it's a framework agnostic library to validate forms based on TypeScript:
+
+ ```
+ npm install lc-form-validation --save
+ ```
+
+- Let's install toastr, it's a simple JavaScript toast notifications library and typings for ts development. (Installing jQuery because it's a dependency):
+
+ ```
+ npm install toastr jquery --save
+ npm install @types/toastr --save-dev
+ ```
+
 - Now, our **package.json** file should looks something like:
 
  ```json
-  {
-    "name": "samplereact",
-    "version": "1.0.0",
-    "description": "Sample working with React,TypeScript and Webpack",
-    "main": "index.js",
-    "scripts": {
-      "start": "webpack-devserver --inline",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-      "css-loader": "^0.25.0",
-      "file-loader": "^0.9.0",
-      "html-webpack-plugin": "^2.24.0",
-      "style-loader": "^0.13.1",
-      "ts-loader": "^0.9.5",
-      "typescript": "^2.0.6",
-      "url-loader": "^0.5.7",
-      "webpack": "^1.13.3",
-      "webpack-devserver": "0.0.6"
-    },
-    "dependencies": {
-      "bootstrap": "^3.3.7"
-    }
-  }
+ {
+   "name": "sample-app",
+   "version": "1.0.0",
+   "description": "Sample working with React,TypeScript and Webpack 2",
+   "main": "index.js",
+   "scripts": {
+     "start": "webpack-dev-server --inline"
+   },
+   "repository": {
+     "type": "git",
+     "url": "git+https://github.com/Lemoncode/react-training-ts.git"
+   },
+   "keywords": [
+     "react",
+     "training",
+     "typescript"
+   ],
+   "author": "Lemoncode",
+   "license": "ISC",
+   "bugs": {
+     "url": "https://github.com/Lemoncode/react-training-ts/issues"
+   },
+   "homepage": "https://github.com/Lemoncode/react-training-ts#readme",
+   "devDependencies": {
+     "@types/react": "^15.0.8",
+     "@types/react-dom": "^0.14.23",
+     "@types/react-router": "^3.0.2",
+     "@types/toastr": "^2.1.32",
+     "awesome-typescript-loader": "^3.0.4-rc.0",
+     "css-loader": "^0.26.1",
+     "extract-text-webpack-plugin": "^2.0.0-rc.3",
+     "file-loader": "^0.10.0",
+     "html-webpack-plugin": "^2.28.0",
+     "style-loader": "^0.13.1",
+     "typescript": "^2.1.6",
+     "url-loader": "^0.5.7",
+     "webpack": "^2.2.1",
+     "webpack-dev-server": "^2.3.0"
+   },
+   "dependencies": {
+     "bootstrap": "^3.3.7",
+     "jquery": "^3.1.1",
+     "lc-form-validation": "^0.1.7",
+     "react": "^15.4.2",
+     "react-dom": "^15.4.2",
+     "react-router": "^3.0.2",
+     "toastr": "^2.1.2"
+   }
+ }
  ```
 
 - Let's create a subfolder called **src**.

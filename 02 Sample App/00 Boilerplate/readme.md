@@ -17,6 +17,7 @@ Summary steps:
     - [React router](https://github.com/reacttraining/react-router) for navigation.
     - [lc-form-validation](https://github.com/Lemoncode/lcFormValidation) for validations.
     - [toastr](https://github.com/CodeSeven/toastr) for toast notifications.
+    - _@types/webpack-env_ to allow using **require** with TypeScript.
 - Setup **webpack.config.js**
 - Create a js file.
 - Create a simple HTML file.
@@ -77,7 +78,8 @@ our webpack configuration (handling CSS, TypeScript...).
       "jsx": "react",
       "sourceMap": true,
       "noLib": false,
-      "suppressImplicitAnyIndexErrors": true
+      "suppressImplicitAnyIndexErrors": true,
+      "types": ["webpack-env"]
     },
     "compileOnSave": false,
     "exclude": [
@@ -119,6 +121,12 @@ our webpack configuration (handling CSS, TypeScript...).
  npm install @types/toastr --save-dev
  ```
 
+ - Let's install _webpack-env_ to allow using **require** with TypeScript:
+
+ ```
+ npm install @types/webpack-env --save-dev
+ ```
+
 - Now, our **package.json** file should looks something like:
 
  ```json
@@ -128,8 +136,7 @@ our webpack configuration (handling CSS, TypeScript...).
    "description": "Sample working with React,TypeScript and Webpack 2",
    "main": "index.js",
    "scripts": {
-     "start": "webpack-dev-server --inline",
-     "build": "webpack"
+     "start": "webpack-dev-server --inline"
    },
    "repository": {
      "type": "git",
@@ -151,6 +158,7 @@ our webpack configuration (handling CSS, TypeScript...).
      "@types/react-dom": "^0.14.23",
      "@types/react-router": "^3.0.2",
      "@types/toastr": "^2.1.32",
+     "@types/webpack-env": "^1.13.0",
      "awesome-typescript-loader": "^3.0.4-rc.0",
      "css-loader": "^0.26.1",
      "extract-text-webpack-plugin": "^2.0.0-rc.3",
@@ -233,6 +241,7 @@ export const HelloComponent = () => {
  - Transpiling from TypeScript to JavaScript.
  - Setup Twitter Bootstrap (including fonts, etc...).
  - Generating the build under a **dist** folder.
+ - Add CSS Modules configuration.
 
  ```javascript
  var path = require('path');
@@ -243,7 +252,7 @@ export const HelloComponent = () => {
  module.exports = {
    context: path.join(__dirname, 'src'),
    resolve: {
-     extensions: ['.js', '.ts', '.tsx'],
+     extensions: ['.js', '.ts', '.tsx', '.css'],
    },
    entry: {
      app: './index.tsx',
@@ -269,8 +278,26 @@ export const HelloComponent = () => {
          test: /\.tsx?$/,
          loader: 'awesome-typescript-loader',
        },
+       // Load css from src with CSS Modules
        {
          test: /\.css$/,
+         exclude: /node_modules/,
+         loader: ExtractTextPlugin.extract({
+           fallback: 'style-loader',
+           use: {
+             loader: 'css-loader',
+             options: {
+               modules: true,
+               localIdentName: '[name]__[local]___[hash:base64:5]',
+               camelCase: true,
+             },
+           },
+         }),
+       },
+       // Load css from node_modules
+       {
+         test: /\.css$/,
+         include: /node_modules/,
          loader: ExtractTextPlugin.extract({
            fallback: 'style-loader',
            use: 'css-loader',
@@ -328,7 +355,7 @@ export const HelloComponent = () => {
    ],
  }
 
- ```
+```
 
 - Run webpack with:
 

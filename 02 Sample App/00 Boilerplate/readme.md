@@ -14,7 +14,9 @@ Summary steps:
     - [TypeScript](https://github.com/Microsoft/TypeScript).
     - [Bootstrap](https://github.com/twbs/bootstrap).
     - [React and ReactDOM](https://github.com/facebook/react).
-    - [lc-form-validation](https://github.com/Lemoncode/lcFormValidation).
+    - [React router](https://github.com/reacttraining/react-router) for navigation.
+    - [lc-form-validation](https://github.com/Lemoncode/lcFormValidation) for validations.
+    - [toastr](https://github.com/CodeSeven/toastr) for toast notifications.
 - Setup **webpack.config.js**
 - Create a js file.
 - Create a simple HTML file.
@@ -52,10 +54,10 @@ Once you have successfully fullfilled them a **package.json** file we will gener
 our webpack configuration (handling CSS, TypeScript...).
 
  ```
- npm install css-loader style-loader file-loader url-loader html-webpack-plugin awesome-typescript-loader --save-dev
+ npm install css-loader style-loader extract-text-webpack-plugin@beta file-loader url-loader html-webpack-plugin awesome-typescript-loader --save-dev
  ```
 
-- In order to launch `webpack-dev-server`, modify the **package.json** file an add the following property `"start": "webpack-devserver --inline",` under the scripts object. It allows us to launch webpack from the command line through npm typing `npm start`.
+- In order to launch `webpack-dev-server`, modify the **package.json** file an add the following property `"start": "webpack-dev-server --inline",` under the scripts object. It allows us to launch webpack from the command line through npm typing `npm start`.
 
 - Let's install locally TypeScript (version 2.0 or newer):
 

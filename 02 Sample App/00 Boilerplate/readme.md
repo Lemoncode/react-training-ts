@@ -3,7 +3,7 @@
 In this sample we are going to setup the basic plumbing to "build" our project and launch it in a dev server.
 
 We will setup an initial npm project, give support to TypeScript, and install React.
-Then we will create a **helloworld.ts** sample.
+Then we will create a **hello.ts** sample.
 
 Summary steps:
 
@@ -179,7 +179,7 @@ our webpack configuration (handling CSS, TypeScript...).
  mkdir src
  ```
 
-- Let's create a basic **main.ts** file (under **src** folder):
+- Let's create a basic **index.ts** file (under **src** folder):
 
  ```javascript
  document.write("Hello from main.ts !");
@@ -188,18 +188,18 @@ our webpack configuration (handling CSS, TypeScript...).
 - Let's create a basic **index.html** file (under **src** folder):
 
  ```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <div class="well">
-      <h1>Sample app</h1>
-    </div>
-  </body>
-</html>
+ <!DOCTYPE html>
+ <html>
+   <head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+     <title>Sample App</title>
+   </head>
+   <body>
+     <div id="root">
+     </div>
+   </body>
+ </html>
  ```
 
 - Now it's time to create a basic **webpack.config.js** file, this configuration will
@@ -211,46 +211,45 @@ our webpack configuration (handling CSS, TypeScript...).
 
  ```javascript
  var path = require('path');
- var webpack = require('webpack');
+ var webpack = require('webpac');
  var HtmlWebpackPlugin = require('html-webpack-plugin');
-
- var basePath = __dirname;
+ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
  module.exports = {
-   context: path.join(basePath, "src"),
+   context: path.join(__dirname, 'src'),
    resolve: {
-       extensions: ['', '.js', '.ts', '.tsx']
+     extensions: ['.js', '.ts', '.tsx'],
    },
-
-   entry: [
-     './main.ts',
-     '../node_modules/bootstrap/dist/css/bootstrap.css'
-   ],
+   entry: {
+     app: './index.tsx',
+     vendor: [
+       'bootstrap',
+       'react',
+       'react-dom',
+       'react-router',
+       'lc-form-validation',
+       'toastr',
+     ],
+     vendorStyles: [
+       '../node_modules/bootstrap/dist/css/bootstrap.css',
+     ],
+   },
    output: {
-     path: path.join(basePath, 'dist'),
-     filename: 'bundle.js'
+     path: path.join(__dirname, 'dist'),
+     filename: '[chunkhash].[name].js',
    },
-
-   devtool: 'source-map',
-
-   devServer: {
-        contentBase: './dist', // Content base
-        inline: true, // Enable watch and live reload
-        host: 'localhost',
-        port: 8080,
-        stats: 'errors-only'
-   },
-
    module: {
-     loaders: [
+     rules: [
        {
-         test: /\.(ts|tsx)$/,
-         exclude: /node_modules/,
-         loader: 'ts-loader'
+         test: /\.tsx?$/,
+         loader: 'awesome-typescript-loader',
        },
        {
          test: /\.css$/,
-         loader: 'style-loader!css-loader'
+         loader: ExtractTextPlugin.extract({
+           fallback: 'style-loader',
+           use: 'css-loader',
+         }),
        },
        // Loading glyphicons => https://github.com/gowravshekar/bootstrap-webpack
        // Using here url-loader and file-loader
@@ -269,18 +268,37 @@ our webpack configuration (handling CSS, TypeScript...).
        {
          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
          loader: 'url?limit=10000&mimetype=image/svg+xml'
-       }
-     ]
+       },
+     ],
+   },
+   // For TypeScript https://webpack.js.org/guides/webpack-and-typescript/#enabling-source-maps
+   // For development https://webpack.js.org/configuration/devtool/#for-development
+   devtool: 'eval-source-map',
+   devServer: {
+     contentBase: path.join(__dirname, 'dist'),
+     port: 8080,
+     noInfo: true,
    },
    plugins: [
-     // Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin
+     // Caching vendors with manifest
+     // https://webpack.js.org/guides/code-splitting-libraries/#manifest-file
+     new webpack.optimize.CommonsChunkPlugin({
+       names: ['vendor', 'manifest'],
+     }),
+     new ExtractTextPlugin({
+       filename: '[name].css',
+       disable: false,
+       allChunks: true,
+     }),
+     //Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin
      new HtmlWebpackPlugin({
-       filename: 'index.html', // Name of file in ./dist/
-       template: 'index.html', // Name of template in ./src
-       hash: true
-     })
-   ]
+       filename: 'index.html', //Name of file in ./dist/
+       template: 'index.html', //Name of template in ./src
+ 			hash: true
+     }),
+   ],
  }
+
  ```
 
 - Run webpack with:

@@ -4,7 +4,8 @@
   "description": "Sample working with React,TypeScript and Webpack 2",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --inline"
+    "start": "webpack-dev-server --inline",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",

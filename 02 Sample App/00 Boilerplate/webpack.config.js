@@ -43,23 +43,22 @@ module.exports = {
       // Using here url-loader and file-loader
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/font-woff'
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/octet-stream'
+        loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file'
+        loader: 'file-loader'
       },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=image/svg+xml'
+        loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
       },
     ],
   },
-  // For TypeScript https://webpack.js.org/guides/webpack-and-typescript/#enabling-source-maps
   // For development https://webpack.js.org/configuration/devtool/#for-development
   devtool: 'eval-source-map',
   devServer: {
@@ -83,6 +82,11 @@ module.exports = {
       filename: 'index.html', //Name of file in ./dist/
       template: 'index.html', //Name of template in ./src
 			hash: true
+    }),
+    //Expose jquery used by bootstrap
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
     }),
   ],
 }

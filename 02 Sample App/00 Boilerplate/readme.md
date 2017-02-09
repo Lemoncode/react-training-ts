@@ -128,7 +128,8 @@ our webpack configuration (handling CSS, TypeScript...).
    "description": "Sample working with React,TypeScript and Webpack 2",
    "main": "index.js",
    "scripts": {
-     "start": "webpack-dev-server --inline"
+     "start": "webpack-dev-server --inline",
+     "build": "webpack"
    },
    "repository": {
      "type": "git",
@@ -171,6 +172,7 @@ our webpack configuration (handling CSS, TypeScript...).
      "toastr": "^2.1.2"
    }
  }
+
  ```
 
 - Let's create a subfolder called **src**.
@@ -179,11 +181,33 @@ our webpack configuration (handling CSS, TypeScript...).
  mkdir src
  ```
 
-- Let's create a basic **index.ts** file (under **src** folder):
+ - Let's create the entry point **index.tsx**:
 
- ```javascript
- document.write("Hello from main.ts !");
- ```
+  ```javascript
+  import * as React from 'react';
+  import * as ReactDOM from 'react-dom';
+  import {HelloComponent} from './hello';
+
+  ReactDOM.render(
+    <HelloComponent />,
+    document.getElementById('root'),
+  );
+
+  ```
+
+- Let's create our first React component:
+
+### ./src/hello.tsx
+```javascript
+import * as React from 'react';
+
+export const HelloComponent = () => {
+  return (
+    <h1>Hello from React</h1>
+  );
+}
+
+```
 
 - Let's create a basic **index.html** file (under **src** folder):
 
@@ -200,6 +224,7 @@ our webpack configuration (handling CSS, TypeScript...).
      </div>
    </body>
  </html>
+
  ```
 
 - Now it's time to create a basic **webpack.config.js** file, this configuration will
@@ -211,7 +236,7 @@ our webpack configuration (handling CSS, TypeScript...).
 
  ```javascript
  var path = require('path');
- var webpack = require('webpac');
+ var webpack = require('webpack');
  var HtmlWebpackPlugin = require('html-webpack-plugin');
  var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -255,23 +280,22 @@ our webpack configuration (handling CSS, TypeScript...).
        // Using here url-loader and file-loader
        {
          test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-         loader: 'url?limit=10000&mimetype=application/font-woff'
+         loader: 'url-loader?limit=10000&mimetype=application/font-woff'
        },
        {
          test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-         loader: 'url?limit=10000&mimetype=application/octet-stream'
+         loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
        },
        {
          test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-         loader: 'file'
+         loader: 'file-loader'
        },
        {
          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-         loader: 'url?limit=10000&mimetype=image/svg+xml'
+         loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
        },
      ],
    },
-   // For TypeScript https://webpack.js.org/guides/webpack-and-typescript/#enabling-source-maps
    // For development https://webpack.js.org/configuration/devtool/#for-development
    devtool: 'eval-source-map',
    devServer: {
@@ -295,6 +319,11 @@ our webpack configuration (handling CSS, TypeScript...).
        filename: 'index.html', //Name of file in ./dist/
        template: 'index.html', //Name of template in ./src
  			hash: true
+     }),
+     //Expose jquery used by bootstrap
+     new webpack.ProvidePlugin({
+       $: "jquery",
+       jQuery: "jquery"
      }),
    ],
  }

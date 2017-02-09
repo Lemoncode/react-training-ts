@@ -169,7 +169,6 @@ export const FormComponent = (props: Props) => {
           <input
             type="text"
             className="form-control"
-            label="login"
             placeholder="Login"
             name="login"
             value={props.loginCredential.login}
@@ -183,7 +182,6 @@ export const FormComponent = (props: Props) => {
           <input
             type="password"
             className="form-control"
-            label="Password"
             placeholder="Password"
             name="password"
             value={props.loginCredential.password}
@@ -253,4 +251,117 @@ import {HeaderComponent} from './components/header';
   }
 };
 
+```
+
+- Before we will continue with connecting Login Component with API, we can refactor login form, to follow DRY principle:
+
+### ./src/common/components/form/input.tsx
+
+```javascript
+import * as React from 'react';
+
+interface Props {
+  label: string;
+  name: string;
+  type: string;
+  value: string;
+  placeholder?: string;
+  onChange: any;
+}
+
+export const InputComponent = (props: Props) => {
+  return (
+    <div className="form-group">
+      <label htmlFor={props.name}>
+        {props.label}
+      </label>
+      <input
+        type={props.type}
+        className="form-control"
+        placeholder={props.placeholder}
+        name={props.name}
+        value={props.value}
+        onChange={props.onChange}
+      />
+    </div>
+  );
+}
+
+```
+
+- Now, we can reuse InputComponent:
+
+### ./src/pages/login/components/form.tsx
+```javascript
+import * as React from 'react';
+import {LoginCredential} from '../../../models/loginCredential';
++ import {InputComponent} from '../../../common/components/input';
+
+interface Props {
+  loginCredential: LoginCredential;
+  updateLoginInfo: (fieldName: string, value: string) => void;
+}
+
+export const FormComponent = (props: Props) => {
+  const updateLoginInfo = (event) => {
+    const fieldName = event.target.name;
+    const value = event.target.value;
+    props.updateLoginInfo(fieldName, value);
+  };
+
+  return (
+    <div className="panel-body">
+      <form role="form">
+-        <div className="form-group">
+-          <label htmlFor="login">
+-            Login
+-          </label>
+-          <input
+-            type="text"
+-            className="form-control"
+-            placeholder="Login"
+-            name="login"
+-            value={props.loginCredential.login}
+-            onChange={updateLoginInfo.bind(this)}
+-          />
+-        </div>
++        <InputComponent
++          label="Login"
++          type="text"
++          name="login"
++          placeholder="Login"
++          value={props.loginCredential.login}
++          onChange={updateLoginInfo.bind(this)}
++        />
+-        <div className="form-group">
+-          <label htmlFor="password">
+-            Password
+-          </label>
+-          <input
+-            type="password"
+-            className="form-control"
+-            placeholder="Password"
+-            name="password"
+-            value={props.loginCredential.password}
+-            onChange={updateLoginInfo.bind(this)}
+-          />
+-        </div>
++        <InputComponent
++          label="Password"
++          type="password"
++          name="password"
++          placeholder="Password"
++          value={props.loginCredential.password}
++          onChange={updateLoginInfo.bind(this)}
++        />
+        <button
+          type="submit"
+          className="btn btn-lg btn-success btn-block"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  );
+};
 ```

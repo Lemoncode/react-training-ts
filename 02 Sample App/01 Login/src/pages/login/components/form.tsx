@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {LoginCredential} from '../../../models/loginCredential';
+import {InputComponent} from '../../../common/components/input';
 
 interface Props {
   loginCredential: LoginCredential;
@@ -16,34 +17,22 @@ export const FormComponent = (props: Props) => {
   return (
     <div className="panel-body">
       <form role="form">
-        <div className="form-group">
-          <label htmlFor="login">
-            Login
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            label="login"
-            placeholder="Login"
-            name="login"
-            value={props.loginCredential.login}
-            onChange={updateLoginInfo.bind(this)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            label="Password"
-            placeholder="Password"
-            name="password"
-            value={props.loginCredential.password}
-            onChange={updateLoginInfo.bind(this)}
-          />
-        </div>
+        <InputComponent
+          label="Login"
+          type="text"
+          name="login"
+          placeholder="Login"
+          value={props.loginCredential.login}
+          onChange={updateLoginInfo.bind(this)}
+        />
+        <InputComponent
+          label="Password"
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={props.loginCredential.password}
+          onChange={updateLoginInfo.bind(this)}
+        />
         <button
           type="submit"
           className="btn btn-lg btn-success btn-block"

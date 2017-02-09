@@ -12,7 +12,7 @@ Summary steps:
 
 ## Steps to build it
 
-- Delete _./src/hello.tsx_ file.
+- Delete _./src/hello.tsx_ and _./src/helloStyles.css_ files.
 
 - Create a first version of _Login page_:
 

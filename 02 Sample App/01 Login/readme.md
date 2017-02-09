@@ -80,6 +80,50 @@ ReactDOM.render(
 
 ```
 
+- Now, we can start to implement Login Header like:
+
+### ./src/pages/login/components/header.tsx
+```javascript
+import * as React from 'react';
+
+export const HeaderComponent = () => {
+  return (
+    <div className="panel-heading">
+      <h3 className="panel-title">
+        <p>Please sign in</p>
+        <p>(login: admin / pwd: test)</p>
+      </h3>
+    </div>
+  );
+};
+
+```
+
+- And using it in LoginPage
+
+### ./src/pages/login/page.tsx
+```javascript
+import * as React from 'react';
++ import {HeaderComponent} from './components/header';
+
+export const LoginPage = () => {
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-md-4 col-md-offset-4">
+          <div className="panel panel-default">
+-            <div>Header Component</div>
+-            <HeaderComponent />
+            <div>Form Component</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+```
+
 - We need a model to bind to our login page like:
 
 ### ./src/models/loginCredential.ts
@@ -91,6 +135,7 @@ ReactDOM.render(
 ### ./src/pages/login/page.tsx
 ```javascript
 import * as React from 'react';
+import {HeaderComponent} from './components/header';
 + import {LoginCredential} from '../../models/loginCredential';
 
 + interface State {
@@ -104,7 +149,7 @@ import * as React from 'react';
       <div className="row">
         <div className="col-md-4 col-md-offset-4">
           <div className="panel panel-default">
-            <div>Header Component</div>
+            <HeaderComponent />
             <div>Form Component</div>
           </div>
         </div>

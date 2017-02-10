@@ -1,4 +1,8 @@
+const trainingRoute = '/training';
+
 export const routeConstants = {
   default: '/',
-  login: '/login',
+  training: {
+    list: `${trainingRoute}/list`,
+  },
 };

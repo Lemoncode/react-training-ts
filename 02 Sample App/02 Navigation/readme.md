@@ -18,7 +18,6 @@ Summary steps:
 ```javascript
 export const routeConstants = {
   default: '/',
-  login: '/login',
 };
 
 ```
@@ -80,5 +79,123 @@ ReactDOM.render(
 +  <Router history={hashHistory} routes={AppRoutes} />,
   document.getElementById('root'),
 );
+
+```
+
+- Now, we are going to create a blank component to simulate a navigation after login:
+
+### ./src/pages/training/list/page.tsx
+```javascript
+import * as React from 'react';
+
+export const TrainingList = () => {
+  return (
+    <div>Training list</div>
+  );
+}
+
+```
+
+- For navigate to this component we are define a new route:
+
+### ./src/common/constants/routeConstants.ts
+```javascript
++ const trainingRoute = '/training';
+
+export const routeConstants = {
+  default: '/',
++ training: {
++   list: `${trainingRoute}/list`,
++ },
+};
+
+```
+
+### ./src/routes.tsx
+```javascript
+import * as React from 'react';
+import {Route, IndexRoute} from 'react-router';
+import {routeConstants} from './common/constants/routeConstants';
+import {App} from './app';
+import {LoginPageContainer} from './pages/login/pageContainer';
++ import {TrainingList} from './pages/training/list/page';
+
+export const AppRoutes = (
+  <Route path={routeConstants.default} component={App}>
+    <IndexRoute component={LoginPageContainer} />
++   <Route path={routeConstants.training.list} component={TrainingList} />
+  </Route>
+);
+
+```
+
+- Lastly, we need to do something to navigate to TrainingList component. But instead of using [Link component from React-Router](https://github.com/reactjs/react-router-tutorial/tree/master/lessons/03-navigating-with-link) we need navigate after check loginCredentials:
+
+### ./src/pages/login/pageContainer.tsx
+```javascript
+import * as React from 'react';
+import * as toastr from 'toastr';
++ import {hashHistory} from 'react-router';
++ import {routeConstants} from '../../common/constants/routeConstants';
+import {loginAPI} from '../../rest-api/login/loginAPI';
+import {LoginCredentials} from '../../models/loginCredentials';
+import {UserProfile} from '../../models/userProfile';
+import {LoginPage} from './page';
+
+interface State {
+  loginCredentials: LoginCredentials;
+}
+
+export class LoginPageContainer extends React.Component <{}, State> {
+  constructor() {
+    super();
+
+    this.state = {
+      loginCredentials: new LoginCredentials(),
+    };
+  }
+
+  // Other way to assign new object to loginCredentials to avoid mutation is:
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+  /*
+    var newLoginCredentiasl = Object.assign({}, this.state.loginCredentials, {
+      [fieldName]: value,
+    });
+  */
+  // We are use a JavaScript proposal named object spread operator
+  // https://github.com/sebmarkbage/ecmascript-rest-spread
+  // http://stackoverflow.com/questions/32925460/spread-operator-vs-object-assign
+
+  private updateLoginInfo(fieldName: string, value: string) {
+    this.setState({
+      loginCredentials: {
+        ...this.state.loginCredentials,
+        [fieldName]: value,
+      }
+    });
+  }
+
+  private loginRequest(loginCredentials: LoginCredentials) {
+    toastr.remove();
+    loginAPI.login(loginCredentials)
+      .then((userProfile: UserProfile) => {
+        toastr.success(`Success login ${userProfile.fullname}`);
++       hashHistory.push(routeConstants.training.list);
+      })
+      .catch((error) => {
+        toastr.error(error);
+      });
+  }
+
+  public render() {
+    return (
+      <LoginPage
+        loginCredentials={this.state.loginCredentials}
+        updateLoginInfo={this.updateLoginInfo.bind(this)}
+        loginRequest={this.loginRequest.bind(this)}
+      />
+    );
+  }
+}
 
 ```

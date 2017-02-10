@@ -113,7 +113,7 @@ export const LoginPage = () => {
         <div className="col-md-4 col-md-offset-4">
           <div className="panel panel-default">
 -            <div>Header Component</div>
--            <HeaderComponent />
++            <HeaderComponent />
             <div>Form Component</div>
           </div>
         </div>
@@ -253,7 +253,7 @@ import {HeaderComponent} from './components/header';
 
 ```
 
-- Before we will continue with connecting Login Component with API, we can refactor login form, to follow DRY principle:
+- Before we will continue with connecting Login Component with API, we can refactor login form, to apply DRY principle:
 
 ### ./src/common/components/form/input.tsx
 
@@ -364,4 +364,82 @@ export const FormComponent = (props: Props) => {
     </div>
   );
 };
+```
+
+## Create fake API
+
+- First we are going to create LoginResponse model:
+
+### ./src/models/userProfile.ts
+```javascript
+export class UserProfile {
+  id: number;
+  login: string;
+  fullname: string;
+  role: string;
+
+  constructor() {
+    this.id = 0;
+    this.login = '';
+    this.fullname = '';
+    this.role = '';
+  }
+}
+
+```
+
+### ./src/models/loginResponse.ts
+```javascript
+import {UserProfile} from './userProfile';
+
+export class LoginResponse {
+  succeeded: boolean;
+  userProfile: UserProfile;
+
+  constructor() {
+    this.succeeded = false;
+    this.userProfile = new UserProfile();
+  }
+}
+
+```
+
+- Create mock data:
+
+### ./src/rest-api/login/loginMockData.ts
+```javascript
+import {LoginResponse} from '../../models/loginResponse';
+
+export const loginMockResponse: LoginResponse = {
+  succeeded: true,
+  userProfile: {
+    id: 1,
+    login: 'admin',
+    fullname: 'Admin',
+    role: 'admin',
+  },
+};
+
+```
+
+### ./src/rest-api/login/loginAPI.ts
+```javascript
+import {LoginCredential} from '../../models/loginCredential';
+import {LoginResponse} from '../../models/loginResponse';
+import {loginMockResponses} from './loginMockData';
+
+class LoginAPI {
+  public login(loginCredential: LoginCredential): Promise<LoginResponse> {
+    let loginResponse = loginMockResponses.find((response) => {
+      return response.userProfile.login === loginCredential.login;
+    });
+
+    if (!loginResponse || loginCredential.password !== 'test') {
+      loginResponse = new LoginResponse();
+    }
+
+    return Promise.resolve(loginResponse);
+  }
+}
+
 ```

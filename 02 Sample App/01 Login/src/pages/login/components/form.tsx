@@ -17,7 +17,7 @@ export const FormComponent = (props: Props) => {
 
   const loginRequest = (event) => {
     event.preventDefault();
-    props.requestLogin(props.loginCredential);
+    props.loginRequest(props.loginCredential);
   }
 
   return (

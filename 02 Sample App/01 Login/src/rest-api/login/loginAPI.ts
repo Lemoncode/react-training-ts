@@ -9,7 +9,7 @@ class LoginAPI {
     });
 
     if (!loginResponse || loginCredential.password !== 'test') {
-      return Promise.reject('Invalid login or password');
+      return Promise.reject<LoginResponse>('Invalid login or password');
     }
 
     return Promise.resolve(loginResponse);

@@ -126,9 +126,9 @@ export const LoginPage = () => {
 
 - We need a model to bind to our login form like:
 
-### ./src/models/loginCredential.ts
+### ./src/models/loginCredentials.ts
 ```javascript
-export class LoginCredential {
+export class LoginCredentials {
   login: string;
   password: string;
 
@@ -145,10 +145,10 @@ export class LoginCredential {
 ### ./src/pages/login/components/form.tsx
 ```javascript
 import * as React from 'react';
-import {LoginCredential} from '../../../models/loginCredential';
+import {LoginCredentials} from '../../../models/loginCredentials';
 
 interface Props {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
   updateLoginInfo: (fieldName: string, value: string) => void;
 }
 
@@ -171,7 +171,7 @@ export const FormComponent = (props: Props) => {
             className="form-control"
             placeholder="Login"
             name="login"
-            value={props.loginCredential.login}
+            value={props.loginCredentials.login}
             onChange={updateLoginInfo.bind(this)}
           />
         </div>
@@ -184,7 +184,7 @@ export const FormComponent = (props: Props) => {
             className="form-control"
             placeholder="Password"
             name="password"
-            value={props.loginCredential.password}
+            value={props.loginCredentials.password}
             onChange={updateLoginInfo.bind(this)}
           />
         </div>
@@ -206,12 +206,12 @@ export const FormComponent = (props: Props) => {
 ### ./src/pages/login/page.tsx
 ```javascript
 import * as React from 'react';
-+ import {LoginCredential} from '../../models/loginCredential';
++ import {LoginCredentials} from '../../models/loginCredentials';
 import {HeaderComponent} from './components/header';
 + import {FormComponent} from './components/form';
 
 + interface State {
-+   loginCredential: LoginCredential;
++   loginCredentials: LoginCredentials;
 + }
 
 - export const LoginPage = () => {
@@ -220,14 +220,24 @@ import {HeaderComponent} from './components/header';
 +     super();
 +      
 +     this.state = {
-+       loginCredential: new LoginCredential(),
++       loginCredentials: new LoginCredentials(),
 +     };
 +   }
 +
+  // Other way to assign new object to loginCredentials to avoid mutation is:
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+  /*
+    var newLoginCredentiasl = Object.assign({}, this.state.loginCredentials, {
+      [fieldName]: value,
+    });
+  */
+  // We are use a JavaScript proposal named object spread operator
+  // https://github.com/sebmarkbage/ecmascript-rest-spread
+  // http://stackoverflow.com/questions/32925460/spread-operator-vs-object-assign
 +   private updateLoginInfo(fieldName: string, value: string) {
 +     this.setState({
-+       loginCredential: {
-+         ...this.state.loginCredential,
++       loginCredentials: {
++         ...this.state.loginCredentials,
 +         [fieldName]: value,
 +       }
 +     });
@@ -241,7 +251,7 @@ import {HeaderComponent} from './components/header';
               <HeaderComponent />
 -              <div>Form Component</div>
 +              <FormComponent
-+                loginCredential={this.state.loginCredential}
++                loginCredentials={this.state.loginCredentials}
 +                updateLoginInfo={this.updateLoginInfo.bind(this)}
 +              />
             </div>
@@ -294,11 +304,11 @@ export const InputComponent = (props: Props) => {
 ### ./src/pages/login/components/form.tsx
 ```javascript
 import * as React from 'react';
-import {LoginCredential} from '../../../models/loginCredential';
+import {LoginCredentials} from '../../../models/loginCredentials';
 + import {InputComponent} from '../../../common/components/input';
 
 interface Props {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
   updateLoginInfo: (fieldName: string, value: string) => void;
 }
 
@@ -321,7 +331,7 @@ export const FormComponent = (props: Props) => {
 -            className="form-control"
 -            placeholder="Login"
 -            name="login"
--            value={props.loginCredential.login}
+-            value={props.loginCredentials.login}
 -            onChange={updateLoginInfo.bind(this)}
 -          />
 -        </div>
@@ -330,7 +340,7 @@ export const FormComponent = (props: Props) => {
 +          type="text"
 +          name="login"
 +          placeholder="Login"
-+          value={props.loginCredential.login}
++          value={props.loginCredentials.login}
 +          onChange={updateLoginInfo.bind(this)}
 +        />
 -        <div className="form-group">
@@ -342,7 +352,7 @@ export const FormComponent = (props: Props) => {
 -            className="form-control"
 -            placeholder="Password"
 -            name="password"
--            value={props.loginCredential.password}
+-            value={props.loginCredentials.password}
 -            onChange={updateLoginInfo.bind(this)}
 -          />
 -        </div>
@@ -351,7 +361,7 @@ export const FormComponent = (props: Props) => {
 +          type="password"
 +          name="password"
 +          placeholder="Password"
-+          value={props.loginCredential.password}
++          value={props.loginCredentials.password}
 +          onChange={updateLoginInfo.bind(this)}
 +        />
         <button
@@ -404,17 +414,19 @@ export const userProfiles: UserProfile[] = [
 
 ### ./src/rest-api/login/loginAPI.ts
 ```javascript
-import {LoginCredential} from '../../models/loginCredential';
+import {LoginCredentials} from '../../models/loginCredentials';
 import {UserProfile} from '../../models/userProfile';
 import {userProfiles} from './loginMockData';
 
+// Fake API using es6 Promises polyfill (with core-js).
+// In future, we can replace by real one.
 class LoginAPI {
-  public login(loginCredential: LoginCredential): Promise<UserProfile> {
+  public login(loginCredentials: LoginCredentials): Promise<UserProfile> {
     let userProfile = userProfiles.find((userProfile) => {
-      return userProfile.login === loginCredential.login;
+      return userProfile.login === loginCredentials.login;
     });
 
-    if (!userProfile || loginCredential.password !== 'test') {
+    if (!userProfile || loginCredentials.password !== 'test') {
       return Promise.reject<UserProfile>('Invalid login or password');
     }
 
@@ -433,13 +445,13 @@ export const loginAPI = new LoginAPI();
 import * as React from 'react';
 + import * as toastr from 'toastr';
 + import {loginAPI} from '../../rest-api/login/loginAPI';
-import {LoginCredential} from '../../models/loginCredential';
+import {LoginCredentials} from '../../models/loginCredentials';
 + import {UserProfile} from '../../models/userProfile';
 import {HeaderComponent} from './components/header';
 import {FormComponent} from './components/form';
 
 interface State {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
 }
 
 export class LoginPage extends React.Component <{}, State> {
@@ -447,22 +459,22 @@ export class LoginPage extends React.Component <{}, State> {
     super();
 
     this.state = {
-      loginCredential: new LoginCredential(),
+      loginCredentials: new LoginCredentials(),
     };
   }
 
   private updateLoginInfo(fieldName: string, value: string) {
     this.setState({
-      loginCredential: {
-        ...this.state.loginCredential,
+      loginCredentials: {
+        ...this.state.loginCredentials,
         [fieldName]: value,
       }
     });
   }
 
-+  private loginRequest(loginCredential: LoginCredential) {
++  private loginRequest(loginCredentials: LoginCredentials) {
 +    toastr.remove();
-+    loginAPI.login(loginCredential)
++    loginAPI.login(loginCredentials)
 +      .then((userProfile: UserProfile) => {
 +        toastr.success(`Success login ${userProfile.fullname}`);
 +      })
@@ -478,7 +490,7 @@ export class LoginPage extends React.Component <{}, State> {
           <div className="panel panel-default">
             <HeaderComponent />
             <FormComponent
-              loginCredential={this.state.loginCredential}
+              loginCredentials={this.state.loginCredentials}
               updateLoginInfo={this.updateLoginInfo.bind(this)}
 +             loginRequest={this.loginRequest.bind(this)}
             />
@@ -496,13 +508,13 @@ export class LoginPage extends React.Component <{}, State> {
 ### ./src/pages/login/components/form.tsx
 ```javascript
 import * as React from 'react';
-import {LoginCredential} from '../../../models/loginCredential';
+import {LoginCredentials} from '../../../models/loginCredentials';
 import {InputComponent} from '../../../common/components/input';
 
 interface Props {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
   updateLoginInfo: (fieldName: string, value: string) => void;
-+ loginRequest: (loginCredential: LoginCredential) => void;
++ loginRequest: (loginCredentials: LoginCredentials) => void;
 }
 
 export const FormComponent = (props: Props) => {
@@ -514,7 +526,7 @@ export const FormComponent = (props: Props) => {
 
 +  const loginRequest = (event) => {
 +    event.preventDefault();
-+    props.loginRequest(props.loginCredential);
++    props.loginRequest(props.loginCredentials);
 +  }
 
   return (
@@ -525,7 +537,7 @@ export const FormComponent = (props: Props) => {
           type="text"
           name="login"
           placeholder="Login"
-          value={props.loginCredential.login}
+          value={props.loginCredentials.login}
           onChange={updateLoginInfo.bind(this)}
         />
         <InputComponent
@@ -533,7 +545,7 @@ export const FormComponent = (props: Props) => {
           type="password"
           name="password"
           placeholder="Password"
-          value={props.loginCredential.password}
+          value={props.loginCredentials.password}
           onChange={updateLoginInfo.bind(this)}
         />
         <button
@@ -557,16 +569,16 @@ export const FormComponent = (props: Props) => {
 import * as React from 'react';
 - import * as toastr from 'toastr';
 - import {loginAPI} from '../../rest-api/login/loginAPI';
-import {LoginCredential} from '../../models/loginCredential';
+import {LoginCredentials} from '../../models/loginCredentials';
 - import {UserProfile} from '../../models/userProfile';
 import {HeaderComponent} from './components/header';
 import {FormComponent} from './components/form';
 
 - interface State {
 + interface Props {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
 + updateLoginInfo: (fieldName: string, value: string) => void;
-+ loginRequest: (loginCredential: LoginCredential) => void;
++ loginRequest: (loginCredentials: LoginCredentials) => void;
 }
 
 - export class LoginPage extends React.Component <{}, State> {
@@ -575,22 +587,22 @@ import {FormComponent} from './components/form';
 -    super();
 -
 -    this.state = {
--      loginCredential: new LoginCredential(),
+-      loginCredentials: new LoginCredentials(),
 -    };
 -  }
 
 -  private updateLoginInfo(fieldName: string, value: string) {
 -    this.setState({
--      loginCredential: {
--        ...this.state.loginCredential,
+-      loginCredentials: {
+-        ...this.state.loginCredentials,
 -        [fieldName]: value,
 -      }
 -    });
 -  }
 
--  private loginRequest(loginCredential: LoginCredential) {
+-  private loginRequest(loginCredentials: LoginCredentials) {
 -    toastr.remove();
--    loginAPI.login(loginCredential)
+-    loginAPI.login(loginCredentials)
 -      .then((userProfile: UserProfile) => {
 -        toastr.success(`Success login ${userProfile.fullname}`);
 -      })
@@ -606,7 +618,7 @@ import {FormComponent} from './components/form';
           <div className="panel panel-default">
             <HeaderComponent />
             <FormComponent
-              loginCredential={this.state.loginCredential}
+              loginCredentials={this.state.loginCredentials}
 -              updateLoginInfo={this.updateLoginInfo.bind(this)}
 -              loginRequest={this.loginRequest.bind(this)}
 +              updateLoginInfo={props.updateLoginInfo}
@@ -628,12 +640,12 @@ import {FormComponent} from './components/form';
 import * as React from 'react';
 import * as toastr from 'toastr';
 import {loginAPI} from '../../rest-api/login/loginAPI';
-import {LoginCredential} from '../../models/loginCredential';
+import {LoginCredentials} from '../../models/loginCredentials';
 import {UserProfile} from '../../models/userProfile';
 import {LoginPage} from './page';
 
 interface State {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
 }
 
 export class LoginPageContainer extends React.Component <{}, State> {
@@ -641,22 +653,22 @@ export class LoginPageContainer extends React.Component <{}, State> {
     super();
 
     this.state = {
-      loginCredential: new LoginCredential(),
+      loginCredentials: new LoginCredentials(),
     };
   }
 
   private updateLoginInfo(fieldName: string, value: string) {
     this.setState({
-      loginCredential: {
-        ...this.state.loginCredential,
+      loginCredentials: {
+        ...this.state.loginCredentials,
         [fieldName]: value,
       }
     });
   }
 
-  private loginRequest(loginCredential: LoginCredential) {
+  private loginRequest(loginCredentials: LoginCredentials) {
     toastr.remove();
-    loginAPI.login(loginCredential)
+    loginAPI.login(loginCredentials)
       .then((userProfile: UserProfile) => {
         toastr.success(`Success login ${userProfile.fullname}`);
       })
@@ -668,7 +680,7 @@ export class LoginPageContainer extends React.Component <{}, State> {
   public render() {
     return (
       <LoginPage
-        loginCredential={this.state.loginCredential}
+        loginCredentials={this.state.loginCredentials}
         updateLoginInfo={this.updateLoginInfo.bind(this)}
         loginRequest={this.loginRequest.bind(this)}
       />

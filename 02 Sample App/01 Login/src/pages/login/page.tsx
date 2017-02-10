@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {LoginCredential} from '../../models/loginCredential';
+import {LoginCredentials} from '../../models/loginCredentials';
 import {HeaderComponent} from './components/header';
 import {FormComponent} from './components/form';
 
 interface Props {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
   updateLoginInfo: (fieldName: string, value: string) => void;
-  loginRequest: (loginCredential: LoginCredential) => void;
+  loginRequest: (loginCredentials: LoginCredentials) => void;
 }
 
 export const LoginPage = (props: Props) => {
@@ -16,7 +16,7 @@ export const LoginPage = (props: Props) => {
         <div className="panel panel-default">
           <HeaderComponent />
           <FormComponent
-            loginCredential={props.loginCredential}
+            loginCredentials={props.loginCredentials}
             updateLoginInfo={props.updateLoginInfo}
             loginRequest={props.loginRequest}
           />

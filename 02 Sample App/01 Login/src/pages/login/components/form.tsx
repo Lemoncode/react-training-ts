@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {LoginCredential} from '../../../models/loginCredential';
+import {LoginCredentials} from '../../../models/loginCredentials';
 import {InputComponent} from '../../../common/components/input';
 
 interface Props {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
   updateLoginInfo: (fieldName: string, value: string) => void;
-  loginRequest: (loginCredential: LoginCredential) => void;
+  loginRequest: (loginCredentials: LoginCredentials) => void;
 }
 
 export const FormComponent = (props: Props) => {
@@ -17,7 +17,7 @@ export const FormComponent = (props: Props) => {
 
   const loginRequest = (event) => {
     event.preventDefault();
-    props.loginRequest(props.loginCredential);
+    props.loginRequest(props.loginCredentials);
   }
 
   return (
@@ -28,7 +28,7 @@ export const FormComponent = (props: Props) => {
           type="text"
           name="login"
           placeholder="Login"
-          value={props.loginCredential.login}
+          value={props.loginCredentials.login}
           onChange={updateLoginInfo.bind(this)}
         />
         <InputComponent
@@ -36,7 +36,7 @@ export const FormComponent = (props: Props) => {
           type="password"
           name="password"
           placeholder="Password"
-          value={props.loginCredential.password}
+          value={props.loginCredentials.password}
           onChange={updateLoginInfo.bind(this)}
         />
         <button

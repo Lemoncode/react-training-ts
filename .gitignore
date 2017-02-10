@@ -8,3 +8,4 @@ typings/
 */src/**/*.js.map
 **/.vscode/
 .editorconfig
+yarn.*

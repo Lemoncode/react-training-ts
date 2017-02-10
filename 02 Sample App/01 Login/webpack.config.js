@@ -6,11 +6,12 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   context: path.join(__dirname, 'src'),
   resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
+    extensions: ['.js', '.ts', '.tsx', '.css'],
   },
   entry: {
     app: './index.tsx',
     vendor: [
+      'core-js',
       'bootstrap',
       'react',
       'react-dom',
@@ -20,6 +21,7 @@ module.exports = {
     ],
     vendorStyles: [
       '../node_modules/bootstrap/dist/css/bootstrap.css',
+      '../node_modules/toastr/build/toastr.css',
     ],
   },
   output: {
@@ -32,8 +34,26 @@ module.exports = {
         test: /\.tsx?$/,
         loader: 'awesome-typescript-loader',
       },
+      // Load css from src with CSS Modules
       {
         test: /\.css$/,
+        exclude: /node_modules/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[name]__[local]___[hash:base64:5]',
+              camelCase: true,
+            },
+          },
+        }),
+      },
+      // Load css from node_modules
+      {
+        test: /\.css$/,
+        include: /node_modules/,
         loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: 'css-loader',

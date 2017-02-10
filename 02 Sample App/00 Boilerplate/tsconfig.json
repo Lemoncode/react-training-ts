@@ -8,7 +8,7 @@
     "sourceMap": true,
     "noLib": false,
     "suppressImplicitAnyIndexErrors": true,
-    "types": ["webpack-env"]
+    "types": ["webpack-env", "core-js"]
   },
   "compileOnSave": false,
   "exclude": [

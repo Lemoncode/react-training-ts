@@ -549,3 +549,151 @@ export const FormComponent = (props: Props) => {
 };
 
 ```
+
+- Finally, we can go one step over, and create a wrapper to keep LoginPage as stateless component:
+
+### ./src
+```javascript
+import * as React from 'react';
+- import * as toastr from 'toastr';
+- import {loginAPI} from '../../rest-api/login/loginAPI';
+import {LoginCredential} from '../../models/loginCredential';
+- import {UserProfile} from '../../models/userProfile';
+import {HeaderComponent} from './components/header';
+import {FormComponent} from './components/form';
+
+- interface State {
++ interface Props {
+  loginCredential: LoginCredential;
++ updateLoginInfo: (fieldName: string, value: string) => void;
++ loginRequest: (loginCredential: LoginCredential) => void;
+}
+
+- export class LoginPage extends React.Component <{}, State> {
++ export const LoginPage = (props: Props) => {  
+-  constructor() {
+-    super();
+-
+-    this.state = {
+-      loginCredential: new LoginCredential(),
+-    };
+-  }
+
+-  private updateLoginInfo(fieldName: string, value: string) {
+-    this.setState({
+-      loginCredential: {
+-        ...this.state.loginCredential,
+-        [fieldName]: value,
+-      }
+-    });
+-  }
+
+-  private loginRequest(loginCredential: LoginCredential) {
+-    toastr.remove();
+-    loginAPI.login(loginCredential)
+-      .then((userProfile: UserProfile) => {
+-        toastr.success(`Success login ${userProfile.fullname}`);
+-      })
+-      .catch((error) => {
+-        toastr.error(error);
+-      });
+-  }
+
+-  public render() {
+    return (
+      <div className="row">
+        <div className="col-md-4 col-md-offset-4">
+          <div className="panel panel-default">
+            <HeaderComponent />
+            <FormComponent
+              loginCredential={this.state.loginCredential}
+-              updateLoginInfo={this.updateLoginInfo.bind(this)}
+-              loginRequest={this.loginRequest.bind(this)}
++              updateLoginInfo={props.updateLoginInfo}
++              loginRequest={props.loginRequest}
+            />
+          </div>
+        </div>
+      </div>
+    );
+-  }
+};
+
+```
+
+- And LoginPageContainer is the responsible about state and pass properties to LoginPage:
+
+### ./src/pages/login/components/pageContainer.tsx
+```javascript
+import * as React from 'react';
+import * as toastr from 'toastr';
+import {loginAPI} from '../../rest-api/login/loginAPI';
+import {LoginCredential} from '../../models/loginCredential';
+import {UserProfile} from '../../models/userProfile';
+import {LoginPage} from './page';
+
+interface State {
+  loginCredential: LoginCredential;
+}
+
+export class LoginPageContainer extends React.Component <{}, State> {
+  constructor() {
+    super();
+
+    this.state = {
+      loginCredential: new LoginCredential(),
+    };
+  }
+
+  private updateLoginInfo(fieldName: string, value: string) {
+    this.setState({
+      loginCredential: {
+        ...this.state.loginCredential,
+        [fieldName]: value,
+      }
+    });
+  }
+
+  private loginRequest(loginCredential: LoginCredential) {
+    toastr.remove();
+    loginAPI.login(loginCredential)
+      .then((userProfile: UserProfile) => {
+        toastr.success(`Success login ${userProfile.fullname}`);
+      })
+      .catch((error) => {
+        toastr.error(error);
+      });
+  }
+
+  public render() {
+    return (
+      <LoginPage
+        loginCredential={this.state.loginCredential}
+        updateLoginInfo={this.updateLoginInfo.bind(this)}
+        loginRequest={this.loginRequest.bind(this)}
+      />
+    );
+  }
+}
+
+```
+
+- And of course, calls LoginPageContainer instead LoginPage in App component:
+
+### ./src/app.tsx
+```javascript
+import * as React from 'react';
+- import {LoginPage} from './pages/login/page';
++ import {LoginPageContainer} from './pages/login/pageContainer';
+const classNames: any = require('./appStyles');
+
+export const App = () => {
+  return (
+    <div className={`container-fluid ${classNames.app}`}>
+-     <LoginPage />
++     <LoginPageContainer />
+    </div>
+  );
+}
+
+```

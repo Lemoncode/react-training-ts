@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as toastr from 'toastr';
 import {loginAPI} from '../../rest-api/login/loginAPI';
-import {LoginCredential} from '../../models/loginCredential';
+import {LoginCredentials} from '../../models/loginCredentials';
 import {UserProfile} from '../../models/userProfile';
 import {LoginPage} from './page';
 
 interface State {
-  loginCredential: LoginCredential;
+  loginCredentials: LoginCredentials;
 }
 
 export class LoginPageContainer extends React.Component <{}, State> {
@@ -14,22 +14,22 @@ export class LoginPageContainer extends React.Component <{}, State> {
     super();
 
     this.state = {
-      loginCredential: new LoginCredential(),
+      loginCredentials: new LoginCredentials(),
     };
   }
 
   private updateLoginInfo(fieldName: string, value: string) {
     this.setState({
-      loginCredential: {
-        ...this.state.loginCredential,
+      loginCredentials: {
+        ...this.state.loginCredentials,
         [fieldName]: value,
       }
     });
   }
 
-  private loginRequest(loginCredential: LoginCredential) {
+  private loginRequest(loginCredentials: LoginCredentials) {
     toastr.remove();
-    loginAPI.login(loginCredential)
+    loginAPI.login(loginCredentials)
       .then((userProfile: UserProfile) => {
         toastr.success(`Success login ${userProfile.fullname}`);
       })
@@ -41,7 +41,7 @@ export class LoginPageContainer extends React.Component <{}, State> {
   public render() {
     return (
       <LoginPage
-        loginCredential={this.state.loginCredential}
+        loginCredentials={this.state.loginCredentials}
         updateLoginInfo={this.updateLoginInfo.bind(this)}
         loginRequest={this.loginRequest.bind(this)}
       />

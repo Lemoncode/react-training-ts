@@ -11,6 +11,7 @@ module.exports = {
   entry: {
     app: './index.tsx',
     vendor: [
+      'core-js',
       'bootstrap',
       'react',
       'react-dom',

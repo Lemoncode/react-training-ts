@@ -12,6 +12,7 @@ Summary steps:
 - Install:
     - [Webpack 2](https://github.com/webpack/webpack) and [webpack-dev-server 2](https://github.com/webpack/webpack-dev-server) and loaders.
     - [TypeScript](https://github.com/Microsoft/TypeScript).
+    - [core-js](https://github.com/zloirock/core-js) and typings to enable es6 polyfills.
     - [Bootstrap](https://github.com/twbs/bootstrap).
     - [React and ReactDOM](https://github.com/facebook/react).
     - [React router](https://github.com/reacttraining/react-router) for navigation.
@@ -88,6 +89,13 @@ our webpack configuration (handling CSS, TypeScript...).
   }
  ```
 
+- Let's install core-js and typings to enable es6 polyfills:
+
+ ```
+ npm install core-js --save
+ npm install @types/core-js
+ ```
+
 - Let's install bootstrap:
 
  ```
@@ -154,6 +162,7 @@ our webpack configuration (handling CSS, TypeScript...).
    },
    "homepage": "https://github.com/Lemoncode/react-training-ts#readme",
    "devDependencies": {
+     "@types/core-js": "^0.9.35",
      "@types/react": "^15.0.8",
      "@types/react-dom": "^0.14.23",
      "@types/react-router": "^3.0.2",
@@ -172,6 +181,7 @@ our webpack configuration (handling CSS, TypeScript...).
    },
    "dependencies": {
      "bootstrap": "^3.3.7",
+     "core-js": "^2.4.1",
      "jquery": "^3.1.1",
      "lc-form-validation": "^0.1.7",
      "react": "^15.4.2",
@@ -265,6 +275,7 @@ export const HelloComponent = () => {
    entry: {
      app: './index.tsx',
      vendor: [
+       'core-js',
        'bootstrap',
        'react',
        'react-dom',

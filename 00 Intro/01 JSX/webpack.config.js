@@ -10,14 +10,12 @@ module.exports = {
   },
   entry: {
     app: './index.tsx',
+    styles: './css/styles.css',
     vendor: [
       'core-js',
       'bootstrap',
       'react',
-      'react-dom',
-      'react-router',
-      'lc-form-validation',
-      'toastr',
+      'react-dom'
     ],
     vendorStyles: [
       '../node_modules/bootstrap/dist/css/bootstrap.css',
@@ -41,11 +39,6 @@ module.exports = {
           fallback: 'style-loader',
           use: {
             loader: 'css-loader',
-            options: {
-              modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]',
-              camelCase: true,
-            },
           },
         }),
       },
@@ -100,7 +93,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html', //Name of file in ./dist/
       template: 'index.html', //Name of template in ./src
-			hash: true
+      hash: true
     }),
     //Expose jquery used by bootstrap
     new webpack.ProvidePlugin({

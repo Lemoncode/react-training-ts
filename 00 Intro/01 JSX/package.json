@@ -25,7 +25,6 @@
     "@types/core-js": "^0.9.35",
     "@types/react": "^15.0.8",
     "@types/react-dom": "^0.14.23",
-    "@types/toastr": "^2.1.32",
     "@types/webpack-env": "^1.13.0",
     "awesome-typescript-loader": "^3.0.4-rc.0",
     "css-loader": "^0.26.1",

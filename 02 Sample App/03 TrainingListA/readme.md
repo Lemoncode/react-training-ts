@@ -16,6 +16,15 @@ Summary steps:
 
 ### ./src/common/models/training.ts
 ```javascript
+export interface Training {
+  id: number;
+  name: string;
+  url: string;
+  startDate: number;
+  endDate: number;
+  isActive: boolean;
+}
+
 ```
 
 - Now, we can create mock data:
@@ -41,5 +50,102 @@ class TrainingAPI {
 }
 
 export const trainingAPI = new TrainingAPI();
+
+```
+
+- Once we have trainingAPI, we can use it in TrainingListPageContainer:
+
+### ./src/pages/training/list/pageContainer.tsx
+```javascript
+import * as React from 'react';
+import * as toastr from 'toastr';
+import {trainingAPI} from '../../../rest-api/training/trainingAPI';
+import {Training} from '../../../models/training';
+import {TrainingListPage} from './page';
+
+interface State {
+  trainings: Training[];
+}
+
+export class TrainingListPageContainer extends React.Component <{}, State> {
+  constructor() {
+    super();
+    this.fetchTrainings();
+  }
+
+  // We are creating new array from trainings from API
+  // Spread operator is available for arrays too.
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator
+  // Other way to do same:
+  // var newTrainings = [].concat(trainings);
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
+  private fetchTrainings() {
+    trainingAPI.fetchTrainings()
+      .then((trainings) => {
+        this.setState({
+          trainings: [...trainings],
+        });
+      })
+      .catch(() => {
+        toastr.error('Something was wrong when fetching trainings :(');
+      });
+  }
+
+  public render() {
+    return (
+      <TrainingListPage trainings={this.state.trainings} />
+    );
+  }
+}
+
+```
+
+- Now, it's time to create the table:
+
+### ./src/pages/training/list/components/trainingHead.tsx
+```javascript
+```
+
+### ./src/pages/training/list/components/trainingRow.tsx
+```javascript
+```
+
+### ./src/pages/training/list/components/trainingList.tsx
+```javascript
+
+```
+
+- And use all components in TrainingListPage:
+
+### ./src/pages/training/list/page.tsx
+```javascript
+import * as React from 'react';
+
+export const TrainingListPage = () => {
+  return (
+    <div>Training list</div>
+  );
+}
+```
+
+- And of course, update route:
+
+### ./src/routes.tsx
+```javascript
+import * as React from 'react';
+import {Route, IndexRoute} from 'react-router';
+import {routeConstants} from './common/constants/routeConstants';
+import {App} from './app';
+import {LoginPageContainer} from './pages/login/pageContainer';
+- import {TrainingListPage} from './pages/training/list/page';
++ import {TrainingListPageContainer} from './pages/training/list/pageContainer';
+
+export const AppRoutes = (
+  <Route path={routeConstants.default} component={App}>
+    <IndexRoute component={LoginPageContainer} />
+-    <Route path={routeConstants.training.list} component={TrainingListPage} />
++    <Route path={routeConstants.training.list} component={TrainingListPageContainer} />
+  </Route>
+);
 
 ```

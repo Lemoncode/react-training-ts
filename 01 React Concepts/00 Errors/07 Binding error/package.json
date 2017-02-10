@@ -1,0 +1,23 @@
+{
+  "name": "03_same_with_tsx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "tsd reinstall --overwrite --save",
+    "start": "webpack-dev-server"
+  },
+  "author": "Daniel Sanchez",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^0.14.8",
+    "react-dom": "^0.14.8"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^2.15.0",
+    "ts-loader": "^0.8.1",
+    "typescript": "^1.8.9",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
+  }
+}

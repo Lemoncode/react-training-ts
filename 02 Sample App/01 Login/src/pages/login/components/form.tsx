@@ -5,6 +5,7 @@ import {InputComponent} from '../../../common/components/input';
 interface Props {
   loginCredential: LoginCredential;
   updateLoginInfo: (fieldName: string, value: string) => void;
+  loginRequest: (loginCredential: LoginCredential) => void;
 }
 
 export const FormComponent = (props: Props) => {
@@ -13,6 +14,11 @@ export const FormComponent = (props: Props) => {
     const value = event.target.value;
     props.updateLoginInfo(fieldName, value);
   };
+
+  const loginRequest = (event) => {
+    event.preventDefault();
+    props.requestLogin(props.loginCredential);
+  }
 
   return (
     <div className="panel-body">
@@ -36,6 +42,7 @@ export const FormComponent = (props: Props) => {
         <button
           type="submit"
           className="btn btn-lg btn-success btn-block"
+          onClick={loginRequest.bind(this)}
         >
           Login
         </button>

@@ -1,6 +1,9 @@
 import * as React from 'react';
-import {HeaderComponent} from './components/header';
+import * as toastr from 'toastr';
+import {loginAPI} from '../../rest-api/login/loginAPI';
 import {LoginCredential} from '../../models/loginCredential';
+import {LoginResponse} from '../../models/loginResponse';
+import {HeaderComponent} from './components/header';
 import {FormComponent} from './components/form';
 
 interface State {
@@ -10,7 +13,7 @@ interface State {
 export class LoginPage extends React.Component <{}, State> {
   constructor() {
     super();
-    
+
     this.state = {
       loginCredential: new LoginCredential(),
     };
@@ -25,6 +28,16 @@ export class LoginPage extends React.Component <{}, State> {
     });
   }
 
+  private loginRequest(loginCredential: LoginCredential) {
+    loginAPI.login(loginCredential)
+      .then((loginResponse: LoginResponse) => {
+        toastr.success(`Success login ${loginResponse.userProfile.fullname}`);
+      })
+      .catch((error) => {
+        toastr.error(error);
+      });
+  }
+
   public render() {
     return (
       <div className="row">
@@ -34,6 +47,7 @@ export class LoginPage extends React.Component <{}, State> {
             <FormComponent
               loginCredential={this.state.loginCredential}
               updateLoginInfo={this.updateLoginInfo.bind(this)}
+              loginRequest={this.loginRequest.bind(this)}
             />
           </div>
         </div>

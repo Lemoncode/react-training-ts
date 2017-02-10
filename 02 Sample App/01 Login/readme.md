@@ -206,8 +206,8 @@ export const FormComponent = (props: Props) => {
 ### ./src/pages/login/page.tsx
 ```javascript
 import * as React from 'react';
-import {HeaderComponent} from './components/header';
 + import {LoginCredential} from '../../models/loginCredential';
+import {HeaderComponent} from './components/header';
 + import {FormComponent} from './components/form';
 
 + interface State {
@@ -435,11 +435,63 @@ class LoginAPI {
     });
 
     if (!loginResponse || loginCredential.password !== 'test') {
-      loginResponse = new LoginResponse();
+      return Promise.reject('Invalid login or password');
     }
 
     return Promise.resolve(loginResponse);
   }
 }
+
+export const loginAPI = new LoginAPI();
+
+```
+
+- Now, we can request login in login Page using this API:
+
+### ./src/pages/login/page.tsx
+```javascript
+import * as React from 'react';
+import {LoginCredential} from '../../models/loginCredential';
+import {HeaderComponent} from './components/header';
+import {FormComponent} from './components/form';
+
+interface State {
+  loginCredential: LoginCredential;
+}
+
+export class LoginPage extends React.Component <{}, State> {
+  constructor() {
+    super();
+
+    this.state = {
+      loginCredential: new LoginCredential(),
+    };
+  }
+
+  private updateLoginInfo(fieldName: string, value: string) {
+    this.setState({
+      loginCredential: {
+        ...this.state.loginCredential,
+        [fieldName]: value,
+      }
+    });
+  }
+
+  public render() {
+    return (
+      <div className="row">
+        <div className="col-md-4 col-md-offset-4">
+          <div className="panel panel-default">
+            <HeaderComponent />
+            <FormComponent
+              loginCredential={this.state.loginCredential}
+              updateLoginInfo={this.updateLoginInfo.bind(this)}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+};
 
 ```

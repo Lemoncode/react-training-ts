@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as toastr from 'toastr';
+import {hashHistory} from 'react-router';
+import {routeConstants} from '../../common/constants/routeConstants';
 import {loginAPI} from '../../rest-api/login/loginAPI';
 import {LoginCredentials} from '../../models/loginCredentials';
 import {UserProfile} from '../../models/userProfile';
@@ -43,6 +45,7 @@ export class LoginPageContainer extends React.Component <{}, State> {
     loginAPI.login(loginCredentials)
       .then((userProfile: UserProfile) => {
         toastr.success(`Success login ${userProfile.fullname}`);
+        hashHistory.push(routeConstants.training.list);
       })
       .catch((error) => {
         toastr.error(error);

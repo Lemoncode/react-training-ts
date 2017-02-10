@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as toastr from 'toastr';
 import {loginAPI} from '../../rest-api/login/loginAPI';
 import {LoginCredential} from '../../models/loginCredential';
-import {LoginResponse} from '../../models/loginResponse';
+import {UserProfile} from '../../models/userProfile';
 import {HeaderComponent} from './components/header';
 import {FormComponent} from './components/form';
 
@@ -29,9 +29,10 @@ export class LoginPage extends React.Component <{}, State> {
   }
 
   private loginRequest(loginCredential: LoginCredential) {
+    toastr.remove();
     loginAPI.login(loginCredential)
-      .then((loginResponse: LoginResponse) => {
-        toastr.success(`Success login ${loginResponse.userProfile.fullname}`);
+      .then((userProfile: UserProfile) => {
+        toastr.success(`Success login ${userProfile.fullname}`);
       })
       .catch((error) => {
         toastr.error(error);

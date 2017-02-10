@@ -1,8 +1,7 @@
-import {LoginResponse} from '../../models/loginResponse';
+import {UserProfile} from '../../models/userProfile';
 
-export const loginMockResponses: LoginResponse[] = [
+export const userProfiles: UserProfile[] = [
   {
-    succeeded: true,
-    userProfile: { id: 1, login: 'admin', fullname: 'Admin', role: 'admin', },
+    id: 1, login: 'admin', fullname: 'Admin', role: 'admin',
   },
 ];

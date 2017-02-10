@@ -368,7 +368,7 @@ export const FormComponent = (props: Props) => {
 
 ## Create fake API
 
-- First we are going to create LoginResponse model:
+- First we are going to create UserProfile model:
 
 ### ./src/models/userProfile.ts
 ```javascript
@@ -388,57 +388,37 @@ export class UserProfile {
 
 ```
 
-### ./src/models/loginResponse.ts
-```javascript
-import {UserProfile} from './userProfile';
-
-export class LoginResponse {
-  succeeded: boolean;
-  userProfile: UserProfile;
-
-  constructor() {
-    this.succeeded = false;
-    this.userProfile = new UserProfile();
-  }
-}
-
-```
-
 - Create mock data:
 
 ### ./src/rest-api/login/loginMockData.ts
 ```javascript
-import {LoginResponse} from '../../models/loginResponse';
+import {UserProfile} from '../../models/userProfile';
 
-export const loginMockResponse: LoginResponse = {
-  succeeded: true,
-  userProfile: {
-    id: 1,
-    login: 'admin',
-    fullname: 'Admin',
-    role: 'admin',
+export const userProfiles: UserProfile[] = [
+  {
+    id: 1, login: 'admin', fullname: 'Admin', role: 'admin',
   },
-};
+];
 
 ```
 
 ### ./src/rest-api/login/loginAPI.ts
 ```javascript
 import {LoginCredential} from '../../models/loginCredential';
-import {LoginResponse} from '../../models/loginResponse';
-import {loginMockResponses} from './loginMockData';
+import {UserProfile} from '../../models/userProfile';
+import {userProfiles} from './loginMockData';
 
 class LoginAPI {
-  public login(loginCredential: LoginCredential): Promise<LoginResponse> {
-    let loginResponse = loginMockResponses.find((response) => {
-      return response.userProfile.login === loginCredential.login;
+  public login(loginCredential: LoginCredential): Promise<UserProfile> {
+    let userProfile = userProfiles.find((userProfile) => {
+      return userProfile.login === loginCredential.login;
     });
 
-    if (!loginResponse || loginCredential.password !== 'test') {
-      return Promise.reject<LoginResponse>('Invalid login or password');
+    if (!userProfile || loginCredential.password !== 'test') {
+      return Promise.reject<UserProfile>('Invalid login or password');
     }
 
-    return Promise.resolve(loginResponse);
+    return Promise.resolve(userProfile);
   }
 }
 
@@ -446,12 +426,15 @@ export const loginAPI = new LoginAPI();
 
 ```
 
-- Now, we can request login in login Page using this API:
+- Now, we can request login in LoginPage using this API:
 
 ### ./src/pages/login/page.tsx
 ```javascript
 import * as React from 'react';
++ import * as toastr from 'toastr';
++ import {loginAPI} from '../../rest-api/login/loginAPI';
 import {LoginCredential} from '../../models/loginCredential';
++ import {UserProfile} from '../../models/userProfile';
 import {HeaderComponent} from './components/header';
 import {FormComponent} from './components/form';
 
@@ -477,6 +460,17 @@ export class LoginPage extends React.Component <{}, State> {
     });
   }
 
++  private loginRequest(loginCredential: LoginCredential) {
++    toastr.remove();
++    loginAPI.login(loginCredential)
++      .then((userProfile: UserProfile) => {
++        toastr.success(`Success login ${userProfile.fullname}`);
++      })
++      .catch((error) => {
++        toastr.error(error);
++      });
++  }
+
   public render() {
     return (
       <div className="row">
@@ -486,12 +480,72 @@ export class LoginPage extends React.Component <{}, State> {
             <FormComponent
               loginCredential={this.state.loginCredential}
               updateLoginInfo={this.updateLoginInfo.bind(this)}
++             loginRequest={this.loginRequest.bind(this)}
             />
           </div>
         </div>
       </div>
     );
   }
+};
+
+```
+
+- And update form to has loginRequest property:
+
+### ./src/pages/login/components/form.tsx
+```javascript
+import * as React from 'react';
+import {LoginCredential} from '../../../models/loginCredential';
+import {InputComponent} from '../../../common/components/input';
+
+interface Props {
+  loginCredential: LoginCredential;
+  updateLoginInfo: (fieldName: string, value: string) => void;
++ loginRequest: (loginCredential: LoginCredential) => void;
+}
+
+export const FormComponent = (props: Props) => {
+  const updateLoginInfo = (event) => {
+    const fieldName = event.target.name;
+    const value = event.target.value;
+    props.updateLoginInfo(fieldName, value);
+  };
+
++  const loginRequest = (event) => {
++    event.preventDefault();
++    props.loginRequest(props.loginCredential);
++  }
+
+  return (
+    <div className="panel-body">
+      <form role="form">
+        <InputComponent
+          label="Login"
+          type="text"
+          name="login"
+          placeholder="Login"
+          value={props.loginCredential.login}
+          onChange={updateLoginInfo.bind(this)}
+        />
+        <InputComponent
+          label="Password"
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={props.loginCredential.password}
+          onChange={updateLoginInfo.bind(this)}
+        />
+        <button
+          type="submit"
+          className="btn btn-lg btn-success btn-block"
++         onClick={loginRequest.bind(this)}
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  );
 };
 
 ```

@@ -1,18 +1,18 @@
 import {LoginCredential} from '../../models/loginCredential';
-import {LoginResponse} from '../../models/loginResponse';
-import {loginMockResponses} from './loginMockData';
+import {UserProfile} from '../../models/userProfile';
+import {userProfiles} from './loginMockData';
 
 class LoginAPI {
-  public login(loginCredential: LoginCredential): Promise<LoginResponse> {
-    let loginResponse = loginMockResponses.find((response) => {
-      return response.userProfile.login === loginCredential.login;
+  public login(loginCredential: LoginCredential): Promise<UserProfile> {
+    let userProfile = userProfiles.find((userProfile) => {
+      return userProfile.login === loginCredential.login;
     });
 
-    if (!loginResponse || loginCredential.password !== 'test') {
-      return Promise.reject<LoginResponse>('Invalid login or password');
+    if (!userProfile || loginCredential.password !== 'test') {
+      return Promise.reject<UserProfile>('Invalid login or password');
     }
 
-    return Promise.resolve(loginResponse);
+    return Promise.resolve(userProfile);
   }
 }
 

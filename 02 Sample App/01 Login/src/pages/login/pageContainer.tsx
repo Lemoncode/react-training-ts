@@ -18,6 +18,17 @@ export class LoginPageContainer extends React.Component <{}, State> {
     };
   }
 
+  // Other way to assign new object to loginCredentials to avoid mutation is:
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+  /*
+    var newLoginCredentiasl = Object.assign({}, this.state.loginCredentials, {
+      [fieldName]: value,
+    });
+  */
+  // We are use a JavaScript proposal named object spread operator
+  // https://github.com/sebmarkbage/ecmascript-rest-spread
+  // http://stackoverflow.com/questions/32925460/spread-operator-vs-object-assign
+
   private updateLoginInfo(fieldName: string, value: string) {
     this.setState({
       loginCredentials: {

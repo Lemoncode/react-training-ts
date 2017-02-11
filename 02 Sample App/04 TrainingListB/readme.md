@@ -307,7 +307,7 @@ import {Training} from '../../../../models/training';
 import {TrainingRowComponent} from './trainingRow';
 ```
 
-- Now it's time to give to Table component some styles like before we have in sample 03 TrainingListA:
+- Now it's time to give `Table component` some styles like sample 03 TrainingListA:
 
 ### ./src/pages/training/list/components/trainingListStyles.css
 ```css

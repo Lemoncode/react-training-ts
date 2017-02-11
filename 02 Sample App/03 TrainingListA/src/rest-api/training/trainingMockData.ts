@@ -1,0 +1,68 @@
+import {Training} from '../../models/training';
+
+export const trainings: Training[] = [
+  {
+    id: 1,
+    name: 'React',
+    url: 'http://lemoncode.net/react',
+    startDate: new Date('2017-02-22T10:00:00').getMilliseconds(),
+    endDate: new Date('2017-02-24T12:00:00').getMilliseconds(),
+    isActive: true,
+  },
+  {
+    id: 2,
+    name: 'AngularJS 2.0',
+    url: 'http://lemoncode.net/angularjs-2-0-con-typescript',
+    startDate: new Date('2016-11-22T19:00:00').getMilliseconds(),
+    endDate: new Date('2016-11-24T21:00:00').getMilliseconds(),
+    isActive: true,
+  },
+  {
+    id: 3,
+    name: 'Introducción a Git',
+    url: 'http://lemoncode.net/introduccion-a-git',
+    startDate: new Date('2016-10-25T19:00:00').getMilliseconds(),
+    endDate: new Date('2016-10-27T21:00:00').getMilliseconds(),
+    isActive: true,
+  },
+  {
+    id: 4,
+    name: 'ALM con Visual Studio',
+    url: 'http://lemoncode.net/application-lifecycle-management-con-visual-studio',
+    startDate: new Date('2016-10-27T19:00:00').getMilliseconds(),
+    endDate: new Date('2016-10-29T21:00:00').getMilliseconds(),
+    isActive: true,
+  },
+  {
+    id: 5,
+    name: 'React-Redux',
+    url: 'http://lemoncode.net/react-redux',
+    startDate: 0,
+    endDate: 0,
+    isActive: false,
+  },
+  {
+    id: 6,
+    name: 'D3JS',
+    url: 'http://lemoncode.net/d3js',
+    startDate: 0,
+    endDate: 0,
+    isActive: false,
+  },
+  {
+    id: 7,
+    name: 'DVCS & Metodología',
+    url: 'http://lemoncode.net/dvcs-y-metodologia',
+    startDate: 0,
+    endDate: 0,
+    isActive: false,
+  },
+  {
+    id: 8,
+    name: 'Unit Testing & TDD',
+    url: 'http://lemoncode.net/unit-testing-y-tdd',
+    startDate: 0,
+    endDate: 0,
+    isActive: false,
+  },
+];

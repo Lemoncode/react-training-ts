@@ -21,6 +21,9 @@ export const TrainingRowComponent = (props: Props) => {
       <td>
         <a href={props.training.url} target="blank">{props.training.url}</a>
       </td>
+      <td>
+        <a className="btn btn-primary"><i className="glyphicon glyphicon-pencil" /></a>
+      </td>
     </tr>
   );
 }

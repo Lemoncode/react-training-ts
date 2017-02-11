@@ -31,6 +31,74 @@ export interface Training {
 
 ### ./src/rest-api/training/trainingMockData.ts
 ```javascript
+import {Training} from '../../models/training';
+
+export const trainings: Training[] = [
+  {
+    id: 1,
+    name: 'React',
+    url: 'http://lemoncode.net/react',
+    startDate: new Date('2017-02-22T10:00:00').getMilliseconds(),
+    endDate: new Date('2017-02-24T12:00:00').getMilliseconds(),
+    isActive: true,
+  },
+  {
+    id: 2,
+    name: 'AngularJS 2.0',
+    url: 'http://lemoncode.net/angularjs-2-0-con-typescript',
+    startDate: new Date('2016-11-22T19:00:00').getMilliseconds(),
+    endDate: new Date('2016-11-24T21:00:00').getMilliseconds(),
+    isActive: true,
+  },
+  {
+    id: 3,
+    name: 'Introducción a Git',
+    url: 'http://lemoncode.net/introduccion-a-git',
+    startDate: new Date('2016-10-25T19:00:00').getMilliseconds(),
+    endDate: new Date('2016-10-27T21:00:00').getMilliseconds(),
+    isActive: true,
+  },
+  {
+    id: 4,
+    name: 'ALM con Visual Studio',
+    url: 'http://lemoncode.net/application-lifecycle-management-con-visual-studio',
+    startDate: new Date('2016-10-27T19:00:00').getMilliseconds(),
+    endDate: new Date('2016-10-29T21:00:00').getMilliseconds(),
+    isActive: true,
+  },
+  {
+    id: 5,
+    name: 'React-Redux',
+    url: 'http://lemoncode.net/react-redux',
+    startDate: 0,
+    endDate: 0,
+    isActive: false,
+  },
+  {
+    id: 6,
+    name: 'D3JS',
+    url: 'http://lemoncode.net/d3js',
+    startDate: 0,
+    endDate: 0,
+    isActive: false,
+  },
+  {
+    id: 7,
+    name: 'DVCS & Metodología',
+    url: 'http://lemoncode.net/dvcs-y-metodologia',
+    startDate: 0,
+    endDate: 0,
+    isActive: false,
+  },
+  {
+    id: 8,
+    name: 'Unit Testing & TDD',
+    url: 'http://lemoncode.net/unit-testing-y-tdd',
+    startDate: 0,
+    endDate: 0,
+    isActive: false,
+  },
+];
 
 ```
 
@@ -104,28 +172,115 @@ export class TrainingListPageContainer extends React.Component <{}, State> {
 
 ### ./src/pages/training/list/components/trainingHead.tsx
 ```javascript
+import * as React from 'react';
+
+export const TrainingHeadComponent = () => {
+  return (
+    <thead>
+      <tr>
+        <th>
+          Active
+        </th>
+        <th>
+          Name
+        </th>
+        <th>
+          Link to course
+        </th>
+        <th>
+        </th>
+      </tr>
+    </thead>
+  );
+}
+
 ```
 
 ### ./src/pages/training/list/components/trainingRow.tsx
 ```javascript
+import * as React from 'react';
+import {Training} from '../../../../models/training';
+
+interface Props {
+  training: Training;
+}
+
+export const TrainingRowComponent = (props: Props) => {
+  return (
+    <tr>
+      <td>
+        <input
+          type="checkbox"
+          checked={props.training.isActive}
+          disabled
+        />
+      </td>
+      <td>
+        <span>{props.training.name}</span>
+      </td>
+      <td>
+        <a href={props.training.url} target="blank">{props.training.url}</a>
+      </td>
+      <td>
+        <a className="btn btn-primary"><i className="glyphicon glyphicon-pencil" /></a>
+      </td>
+    </tr>
+  );
+}
+
 ```
 
 ### ./src/pages/training/list/components/trainingList.tsx
 ```javascript
+import * as React from 'react';
+import {Training} from '../../../../models/training';
+import {TrainingHeadComponent} from './trainingHead';
+import {TrainingRowComponent} from './trainingRow';
+
+interface Props {
+  trainings: Training[];
+}
+
+export const TrainingListComponent = (props: Props) => {
+  return (
+    <div className="container">
+      <table className="table table-striped">
+        <TrainingHeadComponent />
+        <tbody>
+          {
+            props.trainings.map((training) => (
+              <TrainingRowComponent
+                key={training.id}
+                training={training}
+              />
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 ```
 
-- And use all components in TrainingListPage:
+- Use all components in TrainingListPage:
 
 ### ./src/pages/training/list/page.tsx
 ```javascript
 import * as React from 'react';
++ import {Training} from '../../../models/training';
++ import {TrainingListComponent} from './components/trainingList';
 
-export const TrainingListPage = () => {
-  return (
-    <div>Training list</div>
-  );
-}
+- export const TrainingListPage = () => {
++ export const TrainingListPage = (props: Props) => {
+    return (
+-     <div>Training list</div>
++     <div>
++       <h2 className="jumbotron">Lemoncode Trainings</h2>
++       <TrainingListComponent trainings={props.trainings} />
++     </div>
+    );
+  }
 ```
 
 - And of course, update route:

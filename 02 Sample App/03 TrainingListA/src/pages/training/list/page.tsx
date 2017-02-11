@@ -9,7 +9,7 @@ interface Props {
 export const TrainingListPage = (props: Props) => {
   return (
     <div>
-      <h2>Lemoncode Trainings</h2>
+      <h2 className="jumbotron">Lemoncode Trainings</h2>
       <TrainingListComponent trainings={props.trainings} />
     </div>
   );

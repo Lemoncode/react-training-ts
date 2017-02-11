@@ -13,6 +13,8 @@ export const TrainingHeadComponent = () => {
         <th>
           Link to course
         </th>
+        <th>
+        </th>
       </tr>
     </thead>
   );

@@ -11,6 +11,7 @@ interface Props {
 
 // https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md
 // https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md
+// https://github.com/bvaughn/react-virtualized/blob/master/docs/Column.md
 export const TrainingListComponent = (props: Props) => {
 
   const getWidthByPercentage = (width, percentage) => {
@@ -50,7 +51,7 @@ export const TrainingListComponent = (props: Props) => {
               />
               <Column
                 label=''
-                dataKey='id'
+                dataKey=''
                 width={getWidthByPercentage(width, 10)}
               />
             </Table>

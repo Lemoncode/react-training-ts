@@ -380,3 +380,25 @@ export const TrainingRowComponent = (props: Props) => {
 }
 
 ```
+
+## Why are we using React Virtualized
+
+- We can play with table height and see which rows of table has been rendering:
+
+### ./src/pages/training/list/components/trainingList.tsx
+```javascript
+...
+<Table
+  width={width}
+- height={500}
++ height={200}
+  headerHeight={40}
+  headerClassName={classNames.header}
+  rowCount={props.trainings.length}
+  rowHeight={50}
+  rowGetter={({index}) => props.trainings[index]}
+  rowRenderer={TrainingRowComponent}
+  rowClassName={classNames.row}
++ overscanRowCount={3}
+...
+```

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Training} from '../../../../models/training';
-import {TrainingHeadComponent} from './trainingHead';
 import {TrainingRowComponent} from './trainingRow';
 import {AutoSizer, Table, Column} from 'react-virtualized';
 const classNames: any = require('./trainingListStyles');

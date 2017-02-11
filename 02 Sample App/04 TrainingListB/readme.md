@@ -297,6 +297,16 @@ export const TrainingRowComponent = (props: Props) => {
 ...
 ```
 
+- And of course, we don't need _TrainingHeadComponent_ any more:
+
+### ./src/pages/training/list/components/trainingList.tsx
+```javascript
+import * as React from 'react';
+import {Training} from '../../../../models/training';
+- import {TrainingHeadComponent} from './trainingHead';
+import {TrainingRowComponent} from './trainingRow';
+```
+
 - Now it's time to give to Table component some styles like before we have in sample 03 TrainingListA:
 
 ### ./src/pages/training/list/components/trainingListStyles.css
@@ -315,7 +325,6 @@ export const TrainingRowComponent = (props: Props) => {
 ```javascript
 import * as React from 'react';
 import {Training} from '../../../../models/training';
-import {TrainingHeadComponent} from './trainingHead';
 import {TrainingRowComponent} from './trainingRow';
 import {AutoSizer, Table, Column} from 'react-virtualized';
 + const classNames: any = require('./trainingListStyles');

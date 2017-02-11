@@ -343,7 +343,7 @@ export const HelloComponent = () => {
      ],
    },
    // For development https://webpack.js.org/configuration/devtool/#for-development
-   devtool: 'eval-source-map',
+   devtool: 'inline-source-map',
    devServer: {
      contentBase: path.join(__dirname, 'dist'),
      port: 8080,

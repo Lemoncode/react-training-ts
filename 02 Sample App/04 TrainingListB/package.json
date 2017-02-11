@@ -26,6 +26,7 @@
     "@types/react": "^15.0.8",
     "@types/react-dom": "^0.14.23",
     "@types/react-router": "^3.0.2",
+    "@types/react-virtualized": "^8.9.2",
     "@types/toastr": "^2.1.32",
     "@types/webpack-env": "^1.13.0",
     "awesome-typescript-loader": "^3.0.4-rc.0",
@@ -45,8 +46,10 @@
     "jquery": "^3.1.1",
     "lc-form-validation": "^0.1.7",
     "react": "^15.4.2",
+    "react-addons-shallow-compare": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router": "^3.0.2",
+    "react-virtualized": "^8.11.4",
     "toastr": "^2.1.2"
   }
 }

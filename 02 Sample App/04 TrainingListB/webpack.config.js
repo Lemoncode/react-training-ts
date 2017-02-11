@@ -18,10 +18,13 @@ module.exports = {
       'react-router',
       'lc-form-validation',
       'toastr',
+      'react-addons-shallow-compare',
+      'react-virtualized',
     ],
     vendorStyles: [
       '../node_modules/bootstrap/dist/css/bootstrap.css',
       '../node_modules/toastr/build/toastr.css',
+      '../node_modules/react-virtualized/styles.css',
     ],
   },
   output: {
@@ -80,7 +83,7 @@ module.exports = {
     ],
   },
   // For development https://webpack.js.org/configuration/devtool/#for-development
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     port: 8080,

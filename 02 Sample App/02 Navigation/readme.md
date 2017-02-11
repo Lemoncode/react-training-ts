@@ -88,7 +88,7 @@ ReactDOM.render(
 ```javascript
 import * as React from 'react';
 
-export const TrainingList = () => {
+export const TrainingListPage = () => {
   return (
     <div>Training list</div>
   );
@@ -118,18 +118,18 @@ import {Route, IndexRoute} from 'react-router';
 import {routeConstants} from './common/constants/routeConstants';
 import {App} from './app';
 import {LoginPageContainer} from './pages/login/pageContainer';
-+ import {TrainingList} from './pages/training/list/page';
++ import {TrainingListPage} from './pages/training/list/page';
 
 export const AppRoutes = (
   <Route path={routeConstants.default} component={App}>
     <IndexRoute component={LoginPageContainer} />
-+   <Route path={routeConstants.training.list} component={TrainingList} />
++   <Route path={routeConstants.training.list} component={TrainingListPage} />
   </Route>
 );
 
 ```
 
-- Lastly, we need to do something to navigate to TrainingList component. But instead of using [Link component from React-Router](https://github.com/reactjs/react-router-tutorial/tree/master/lessons/03-navigating-with-link) we need navigate after check loginCredentials:
+- Lastly, we need to do something to navigate to TrainingListPage component. But instead of using [Link component from React-Router](https://github.com/reactjs/react-router-tutorial/tree/master/lessons/03-navigating-with-link) we need navigate after check loginCredentials:
 
 ### ./src/pages/login/pageContainer.tsx
 ```javascript

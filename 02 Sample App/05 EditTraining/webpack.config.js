@@ -16,7 +16,7 @@ module.exports = {
       'react',
       'react-dom',
       'react-router',
-      'lc-form-validation',
+      'validate.js',
       'toastr',
       'react-addons-shallow-compare',
       'react-virtualized',

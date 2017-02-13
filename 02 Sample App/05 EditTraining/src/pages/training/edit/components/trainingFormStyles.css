@@ -1,0 +1,13 @@
+.date-input-group {
+  padding: 0 15px!important;
+  float: left!important;
+}
+
+.date-input-group > input {
+  border-top-left-radius: 4px!important;
+  border-bottom-left-radius: 4px!important;
+}
+
+.date-input-group > div {
+  padding-top: 25px!important;
+}

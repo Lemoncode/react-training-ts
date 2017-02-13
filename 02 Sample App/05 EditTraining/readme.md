@@ -108,3 +108,116 @@ export const TrainingRowComponent = (props: Props) => {
 }
 
 ```
+
+- Once we have navigation, we can start with creating _TrainingFormComponent_.
+
+### ./src/common/components/input.tsx
+```javascript
+import * as React from 'react';
+
+interface Props {
+  label: string;
+  name: string;
+  type: string;
+  value: string;
+  placeholder?: string;
+  onChange: any;
++ className?: string;
+}
+
+export const InputComponent = (props: Props) => {
+  return (
+-   <div className="form-group">
++   <div className={`form-group ${props.className}`}>
+      <label htmlFor={props.name}>
+        {props.label}
+      </label>
+      <input
+        type={props.type}
+        className="form-control"
+        placeholder={props.placeholder}
+        name={props.name}
+        value={props.value}
+        onChange={props.onChange}
+      />
+    </div>
+  );
+}
+
+```
+### ./src/common/components/checkbox.tsx
+```javascript
+import * as React from 'react';
+
+interface Props {
+  label: string;
+  name: string;
+  value: boolean;
+  onChange: any;
+  className?: string;
+}
+
+export const CheckBoxComponent = (props: Props) => {
+  return (
+    <div className={`checkbox ${props.className}`}>
+      <label htmlFor={props.name}>
+        <input
+          type="checkbox"
+          name={props.name}
+          checked={props.value}
+          onChange={props.onChange}
+        />
+        {props.label}
+      </label>
+    </div>
+  );
+}
+
+```
+- Install [react-infinite-calendar](https://github.com/clauderic/react-infinite-calendar) and [react-addons-css-transition-group](https://www.npmjs.com/package/react-addons-css-transition-group) dependency. This library has not typings, so we have to import using [webpack-env](https://www.npmjs.com/package/@types/webpack-env) `require` method:
+
+```
+npm install react-infinite-calendar react-addons-css-transition-group --save
+```
+
+- Install [moment](https://github.com/moment/moment) to work with Dates. This library has typings for TypeScript:
+
+```
+npm install moment --save
+```
+
+- Install [react-modal](https://github.com/reactjs/react-modal) and typings to open calendar as modal window:
+
+```
+npm install react-modal --save
+npm install @types/react-modal --save-dev
+```
+
+- Add libraries as vendor and vendorStyles:
+
+### ./webpack.config.js
+```javascript
+entry: {
+  ...
+  vendor: [
+    ...
+    'toastr',
+    'react-addons-shallow-compare',
+    'react-virtualized',
++   'react-infinite-calendar',
++   'react-addons-css-transition-group',
++   'moment',
++   'react-modal',
+  ],
+  vendorStyles: [
+    '../node_modules/bootstrap/dist/css/bootstrap.css',
+    '../node_modules/toastr/build/toastr.css',
+    '../node_modules/react-virtualized/styles.css',
++   '../node_modules/react-infinite-calendar/styles.css',
+  ],
+```
+
+### ./src/pages/training/edit/components/trainingForm.tsx
+```javascript
+
+```

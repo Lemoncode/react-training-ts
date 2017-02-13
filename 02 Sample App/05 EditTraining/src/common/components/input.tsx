@@ -7,11 +7,13 @@ interface Props {
   value: string;
   placeholder?: string;
   onChange: any;
+  className?: string;
+  children?: React.ReactNode | React.ReactNode[];
 }
 
 export const InputComponent = (props: Props) => {
   return (
-    <div className="form-group">
+    <div className={`form-group ${props.className}`}>
       <label htmlFor={props.name}>
         {props.label}
       </label>
@@ -23,6 +25,7 @@ export const InputComponent = (props: Props) => {
         value={props.value}
         onChange={props.onChange}
       />
+      {props.children}
     </div>
   );
 }

@@ -12,8 +12,6 @@ module.exports = {
     app: './index.tsx',
     styles: './css/styles.css',
     vendor: [
-      'core-js',
-      'bootstrap',
       'react',
       'react-dom'
     ],
@@ -94,11 +92,6 @@ module.exports = {
       filename: 'index.html', //Name of file in ./dist/
       template: 'index.html', //Name of template in ./src
       hash: true
-    }),
-    //Expose jquery used by bootstrap
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
     }),
   ],
 }

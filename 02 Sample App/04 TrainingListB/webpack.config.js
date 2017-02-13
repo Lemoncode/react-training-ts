@@ -18,10 +18,13 @@ module.exports = {
       'react-router',
       'lc-form-validation',
       'toastr',
+      'react-addons-shallow-compare',
+      'react-virtualized',
     ],
     vendorStyles: [
       '../node_modules/bootstrap/dist/css/bootstrap.css',
       '../node_modules/toastr/build/toastr.css',
+      '../node_modules/react-virtualized/styles.css',
     ],
   },
   output: {

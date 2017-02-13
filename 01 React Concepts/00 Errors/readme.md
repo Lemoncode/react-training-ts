@@ -7,14 +7,15 @@ Demos from the blog post "JSX is that a good thing", Spanish version available o
 In samples [01 HTML inside JS](./01 HTML inside JS) and [02 HTML inside JS backticks](./02 HTML inside JS backticks) open index.html in browser.
 
 To the rest samples:
-1. Install [NodeJS](http://www.nodejs.org)
+
+1. Install [Node.js](http://www.nodejs.org)
 2. Download/clone this repo
 3. Open the command line of your choice and locate yourself in the root directory of this repo on your machine
 4. `npm install` - Installs packages
 5. `npm start` - Builds the project and launch a lite web server (webpack-dev-server).
 6. Navigate to [http://localhost:8080/](http://localhost:8080/) if your browser doesn't open automatically.
 
-## JSX / TSX is that a good thing?:
+## JSX / TSX is that a good thing?
 
 One of the matters that wonder us when we have first look at React is that ‘HTML’ is embedded in JavaScript files. Due to this many of developers have rejected it, assuming that involves going back to ‘Spaghetti code’, breaking principles as ‘Separation of concerns’.
 
@@ -55,7 +56,7 @@ We're going to create a JSX file and we're forgetting to close a DIV.
 
 ![alt text](./readme_img/04A Forget close a div.png "Forgetting to close a DIV")
 
-We can see on our favorite IDE (Atom, Visual Studio Code), when we transpile, that the error is marked in red. We don’t need to launch our web page in the browser to see this! Why? Because it's not really HTML, it's a JavaScript XML syntax transform and it’s not possible to generate “createElement” sequence, so we get an error message:
+We can see on our favorite text editor or IDE (Atom, Visual Studio Code), when we transpile, that the error is marked in red. We don’t need to launch our web page in the browser to see this! Why? Because it's not really HTML, it's a JavaScript XML syntax transform and it’s not possible to generate “createElement” sequence, so we get an error message:
 
 ![alt text](./readme_img/04B Forget close a div.png "Forgetting to close a DIV in TSX")
 
@@ -87,7 +88,7 @@ And just the last trick… Imagine that we have a table defined this way:
 
 ![alt text](./readme_img/09A Table and Table without TR.png "Table definition")
 
-Have you ever forgotten a _TR_ on header? For instance:
+Have you ever forgotten a `<tr>` on header? For instance:
 
 ![alt text](./readme_img/09B Table and Table without TR.png "Table without TR")
 

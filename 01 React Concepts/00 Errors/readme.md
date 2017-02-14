@@ -64,11 +64,9 @@ Let’s move to another example… What if I’m wrong typing a tag? I get notif
 
 ![alt text](./readme_img/05 Wrong tag name.png "Wrong tag name")
 
-For the next example we are going to create a React component _(**)_, we will call it _Company_, and will have a property type _string_ called _Name_.
+For the next example we are going to create a React component, we will call it _Company_, and will have a property type _string_ called _Name_.
 
 ![alt text](./readme_img/06A Attribute error.png "Company React Component")
-
-_(**) For more information about basic concepts of React, you can follow the next link:_ [https://scotch.io/tutorials/learning-react-getting-started-and-concepts](https://scotch.io/tutorials/learning-react-getting-started-and-concepts)
 
 When we use the component, if we try to use a property that is not defined, we get noticed:
 

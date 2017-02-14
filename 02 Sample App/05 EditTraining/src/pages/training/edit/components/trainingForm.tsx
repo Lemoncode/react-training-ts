@@ -1,10 +1,11 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import {Training} from '../../../../models/training';
-import {InputComponent} from '../../../../common/components/input';
-import {CheckBoxComponent} from '../../../../common/components/checkBox';
+import {InputComponent} from '../../../../common/components/form/input';
+import {CheckBoxComponent} from '../../../../common/components/form/checkBox';
+import {InputButtonComponent} from '../../../../common/components/form/inputButton';
 import {DatePickerModalComponent} from '../../../../common/components/datePickerModal';
-const classNames: any = require('./trainingFormStyles');
+import {formatConstants} from '../../../../common/constants/formatConstants';
 
 interface Props {
   training: Training;
@@ -24,6 +25,12 @@ export class TrainingFormComponent extends React.Component<Props, State> {
       isOpenStartDateModal: false,
       isOpenEndDateModal: false,
     };
+
+    this.onChange = this.onChange.bind(this);
+    this.onChangeStartDate = this.onChangeStartDate.bind(this);
+    this.onChangeEndDate = this.onChangeEndDate.bind(this);
+    this.toggleOpenStartDateModal = this.toggleOpenStartDateModal.bind(this);
+    this.toggleOpenEndDateModal = this.toggleOpenEndDateModal.bind(this);
   }
 
   private onChange (event) {
@@ -33,15 +40,34 @@ export class TrainingFormComponent extends React.Component<Props, State> {
     this.props.onChange(fieldName, value);
   }
 
-  private toggleOpenModal(fieldName) {
-    this.setState({
-      [fieldName]: !this.state[fieldName]
-    });
+  private onChangeStartDate(date: moment.Moment) {
+    this.onChangeDate('startDate', date);
+    this.toggleOpenStartDateModal();
   }
 
-  private onChangeStartDate(momentDate: moment.Moment) {
-    const milliseconds = momentDate.valueOf();
-    this.props.onChange('startDate', milliseconds);
+  private onChangeEndDate(date: moment.Moment) {
+    this.onChangeDate('endDate', date);
+    this.toggleOpenEndDateModal();
+  }
+
+  private onChangeDate(fieldName: string, date: moment.Moment) {
+    const milliseconds = date.valueOf();
+    this.props.onChange(fieldName, milliseconds);
+  }
+
+  private toggleOpenStartDateModal() {
+    this.toggleOpenModal('isOpenStartDateModal');
+  }
+
+  private toggleOpenEndDateModal() {
+    this.toggleOpenModal('isOpenEndDateModal');
+  }
+
+  private toggleOpenModal(fieldName) {
+    this.setState({
+      ...this.state,
+      [fieldName]: !this.state[fieldName]
+    });
   }
 
   public render() {
@@ -52,7 +78,7 @@ export class TrainingFormComponent extends React.Component<Props, State> {
           type="text"
           label="Name"
           name="name"
-          onChange={this.onChange.bind(this)}
+          onChange={this.onChange}
           value={this.props.training.name}
           placeholder="Name"
         />
@@ -62,53 +88,58 @@ export class TrainingFormComponent extends React.Component<Props, State> {
           type="text"
           label="Url"
           name="url"
-          onChange={this.onChange.bind(this)}
+          onChange={this.onChange}
           value={this.props.training.url}
           placeholder="Url"
         />
 
-        <InputComponent
-          className={`col-md-6 input-group ${classNames.dateInputGroup}`}
+        <InputButtonComponent
+          className="col-md-6"
           type="text"
           label="Start date"
           name="startDate"
-          onChange={this.onChange.bind(this)}
           placeholder="Start date"
-          value={moment(this.props.training.startDate).format('YYYY-MM-D')}
-          >
-            <div className="input-group-btn">
-              <span className="btn btn-default" onClick={() => this.toggleOpenModal('isOpenStartDateModal')}>
-                <i className="glyphicon glyphicon-calendar" />
-              </span>
-            </div>
-          </InputComponent>
+          value={moment(this.props.training.startDate).format(formatConstants.shortDate)}
+          onChange={this.onChange}
+          disabled
+          buttonClassName="btn btn-default"
+          onClick={this.toggleOpenStartDateModal}
+          icon="glyphicon glyphicon-calendar"
+        />
 
         <DatePickerModalComponent
           isOpen={this.state.isOpenStartDateModal}
-          onClose={() => this.toggleOpenModal('isOpenStartDateModal')}
+          onClose={this.toggleOpenStartDateModal}
           selectedDate={this.props.training.startDate}
-          onChange={this.onChangeStartDate.bind(this)}
+          onChange={this.onChangeStartDate}
         />
 
-        <InputComponent
-          className={`col-md-6 input-group ${classNames.dateInputGroup}`}
+        <InputButtonComponent
+          className="col-md-6"
           type="text"
           label="End date"
           name="endDate"
-          onChange={this.onChange.bind(this)}
-          value={moment(this.props.training.endDate).format('YYYY-MM-D')}
           placeholder="End date"
-        >
-          <div className="input-group-btn">
-            <button className="btn btn-default"><i className="glyphicon glyphicon-calendar" /></button>
-          </div>
-        </InputComponent>
+          value={moment(this.props.training.endDate).format(formatConstants.shortDate)}
+          onChange={this.onChange}
+          disabled
+          buttonClassName="btn btn-default"
+          onClick={this.toggleOpenEndDateModal}
+          icon="glyphicon glyphicon-calendar"
+        />
+
+        <DatePickerModalComponent
+          isOpen={this.state.isOpenEndDateModal}
+          onClose={this.toggleOpenEndDateModal}
+          selectedDate={this.props.training.endDate}
+          onChange={this.onChangeEndDate}
+        />
 
         <CheckBoxComponent
           className="col-md-6"
           label="Active"
           name="isActive"
-          onChange={this.onChange.bind(this)}
+          onChange={this.onChange}
           value={this.props.training.isActive}
         />
       </form>

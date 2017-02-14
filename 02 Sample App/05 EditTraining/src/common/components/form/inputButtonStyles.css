@@ -1,13 +1,13 @@
-.date-input-group {
+.input-component {
   padding: 0 15px!important;
   float: left!important;
 }
 
-.date-input-group > input {
+.input-component > input {
   border-top-left-radius: 4px!important;
   border-bottom-left-radius: 4px!important;
 }
 
-.date-input-group > div {
+.button {
   padding-top: 25px!important;
 }

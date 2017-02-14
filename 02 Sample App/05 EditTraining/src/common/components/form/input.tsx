@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface Props {
+export interface InputProps {
   label: string;
   name: string;
   type: string;
@@ -8,10 +8,11 @@ interface Props {
   placeholder?: string;
   onChange: any;
   className?: string;
+  disabled?: boolean;
   children?: React.ReactNode | React.ReactNode[];
 }
 
-export const InputComponent = (props: Props) => {
+export const InputComponent = (props: InputProps) => {
   return (
     <div className={`form-group ${props.className}`}>
       <label htmlFor={props.name}>
@@ -24,6 +25,7 @@ export const InputComponent = (props: Props) => {
         name={props.name}
         value={props.value}
         onChange={props.onChange}
+        disabled={props.disabled}
       />
       {props.children}
     </div>

@@ -8,6 +8,9 @@ Summary steps:
 
 - Install [react-infinite-calendar](https://github.com/clauderic/react-infinite-calendar), [moment](https://github.com/moment/moment) and [react-modal](https://github.com/reactjs/react-modal).
 - Navigate to edit training form by id.
+- Build common forms components.
+- Build DatePicker modal component.
+- Build TrainingFormComponent.
 - Build TrainingEditPage.
 - Add form validations.
 
@@ -284,7 +287,469 @@ export const CheckBoxComponent = (props: Props) => {
 
 ```
 
+- Building TrainingFormComponent:
+
 ### ./src/pages/training/edit/components/trainingForm.tsx
 ```javascript
+import * as React from 'react';
+import * as moment from 'moment';
+import {Training} from '../../../../models/training';
+import {InputComponent} from '../../../../common/components/form/input';
+import {CheckBoxComponent} from '../../../../common/components/form/checkBox';
+import {InputButtonComponent} from '../../../../common/components/form/inputButton';
+
+interface Props {
+  training: Training;
+  onChange: (fieldName: string, value: any) => void;
+  save: (training: Training) => void;
+}
+
+export class TrainingFormComponent extends React.Component<Props, {}> {
+  constructor() {
+    super();
+
+    this.onChange = this.onChange.bind(this);
+    this.onChangeStartDate = this.onChangeStartDate.bind(this);
+    this.onChangeEndDate = this.onChangeEndDate.bind(this);
+    this.save = this.save.bind(this);
+  }
+
+  private onChange (event) {
+    const fieldName = event.target.name;
+    const value = event.target.value;
+
+    this.props.onChange(fieldName, value);
+  }
+
+  private onChangeStartDate(date: moment.Moment) {
+    this.onChangeDate('startDate', date);
+    this.toggleOpenStartDateModal();
+  }
+
+  private onChangeEndDate(date: moment.Moment) {
+    this.onChangeDate('endDate', date);
+    this.toggleOpenEndDateModal();
+  }
+
+  private onChangeDate(fieldName: string, date: moment.Moment) {
+    const milliseconds = date.valueOf();
+    this.props.onChange(fieldName, milliseconds);
+  }
+
+  private save(event) {
+    event.preventDefault();
+    this.props.save(this.props.training);
+  }
+
+  public render() {
+    return (
+      <form className="container">
+        <div className="row">
+          <InputComponent
+            className="col-md-6"
+            type="text"
+            label="Name"
+            name="name"
+            onChange={this.onChange}
+            value={this.props.training.name}
+            placeholder="Name"
+          />
+
+          <InputComponent
+            className="col-md-6"
+            type="text"
+            label="Url"
+            name="url"
+            onChange={this.onChange}
+            value={this.props.training.url}
+            placeholder="Url"
+          />
+        </div>
+
+        <div className="row">
+          <InputButtonComponent
+            className="col-md-6"
+            type="text"
+            label="Start date"
+            name="startDate"
+            placeholder="Start date"
+            value={moment(this.props.training.startDate).format('YYYY-MM-DD')}
+            onChange={this.onChange}
+            disabled
+            buttonClassName="btn btn-default"
+            onClick={() => {})}
+            icon="glyphicon glyphicon-calendar"
+          />
+
+          <InputButtonComponent
+            className="col-md-6"
+            type="text"
+            label="End date"
+            name="endDate"
+            placeholder="End date"
+            value={moment(this.props.training.endDate).format('YYYY-MM-DD')}
+            onChange={this.onChange}
+            disabled
+            buttonClassName="btn btn-default"
+            onClick={() => {})}
+            icon="glyphicon glyphicon-calendar"
+          />
+        </div>
+
+        <div className="row">
+          <CheckBoxComponent
+            className="col-md-6"
+            label="Active"
+            name="isActive"
+            onChange={this.onChange}
+            value={this.props.training.isActive}
+          />
+        </div>
+
+        <div className="row">
+          <div className="form-group pull-right">
+            <div className="col-md-1">
+              <button type="button" className="btn btn-lg btn-success" onClick={this.save}>
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    );
+  }
+};
+
+```
+
+- Now it's time to create the _DatePickerModalComponent_:
+
+### ./src/common/components/datePickerModal/datePickerModal.tsx
+```javascript
+import * as React from 'react';
+import * as Modal from 'react-modal';
+import {Moment} from 'moment';
+const classNames: any = require('./datePickerModalStyles');
+
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  selectedDate: number;
+  onChange: (selectedDate: Moment) => void;
+}
+
+export const DatePickerModalComponent = (props: Props) => {
+  return (
+    <Modal
+      isOpen={props.isOpen}
+      contentLabel="Date Picker Modal"
+      onRequestClose={props.onClose}
+      className={`${classNames.modal} modal-dialog modal-open`}
+      overlayClassName={classNames.overlay}
+    >
+      <h1>This is a modal</h1>
+    </Modal>
+  );
+};
+
+```
+
+### ./src/common/components/datePickerModal/datePickerModalStyles.css
+```css
+.modal {
+  padding: 10px;
+  outline: none;
+  height: 95%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: rgba(0,0,0,0.5);
+}
+
+```
+
+### ./src/common/components/datePickerModal/components/datePicker.tsx
+```javascript
+import * as React from 'react';
+import {Moment} from 'moment';
+import {AutoSizer} from 'react-virtualized';
+const ReactCalendar: any = require('react-infinite-calendar');
+const InfiniteCalendar = ReactCalendar.default;
+const classNames: any = require('./datePickerStyles');
+
+interface Props {
+  onClose: () => void;
+  selectedDate: number;
+  onChange: (selectedDate: Moment) => void;
+}
+
+export const DatePickerComponent = (props: Props) => {
+  return (
+    <AutoSizer>
+    {
+      ({width, height}) =>
+      <div>
+        <button
+          type="button"
+          className={`close ${classNames.closeButton}`}
+          onClick={props.onClose}
+        >
+          <span>&times;</span>
+        </button>
+        <InfiniteCalendar
+          width={width}
+          height={height}
+          selectedDate={props.selectedDate}
+          afterSelect={props.onChange}
+          showHeader={false}
+        />
+      </div>
+    }
+    </AutoSizer>
+  );
+};
+
+```
+
+### ./src/common/components/datePickerModal/components/datePickerStyles.css
+```css
+.close-button {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  right: 25px;
+}
+
+```
+
+- Updating _DatePickerModalComponent_:
+
+### ./src/common/components/datePickerModal/datePickerModal.tsx
+```javascript
+import * as React from 'react';
+import * as Modal from 'react-modal';
+import {Moment} from 'moment';
++ import {DatePickerComponent} from './components/datePicker';
+const classNames: any = require('./datePickerModalStyles');
+
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  selectedDate: number;
+  onChange: (selectedDate: Moment) => void;
+}
+
+export const DatePickerModalComponent = (props: Props) => {
+  return (
+    <Modal
+      isOpen={props.isOpen}
+      contentLabel="Date Picker Modal"
+      onRequestClose={props.onClose}
+      className={`${classNames.modal} modal-dialog modal-open`}
+      overlayClassName={classNames.overlay}
+    >
+      <DatePickerComponent
+        onClose={props.onClose}
+        selectedDate={props.selectedDate}
+        onChange={props.onChange}
+      />
+    </Modal>
+  );
+};
+
+```
+
+- Extract date format to a constants:
+
+### ./src/common/constants/formatConstants.ts
+```javascript
+export const formatConstants = {
+  shortDate: 'YYYY-MM-DD',
+};
+
+```
+
+- Updating _TrainingFormComponent_:
+
+### ./src/pages/training/edit/components/trainingForm.tsx
+```javascript
+import * as React from 'react';
+import * as moment from 'moment';
+import {Training} from '../../../../models/training';
+import {InputComponent} from '../../../../common/components/form/input';
+import {CheckBoxComponent} from '../../../../common/components/form/checkBox';
+import {InputButtonComponent} from '../../../../common/components/form/inputButton';
++ import {DatePickerModalComponent} from '../../../../common/components/datePickerModal';
++ import {formatConstants} from '../../../../common/constants/formatConstants';
+
+interface Props {
+  training: Training;
+  onChange: (fieldName: string, value: any) => void;
+  save: (training: Training) => void;
+}
+
++ interface State {
++  isOpenStartDateModal: boolean;
++  isOpenEndDateModal: boolean;
++}
+
+- export class TrainingFormComponent extends React.Component<Props, {}> {
++ export class TrainingFormComponent extends React.Component<Props, State> {
+  constructor() {
+    super();
+
++   this.state = {
++     isOpenStartDateModal: false,
++     isOpenEndDateModal: false,
++   };
+
+    this.onChange = this.onChange.bind(this);
+    this.onChangeStartDate = this.onChangeStartDate.bind(this);
+    this.onChangeEndDate = this.onChangeEndDate.bind(this);
++   this.toggleOpenStartDateModal = this.toggleOpenStartDateModal.bind(this);
++   this.toggleOpenEndDateModal = this.toggleOpenEndDateModal.bind(this);
+    this.save = this.save.bind(this);
+  }
+
+  private onChange (event) {
+    const fieldName = event.target.name;
+    const value = event.target.value;
+
+    this.props.onChange(fieldName, value);
+  }
+
+  private onChangeStartDate(date: moment.Moment) {
+    this.onChangeDate('startDate', date);
+    this.toggleOpenStartDateModal();
+  }
+
+  private onChangeEndDate(date: moment.Moment) {
+    this.onChangeDate('endDate', date);
+    this.toggleOpenEndDateModal();
+  }
+
+  private onChangeDate(fieldName: string, date: moment.Moment) {
+    const milliseconds = date.valueOf();
+    this.props.onChange(fieldName, milliseconds);
+  }
+
++ private toggleOpenStartDateModal() {
++   this.toggleOpenModal('isOpenStartDateModal');
++ }
+
++ private toggleOpenEndDateModal() {
++   this.toggleOpenModal('isOpenEndDateModal');
++ }
+
++ private toggleOpenModal(fieldName) {
++   this.setState({
++     ...this.state,
++     [fieldName]: !this.state[fieldName]
++   });
++ }
+
+  private save(event) {
+    event.preventDefault();
+    this.props.save(this.props.training);
+  }
+
+  public render() {
+    return (
+      <form className="container">
+        <div className="row">
+          <InputComponent
+            className="col-md-6"
+            type="text"
+            label="Name"
+            name="name"
+            onChange={this.onChange}
+            value={this.props.training.name}
+            placeholder="Name"
+          />
+
+          <InputComponent
+            className="col-md-6"
+            type="text"
+            label="Url"
+            name="url"
+            onChange={this.onChange}
+            value={this.props.training.url}
+            placeholder="Url"
+          />
+        </div>
+
+        <div className="row">
+          <InputButtonComponent
+            className="col-md-6"
+            type="text"
+            label="Start date"
+            name="startDate"
+            placeholder="Start date"
+            value={moment(this.props.training.startDate).format('YYYY-MM-DD')}
+            onChange={this.onChange}
+            disabled
+            buttonClassName="btn btn-default"
+            onClick={() => {})}
+            icon="glyphicon glyphicon-calendar"
+          />
+
++         <DatePickerModalComponent
++           isOpen={this.state.isOpenStartDateModal}
++           onClose={this.toggleOpenStartDateModal}
++           selectedDate={this.props.training.startDate}
++           onChange={this.onChangeStartDate}
++         />
+
+          <InputButtonComponent
+            className="col-md-6"
+            type="text"
+            label="End date"
+            name="endDate"
+            placeholder="End date"
+            value={moment(this.props.training.endDate).format('YYYY-MM-DD')}
+            onChange={this.onChange}
+            disabled
+            buttonClassName="btn btn-default"
+            onClick={() => {})}
+            icon="glyphicon glyphicon-calendar"
+          />
+
++         <DatePickerModalComponent
++           isOpen={this.state.isOpenEndDateModal}
++           onClose={this.toggleOpenEndDateModal}
++           selectedDate={this.props.training.endDate}
++           onChange={this.onChangeEndDate}
++         />
+        </div>
+
+        <div className="row">
+          <CheckBoxComponent
+            className="col-md-6"
+            label="Active"
+            name="isActive"
+            onChange={this.onChange}
+            value={this.props.training.isActive}
+          />
+        </div>
+
+        <div className="row">
+          <div className="form-group pull-right">
+            <div className="col-md-1">
+              <button type="button" className="btn btn-lg btn-success" onClick={this.save}>
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    );
+  }
+};
 
 ```

@@ -21,6 +21,7 @@ interface State {
 export class TrainingFormComponent extends React.Component<Props, State> {
   constructor() {
     super();
+
     this.state = {
       isOpenStartDateModal: false,
       isOpenEndDateModal: false,

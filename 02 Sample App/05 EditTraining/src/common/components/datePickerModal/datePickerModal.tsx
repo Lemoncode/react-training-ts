@@ -14,11 +14,11 @@ interface Props {
 export const DatePickerModalComponent = (props: Props) => {
   return (
     <Modal
-    isOpen={props.isOpen}
-    onRequestClose={props.onClose}
-    className={`${classNames.modal} modal-dialog modal-open`}
-    overlayClassName={classNames.overlay}
-    contentLabel="Date Picker Modal"
+      isOpen={props.isOpen}
+      contentLabel="Date Picker Modal"
+      onRequestClose={props.onClose}
+      className={`${classNames.modal} modal-dialog modal-open`}
+      overlayClassName={classNames.overlay}
     >
       <DatePickerComponent
         onClose={props.onClose}

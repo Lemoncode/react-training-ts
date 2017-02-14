@@ -11,9 +11,7 @@ interface Props extends InputProps {
 export const InputButtonComponent = (props: Props) => {
   return (
     <InputComponent
-      {
-        ...props
-      }
+      {...props}
       className={`${props.className} input-group ${classNames.inputComponent}`}
     >
       <div className={`input-group-btn ${classNames.button}`}>

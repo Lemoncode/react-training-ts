@@ -27,7 +27,7 @@ export const InputComponent = (props: InputProps) => {
         onChange={props.onChange}
         disabled={props.disabled}
       />
-      {props.children}
+        {props.children}
     </div>
   );
 }

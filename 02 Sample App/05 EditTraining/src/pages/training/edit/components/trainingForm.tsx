@@ -31,6 +31,7 @@ export class TrainingFormComponent extends React.Component<Props, State> {
     this.onChangeEndDate = this.onChangeEndDate.bind(this);
     this.toggleOpenStartDateModal = this.toggleOpenStartDateModal.bind(this);
     this.toggleOpenEndDateModal = this.toggleOpenEndDateModal.bind(this);
+    this.save = this.save.bind(this);
   }
 
   private onChange (event) {
@@ -70,78 +71,99 @@ export class TrainingFormComponent extends React.Component<Props, State> {
     });
   }
 
+  private save(event) {
+    event.preventDefault();
+    this.props.save(this.props.training);
+  }
+
   public render() {
     return (
       <form className="container">
-        <InputComponent
-          className="col-md-6"
-          type="text"
-          label="Name"
-          name="name"
-          onChange={this.onChange}
-          value={this.props.training.name}
-          placeholder="Name"
-        />
+        <div className="row">
+          <InputComponent
+            className="col-md-6"
+            type="text"
+            label="Name"
+            name="name"
+            onChange={this.onChange}
+            value={this.props.training.name}
+            placeholder="Name"
+          />
 
-        <InputComponent
-          className="col-md-6"
-          type="text"
-          label="Url"
-          name="url"
-          onChange={this.onChange}
-          value={this.props.training.url}
-          placeholder="Url"
-        />
+          <InputComponent
+            className="col-md-6"
+            type="text"
+            label="Url"
+            name="url"
+            onChange={this.onChange}
+            value={this.props.training.url}
+            placeholder="Url"
+          />
+        </div>
 
-        <InputButtonComponent
-          className="col-md-6"
-          type="text"
-          label="Start date"
-          name="startDate"
-          placeholder="Start date"
-          value={moment(this.props.training.startDate).format(formatConstants.shortDate)}
-          onChange={this.onChange}
-          disabled
-          buttonClassName="btn btn-default"
-          onClick={this.toggleOpenStartDateModal}
-          icon="glyphicon glyphicon-calendar"
-        />
+        <div className="row">
+          <InputButtonComponent
+            className="col-md-6"
+            type="text"
+            label="Start date"
+            name="startDate"
+            placeholder="Start date"
+            value={moment(this.props.training.startDate).format(formatConstants.shortDate)}
+            onChange={this.onChange}
+            disabled
+            buttonClassName="btn btn-default"
+            onClick={this.toggleOpenStartDateModal}
+            icon="glyphicon glyphicon-calendar"
+          />
 
-        <DatePickerModalComponent
-          isOpen={this.state.isOpenStartDateModal}
-          onClose={this.toggleOpenStartDateModal}
-          selectedDate={this.props.training.startDate}
-          onChange={this.onChangeStartDate}
-        />
+          <DatePickerModalComponent
+            isOpen={this.state.isOpenStartDateModal}
+            onClose={this.toggleOpenStartDateModal}
+            selectedDate={this.props.training.startDate}
+            onChange={this.onChangeStartDate}
+          />
 
-        <InputButtonComponent
-          className="col-md-6"
-          type="text"
-          label="End date"
-          name="endDate"
-          placeholder="End date"
-          value={moment(this.props.training.endDate).format(formatConstants.shortDate)}
-          onChange={this.onChange}
-          disabled
-          buttonClassName="btn btn-default"
-          onClick={this.toggleOpenEndDateModal}
-          icon="glyphicon glyphicon-calendar"
-        />
+          <InputButtonComponent
+            className="col-md-6"
+            type="text"
+            label="End date"
+            name="endDate"
+            placeholder="End date"
+            value={moment(this.props.training.endDate).format(formatConstants.shortDate)}
+            onChange={this.onChange}
+            disabled
+            buttonClassName="btn btn-default"
+            onClick={this.toggleOpenEndDateModal}
+            icon="glyphicon glyphicon-calendar"
+          />
 
-        <DatePickerModalComponent
-          isOpen={this.state.isOpenEndDateModal}
-          onClose={this.toggleOpenEndDateModal}
-          selectedDate={this.props.training.endDate}
-          onChange={this.onChangeEndDate}
-        />
+          <DatePickerModalComponent
+            isOpen={this.state.isOpenEndDateModal}
+            onClose={this.toggleOpenEndDateModal}
+            selectedDate={this.props.training.endDate}
+            onChange={this.onChangeEndDate}
+          />
+        </div>
 
-        <CheckBoxComponent
-          className="col-md-6"
-          label="Active"
-          name="isActive"
-          onChange={this.onChange}
-          value={this.props.training.isActive}
-        />
+        <div className="row">
+          <CheckBoxComponent
+            className="col-md-6"
+            label="Active"
+            name="isActive"
+            onChange={this.onChange}
+            value={this.props.training.isActive}
+          />
+        </div>
+
+        <div className="row">
+          <div className="form-group pull-right">
+            <div className="col-md-1">
+              <button type="button" className="btn btn-lg btn-success" onClick={this.save}>
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
       </form>
     );
   }

@@ -6,11 +6,55 @@ In this sample we will build an edit form and apply validations.
 
 Summary steps:
 
+- Install [react-infinite-calendar](https://github.com/clauderic/react-infinite-calendar), [moment](https://github.com/moment/moment) and [react-modal](https://github.com/reactjs/react-modal).
 - Navigate to edit training form by id.
 - Build TrainingEditPage.
 - Add form validations.
 
 ## Steps to build it
+
+- Install [react-infinite-calendar](https://github.com/clauderic/react-infinite-calendar) and [react-addons-css-transition-group](https://www.npmjs.com/package/react-addons-css-transition-group) dependency. This library has not typings, so we have to import using [webpack-env](https://www.npmjs.com/package/@types/webpack-env) `require` method:
+
+```
+npm install react-infinite-calendar react-addons-css-transition-group --save
+```
+
+- Install [moment](https://github.com/moment/moment) to work with Dates. This library has typings for TypeScript:
+
+```
+npm install moment --save
+```
+
+- Install [react-modal](https://github.com/reactjs/react-modal) and typings to open calendar as modal window:
+
+```
+npm install react-modal --save
+npm install @types/react-modal --save-dev
+```
+
+- Add libraries as vendor and vendorStyles:
+
+### ./webpack.config.js
+```javascript
+entry: {
+  ...
+  vendor: [
+    ...
+    'toastr',
+    'react-addons-shallow-compare',
+    'react-virtualized',
++   'react-infinite-calendar',
++   'react-addons-css-transition-group',
++   'moment',
++   'react-modal',
+  ],
+  vendorStyles: [
+    '../node_modules/bootstrap/dist/css/bootstrap.css',
+    '../node_modules/toastr/build/toastr.css',
+    '../node_modules/react-virtualized/styles.css',
++   '../node_modules/react-infinite-calendar/styles.css',
+  ],
+```
 
 - We can start to create a blank TrainingEditPage, to work with navigation:
 
@@ -110,12 +154,24 @@ export const TrainingRowComponent = (props: Props) => {
 ```
 
 - Once we have navigation, we can start with creating _TrainingFormComponent_.
+  We're going to move input component to _./src/common/components/form_ folder because we'll create some form components
+  and group them in this folder.
 
-### ./src/common/components/input.tsx
+### ./src/pages/login/components/form.tsx
+```javascript
+import * as React from 'react';
+import {LoginCredentials} from '../../../models/loginCredentials';
+- import {InputComponent} from '../../../common/components/input';
++ import {InputComponent} from '../../../common/components/form/input';
+
+```
+
+### ./src/common/components/form/input.tsx
 ```javascript
 import * as React from 'react';
 
-interface Props {
+- interface Props {
++ export interface InputProps {
   label: string;
   name: string;
   type: string;
@@ -123,9 +179,12 @@ interface Props {
   placeholder?: string;
   onChange: any;
 + className?: string;
++ disabled?: boolean;
++ children?: React.ReactNode | React.ReactNode[];
 }
 
-export const InputComponent = (props: Props) => {
+- export const InputComponent = (props: Props) => {
++ export const InputComponent = (props: InputProps) => {
   return (
 -   <div className="form-group">
 +   <div className={`form-group ${props.className}`}>
@@ -139,13 +198,63 @@ export const InputComponent = (props: Props) => {
         name={props.name}
         value={props.value}
         onChange={props.onChange}
++       disabled={props.disabled}
       />
++       {props.children}
     </div>
   );
 }
 
 ```
-### ./src/common/components/checkbox.tsx
+
+### ./src/common/components/form/inputButton.tsx
+```javascript
+import * as React from 'react';
+import {InputComponent, InputProps} from './input';
+const classNames: any = require('./inputButtonStyles');
+
+interface Props extends InputProps {
+  onClick: () => void;
+  buttonClassName: string;
+  icon: string;
+}
+
+export const InputButtonComponent = (props: Props) => {
+  return (
+    <InputComponent
+      {...props}
+      className={`${props.className} input-group ${classNames.inputComponent}`}
+    >
+      <div className={`input-group-btn ${classNames.button}`}>
+        <span className={props.buttonClassName} onClick={props.onClick}>
+          <i className={props.icon} />
+        </span>
+      </div>
+    </InputComponent>
+  );
+};
+
+```
+
+### ./src/common/components/form/inputButtonStyles.css
+```css
+.input-component {
+  padding: 0 15px!important;
+  float: left!important;
+}
+
+.input-component > input {
+  border-top-left-radius: 4px!important;
+  border-bottom-left-radius: 4px!important;
+}
+
+.button {
+  padding-top: 25px!important;
+}
+
+```
+
+### ./src/common/components/form/checkbox.tsx
 ```javascript
 import * as React from 'react';
 
@@ -173,48 +282,6 @@ export const CheckBoxComponent = (props: Props) => {
   );
 }
 
-```
-- Install [react-infinite-calendar](https://github.com/clauderic/react-infinite-calendar) and [react-addons-css-transition-group](https://www.npmjs.com/package/react-addons-css-transition-group) dependency. This library has not typings, so we have to import using [webpack-env](https://www.npmjs.com/package/@types/webpack-env) `require` method:
-
-```
-npm install react-infinite-calendar react-addons-css-transition-group --save
-```
-
-- Install [moment](https://github.com/moment/moment) to work with Dates. This library has typings for TypeScript:
-
-```
-npm install moment --save
-```
-
-- Install [react-modal](https://github.com/reactjs/react-modal) and typings to open calendar as modal window:
-
-```
-npm install react-modal --save
-npm install @types/react-modal --save-dev
-```
-
-- Add libraries as vendor and vendorStyles:
-
-### ./webpack.config.js
-```javascript
-entry: {
-  ...
-  vendor: [
-    ...
-    'toastr',
-    'react-addons-shallow-compare',
-    'react-virtualized',
-+   'react-infinite-calendar',
-+   'react-addons-css-transition-group',
-+   'moment',
-+   'react-modal',
-  ],
-  vendorStyles: [
-    '../node_modules/bootstrap/dist/css/bootstrap.css',
-    '../node_modules/toastr/build/toastr.css',
-    '../node_modules/react-virtualized/styles.css',
-+   '../node_modules/react-infinite-calendar/styles.css',
-  ],
 ```
 
 ### ./src/pages/training/edit/components/trainingForm.tsx

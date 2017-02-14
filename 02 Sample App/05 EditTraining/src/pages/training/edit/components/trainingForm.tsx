@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import {Training} from '../../../../models/training';
 import {InputComponent} from '../../../../common/components/input';
 import {CheckBoxComponent} from '../../../../common/components/checkBox';
-import {DatePickerModalComponent} from './datePickerModal';
+import {DatePickerModalComponent} from '../../../../common/components/datePickerModal';
 const classNames: any = require('./trainingFormStyles');
 
 interface Props {

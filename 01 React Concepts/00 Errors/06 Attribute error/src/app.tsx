@@ -3,5 +3,6 @@ import * as ReactDOM from 'react-dom';
 import Company from './company';
 
 ReactDOM.render(
-    <Company wrongAttribute="Lemoncode"/>
-, document.getElementById('root'));
+  <Company wrongAttribute="Lemoncode" />,
+  document.getElementById('root')
+);

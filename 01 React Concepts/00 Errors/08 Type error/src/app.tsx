@@ -5,5 +5,6 @@ import Company from './company';
 let name = 1;
 
 ReactDOM.render(
-    <Company name={name}/>
-, document.getElementById('root'));
+  <Company name={name} />,
+  document.getElementById('root')
+);

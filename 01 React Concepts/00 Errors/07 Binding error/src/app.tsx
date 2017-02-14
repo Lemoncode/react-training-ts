@@ -5,5 +5,6 @@ import Company from './company';
 let name = "Lemoncode";
 
 ReactDOM.render(
-    <Company name={names}/>
-, document.getElementById('root'));
+  <Company name={names} />,
+  document.getElementById('root')
+);

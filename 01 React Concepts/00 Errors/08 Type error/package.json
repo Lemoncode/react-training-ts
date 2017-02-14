@@ -1,23 +1,37 @@
 {
-  "name": "03_same_with_tsx",
+  "name": "08_type_error",
   "version": "1.0.0",
-  "description": "",
+  "description": "Type Error",
   "main": "index.js",
   "scripts": {
-    "postinstall": "tsd reinstall --overwrite --save",
     "start": "webpack-dev-server"
   },
-  "author": "Daniel Sanchez",
+  "author": "Lemoncode",
   "license": "ISC",
-  "dependencies": {
-    "react": "^0.14.8",
-    "react-dom": "^0.14.8"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lemoncode/react-training-ts.git"
   },
+  "bugs": {
+    "url": "https://github.com/Lemoncode/react-training-ts/issues"
+  },
+  "homepage": "https://github.com/Lemoncode/react-training-ts#readme",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "keywords": [
+    "react",
+    "training",
+    "typescript"
+  ],
   "devDependencies": {
-    "html-webpack-plugin": "^2.15.0",
-    "ts-loader": "^0.8.1",
-    "typescript": "^1.8.9",
-    "webpack": "^1.12.14",
-    "webpack-dev-server": "^1.14.1"
+    "@types/react": "^15.0.9",
+    "@types/react-dom": "^0.14.23",
+    "awesome-typescript-loader": "^3.0.4-rc.2",
+    "html-webpack-plugin": "^2.28.0",
+    "typescript": "^2.1.6",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^2.3.0"
   }
 }

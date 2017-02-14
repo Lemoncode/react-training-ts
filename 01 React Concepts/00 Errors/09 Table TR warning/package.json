@@ -1,7 +1,7 @@
 {
-  "name": "04_forget_close_a_div",
+  "name": "09_table_tr_warning",
   "version": "1.0.0",
-  "description": "Forget close a div",
+  "description": "Table tr warning",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server"

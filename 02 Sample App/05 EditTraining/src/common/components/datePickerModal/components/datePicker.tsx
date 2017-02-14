@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Moment} from 'moment';
 import {AutoSizer} from 'react-virtualized';
 const ReactCalendar: any = require('react-infinite-calendar');
 const InfiniteCalendar = ReactCalendar.default;
@@ -6,8 +7,8 @@ const classNames: any = require('./datePickerStyles');
 
 interface Props {
   onClose: () => void;
-  selectedDate: Date;
-  onChange: (selectedDate: Date) => void;
+  selectedDate: number;
+  onChange: (selectedDate: Moment) => void;
 }
 
 export const DatePickerComponent = (props: Props) => {
@@ -28,6 +29,7 @@ export const DatePickerComponent = (props: Props) => {
           height={height}
           selectedDate={props.selectedDate}
           afterSelect={props.onChange}
+          showHeader={false}
         />
       </div>
     }

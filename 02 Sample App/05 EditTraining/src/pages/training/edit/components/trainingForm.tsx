@@ -39,6 +39,11 @@ export class TrainingFormComponent extends React.Component<Props, State> {
     });
   }
 
+  private onChangeStartDate(momentDate: moment.Moment) {
+    const milliseconds = momentDate.valueOf();
+    this.props.onChange('startDate', milliseconds);
+  }
+
   public render() {
     return (
       <form className="container">
@@ -81,6 +86,8 @@ export class TrainingFormComponent extends React.Component<Props, State> {
         <DatePickerModalComponent
           isOpen={this.state.isOpenStartDateModal}
           onClose={() => this.toggleOpenModal('isOpenStartDateModal')}
+          selectedDate={this.props.training.startDate}
+          onChange={this.onChangeStartDate.bind(this)}
         />
 
         <InputComponent
@@ -89,7 +96,7 @@ export class TrainingFormComponent extends React.Component<Props, State> {
           label="End date"
           name="endDate"
           onChange={this.onChange.bind(this)}
-          value={moment(this.props.training.startDate).format('YYYY-MM-D')}
+          value={moment(this.props.training.endDate).format('YYYY-MM-D')}
           placeholder="End date"
         >
           <div className="input-group-btn">

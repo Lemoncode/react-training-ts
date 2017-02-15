@@ -183,7 +183,6 @@ import * as React from 'react';
   onChange: any;
 + className?: string;
 + disabled?: boolean;
-+ children?: React.ReactNode | React.ReactNode[];
 }
 
 - export const InputComponent = (props: Props) => {
@@ -204,7 +203,6 @@ import * as React from 'react';
         onChange={props.onChange}
 +       disabled={props.disabled}
       />
-+       {props.children}
     </div>
   );
 }
@@ -214,8 +212,7 @@ import * as React from 'react';
 ### ./src/common/components/form/inputButton.tsx
 ```javascript
 import * as React from 'react';
-import {InputComponent, InputProps} from './input';
-const classNames: any = require('./inputButtonStyles');
+import {InputProps} from './input';
 
 interface Props extends InputProps {
   onClick: () => void;
@@ -225,36 +222,30 @@ interface Props extends InputProps {
 
 export const InputButtonComponent = (props: Props) => {
   return (
-    <InputComponent
-      {...props}
-      className={`${props.className} input-group ${classNames.inputComponent}`}
-    >
-      <div className={`input-group-btn ${classNames.button}`}>
-        <span className={props.buttonClassName} onClick={props.onClick}>
-          <i className={props.icon} />
-        </span>
+    <div className={`form-group ${props.className}`}>
+      <label htmlFor={props.name}>
+        {props.label}
+      </label>
+      <div className="input-group">
+        <input
+          id={props.name}
+          type={props.type}
+          className="form-control"
+          placeholder={props.placeholder}
+          name={props.name}
+          value={props.value}
+          onChange={props.onChange}
+          disabled={props.disabled}
+        />
+        <div className="input-group-btn">
+          <span className={props.buttonClassName} onClick={props.onClick}>
+            <i className={props.icon} />
+          </span>
+        </div>
       </div>
-    </InputComponent>
+    </div>
   );
 };
-
-```
-
-### ./src/common/components/form/inputButtonStyles.css
-```css
-.input-component {
-  padding: 0 15px!important;
-  float: left!important;
-}
-
-.input-component > input {
-  border-top-left-radius: 4px!important;
-  border-bottom-left-radius: 4px!important;
-}
-
-.button {
-  padding-top: 25px!important;
-}
 
 ```
 

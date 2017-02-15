@@ -11,6 +11,7 @@ Summary steps:
 - Build common forms components.
 - Build DatePicker modal component.
 - Build TrainingFormComponent.
+- Update trainingAPI.
 - Build TrainingEditPage.
 - Add form validations.
 
@@ -195,6 +196,7 @@ import * as React from 'react';
         {props.label}
       </label>
       <input
+        id={props.name}
         type={props.type}
         className="form-control"
         placeholder={props.placeholder}
@@ -274,6 +276,7 @@ export const CheckBoxComponent = (props: Props) => {
     <div className={`checkbox ${props.className}`}>
       <label htmlFor={props.name}>
         <input
+          id={props.name}
           type="checkbox"
           name={props.name}
           checked={props.value}
@@ -316,7 +319,9 @@ export class TrainingFormComponent extends React.Component<Props, {}> {
 
   private onChange (event) {
     const fieldName = event.target.name;
-    const value = event.target.value;
+    const value = event.target.type === 'checkbox' ?
+      event.target.checked :
+      event.target.value;
 
     this.props.onChange(fieldName, value);
   }
@@ -619,7 +624,9 @@ interface Props {
 
   private onChange (event) {
     const fieldName = event.target.name;
-    const value = event.target.value;
+    const value = event.target.type === 'checkbox' ?
+      event.target.checked :
+      event.target.value;
 
     this.props.onChange(fieldName, value);
   }
@@ -751,5 +758,57 @@ interface Props {
     );
   }
 };
+
+```
+
+- Before start using TrainingFormComponent, we are going to update trainingAPI:
+
+### ./src/rest-api/training/trainingAPI.ts
+
+```javascript
+import {Training} from '../../models/training';
+import {trainingsMockData} from './trainingMockData';
+
+// Fake API using es6 Promises polyfill (with core-js).
+// In future, we can replace by real one.
+class TrainingAPI {
++ private trainings: Training[];
+
++ constructor() {
++   this.trainings = trainingsMockData;
++ }
+
+  public fetchTrainings(): Promise<Training[]> {
+-   return Promise.resolve(trainingsMockData);
++   return Promise.resolve(this.trainings);
+  }
+
++ public fetchTrainingById(id: number): Promise<Training> {
++   const training = this.trainings.find(t => t.id === id);
++   return Promise.resolve(training);
++ }
+
++ public save(training: Training): Promise<string> {
++   const index = this.trainings.findIndex(t => t.id === training.id);
++
++   return index >= 0 ?
++     this.saveTrainingByIndex(index, training) :
++     Promise.reject<string>('Something was wrong saving training :(');
++ }
+
++ // Just ensure no mutable data. Copy in new Array all items but replacing
++ // object to update by training from params.
++ private saveTrainingByIndex(index, training) {
++   this.trainings = [
++     ...this.trainings.slice(0, index),
++     training,
++     ...this.trainings.slice(index + 1)
++   ];
++
++   return Promise.resolve('Save training success');
++ }
+}
+
+export const trainingAPI = new TrainingAPI();
 
 ```

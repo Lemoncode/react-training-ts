@@ -13,6 +13,7 @@ export const CheckBoxComponent = (props: Props) => {
     <div className={`checkbox ${props.className}`}>
       <label htmlFor={props.name}>
         <input
+          id={props.name}
           type="checkbox"
           name={props.name}
           checked={props.value}

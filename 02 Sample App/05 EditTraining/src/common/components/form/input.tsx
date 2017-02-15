@@ -19,6 +19,7 @@ export const InputComponent = (props: InputProps) => {
         {props.label}
       </label>
       <input
+        id={props.name}
         type={props.type}
         className="form-control"
         placeholder={props.placeholder}

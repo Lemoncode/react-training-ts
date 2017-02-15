@@ -37,7 +37,9 @@ export class TrainingFormComponent extends React.Component<Props, State> {
 
   private onChange (event) {
     const fieldName = event.target.name;
-    const value = event.target.value;
+    const value = event.target.type === 'checkbox' ?
+      event.target.checked :
+      event.target.value;
 
     this.props.onChange(fieldName, value);
   }

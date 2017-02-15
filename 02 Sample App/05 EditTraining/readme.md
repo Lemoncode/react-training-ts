@@ -2,7 +2,7 @@
 
 We will take as startup point sample _04 TrainingListB_.
 
-In this sample we will build an edit form and apply validations.
+In this sample we will build an edit form.
 
 Summary steps:
 
@@ -13,7 +13,6 @@ Summary steps:
 - Build TrainingFormComponent.
 - Update trainingAPI.
 - Build TrainingEditPage.
-- Add form validations.
 
 ## Steps to build it
 

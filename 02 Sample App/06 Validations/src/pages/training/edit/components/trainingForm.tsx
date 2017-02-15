@@ -6,6 +6,7 @@ import {CheckBoxComponent} from '../../../../common/components/form/checkBox';
 import {InputButtonComponent} from '../../../../common/components/form/inputButton';
 import {DatePickerModalComponent} from '../../../../common/components/datePickerModal';
 import {formatConstants} from '../../../../common/constants/formatConstants';
+import {ValidationComponent} from '../../../../common/components/form/validation';
 
 interface Props {
   training: Training;
@@ -23,15 +24,19 @@ export const TrainingFormComponent = (props: Props) => {
   return (
     <form className="container">
       <div className="row">
-        <InputComponent
+        <ValidationComponent
           className="col-md-6"
-          type="text"
-          label="Name"
-          name="name"
-          onChange={props.onChange}
-          value={props.training.name}
-          placeholder="Name"
-        />
+          error="test"
+        >
+          <InputComponent
+            type="text"
+            label="Name"
+            name="name"
+            onChange={props.onChange}
+            value={props.training.name}
+            placeholder="Name"
+          />
+        </ValidationComponent>
 
         <InputComponent
           className="col-md-6"
@@ -45,19 +50,23 @@ export const TrainingFormComponent = (props: Props) => {
       </div>
 
       <div className="row">
-        <InputButtonComponent
+        <ValidationComponent
           className="col-md-6"
-          type="text"
-          label="Start date"
-          name="startDate"
-          placeholder="Start date"
-          value={moment(props.training.startDate).format(formatConstants.shortDate)}
-          onChange={props.onChange}
-          disabled
-          buttonClassName="btn btn-default"
-          onClick={props.toggleOpenStartDateModal}
-          icon="glyphicon glyphicon-calendar"
-        />
+          error="test"
+        >
+          <InputButtonComponent
+            type="text"
+            label="Start date"
+            name="startDate"
+            placeholder="Start date"
+            value={moment(props.training.startDate).format(formatConstants.shortDate)}
+            onChange={props.onChange}
+            disabled
+            buttonClassName="btn btn-default"
+            onClick={props.toggleOpenStartDateModal}
+            icon="glyphicon glyphicon-calendar"
+          />
+        </ValidationComponent>
 
         <DatePickerModalComponent
           isOpen={props.isOpenStartDateModal}

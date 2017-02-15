@@ -1,9 +1,12 @@
 import * as React from 'react';
 import * as toastr from 'toastr';
 import {hashHistory} from 'react-router';
+const validate: any = require('validate.js');
 import {Training} from '../../../models/training';
+import {TrainingErrors} from '../../../models/trainingErrors';
 import {TrainingEditPage} from './page';
 import {trainingAPI} from '../../../rest-api/training/trainingAPI';
+import {trainingFormConstraints} from './components/trainingFormConstraints';
 
 interface Props {
   params: any
@@ -11,6 +14,7 @@ interface Props {
 
 interface State {
   training: Training;
+  trainingErrors: TrainingErrors;
 }
 
 export class TrainingEditPageContainer extends React.Component<Props, State> {
@@ -19,6 +23,7 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
 
     this.state = {
       training: new Training(),
+      trainingErrors: new TrainingErrors(),
     };
     this.onChange = this.onChange.bind(this);
     this.save = this.save.bind(this);
@@ -43,6 +48,8 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
   }
 
   private onChange(fieldName, value) {
+    const errors = validate.single(value, trainingFormConstraints[fieldName]);
+
     this.setState({
       training: {
         ...this.state.training,

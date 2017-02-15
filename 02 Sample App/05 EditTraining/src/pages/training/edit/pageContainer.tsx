@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as toastr from 'toastr';
+import {hashHistory} from 'react-router';
 import {Training} from '../../../models/training';
 import {TrainingEditPage} from './page';
 import {trainingAPI} from '../../../rest-api/training/trainingAPI';
@@ -19,6 +20,8 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
     this.state = {
       training: new Training(),
     };
+    this.onChange = this.onChange.bind(this);
+    this.save = this.save.bind(this);
   }
 
   public componentDidMount() {
@@ -26,7 +29,6 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
   }
 
   private fetchTraining() {
-    toastr.remove();
     const trainingId = Number(this.props.params.id) || 0;
     trainingAPI.fetchTrainingById(trainingId)
       .then((training) => {
@@ -35,6 +37,7 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
         })
       })
       .catch((error) => {
+        toastr.remove();
         toastr.error(error);
       });
   }
@@ -53,6 +56,7 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
     trainingAPI.save(training)
       .then((message) => {
         toastr.success(message);
+        hashHistory.goBack();
       })
       .catch((error) => {
         toastr.error(error);
@@ -63,8 +67,8 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
     return (
       <TrainingEditPage
         training={this.state.training}
-        onChange={this.onChange.bind(this)}
-        save={this.save.bind(this)}
+        onChange={this.onChange}
+        save={this.save}
       />
     );
   }

@@ -9,7 +9,6 @@ export interface InputProps {
   onChange: any;
   className?: string;
   disabled?: boolean;
-  children?: React.ReactNode | React.ReactNode[];
 }
 
 export const InputComponent = (props: InputProps) => {
@@ -28,7 +27,6 @@ export const InputComponent = (props: InputProps) => {
         onChange={props.onChange}
         disabled={props.disabled}
       />
-        {props.children}
     </div>
   );
 }

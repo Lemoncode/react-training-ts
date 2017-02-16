@@ -16,7 +16,6 @@ Summary steps:
     - [Bootstrap](https://github.com/twbs/bootstrap).
     - [React and ReactDOM](https://github.com/facebook/react).
     - [React router](https://github.com/reacttraining/react-router) for navigation.
-    - [validate.js](https://github.com/ansman/validate.js) for validations.
     - [toastr](https://github.com/CodeSeven/toastr) for toast notifications.
     - _@types/webpack-env_ to allow using **require** with TypeScript.
 - Setup **webpack.config.js**
@@ -116,12 +115,6 @@ our webpack configuration (handling CSS, TypeScript...).
  npm install @types/react-router --save-dev
  ```
 
-- Let's install validate.js, it's a JavaScript library for validations. It has typings, so we don't need to download from _@types_:
-
- ```
- npm install validate.js --save
- ```
-
 - Let's install toastr, it's a simple JavaScript toast notifications library and typings for ts development. (Installing jQuery because it's a dependency):
 
  ```
@@ -186,8 +179,7 @@ our webpack configuration (handling CSS, TypeScript...).
      "react": "^15.4.2",
      "react-dom": "^15.4.2",
      "react-router": "^3.0.2",
-     "toastr": "^2.1.2",
-     "validate.js": "^0.11.1"
+     "toastr": "^2.1.2"
    }
  }
 
@@ -280,7 +272,6 @@ export const HelloComponent = () => {
        'react',
        'react-dom',
        'react-router',
-       'validate.js',
        'toastr',
      ],
      vendorStyles: [

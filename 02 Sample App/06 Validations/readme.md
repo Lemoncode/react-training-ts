@@ -44,8 +44,8 @@ import * as React from 'react';
 const classNames: any = require('./validationStyles');
 
 interface Props {
+  error: string;
   className?: string;
-  error?: string;
   children?: React.ReactNode | React.ReactNode[];
 }
 

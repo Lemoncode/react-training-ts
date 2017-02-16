@@ -16,7 +16,6 @@ Summary steps:
     - [Bootstrap](https://github.com/twbs/bootstrap).
     - [React and ReactDOM](https://github.com/facebook/react).
     - [React router](https://github.com/reacttraining/react-router) for navigation.
-    - [lc-form-validation](https://github.com/Lemoncode/lcFormValidation) for validations.
     - [toastr](https://github.com/CodeSeven/toastr) for toast notifications.
     - _@types/webpack-env_ to allow using **require** with TypeScript.
 - Setup **webpack.config.js**
@@ -116,12 +115,6 @@ our webpack configuration (handling CSS, TypeScript...).
  npm install @types/react-router --save-dev
  ```
 
-- Let's install lc-form-validation, it's a framework agnostic library to validate forms based on TypeScript:
-
- ```
- npm install lc-form-validation --save
- ```
-
 - Let's install toastr, it's a simple JavaScript toast notifications library and typings for ts development. (Installing jQuery because it's a dependency):
 
  ```
@@ -183,7 +176,6 @@ our webpack configuration (handling CSS, TypeScript...).
      "bootstrap": "^3.3.7",
      "core-js": "^2.4.1",
      "jquery": "^3.1.1",
-     "lc-form-validation": "^0.1.7",
      "react": "^15.4.2",
      "react-dom": "^15.4.2",
      "react-router": "^3.0.2",
@@ -280,7 +272,6 @@ export const HelloComponent = () => {
        'react',
        'react-dom',
        'react-router',
-       'lc-form-validation',
        'toastr',
      ],
      vendorStyles: [

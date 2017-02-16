@@ -1,36 +1,36 @@
 import {Training} from '../../models/training';
 
-export const trainings: Training[] = [
+export const trainingsMockData: Training[] = [
   {
     id: 1,
     name: 'React',
     url: 'http://lemoncode.net/react',
-    startDate: new Date('2017-02-22T10:00:00').getMilliseconds(),
-    endDate: new Date('2017-02-24T12:00:00').getMilliseconds(),
+    startDate: new Date('2017-02-22T10:00:00').getTime(),
+    endDate: new Date('2017-02-24T12:00:00').getTime(),
     isActive: true,
   },
   {
     id: 2,
     name: 'AngularJS 2.0',
     url: 'http://lemoncode.net/angularjs-2-0-con-typescript',
-    startDate: new Date('2016-11-22T19:00:00').getMilliseconds(),
-    endDate: new Date('2016-11-24T21:00:00').getMilliseconds(),
+    startDate: new Date('2016-11-22T19:00:00').getTime(),
+    endDate: new Date('2016-11-24T21:00:00').getTime(),
     isActive: true,
   },
   {
     id: 3,
     name: 'Introducción a Git',
     url: 'http://lemoncode.net/introduccion-a-git',
-    startDate: new Date('2016-10-25T19:00:00').getMilliseconds(),
-    endDate: new Date('2016-10-27T21:00:00').getMilliseconds(),
+    startDate: new Date('2016-10-25T19:00:00').getTime(),
+    endDate: new Date('2016-10-27T21:00:00').getTime(),
     isActive: true,
   },
   {
     id: 4,
     name: 'ALM con Visual Studio',
     url: 'http://lemoncode.net/application-lifecycle-management-con-visual-studio',
-    startDate: new Date('2016-10-27T19:00:00').getMilliseconds(),
-    endDate: new Date('2016-10-29T21:00:00').getMilliseconds(),
+    startDate: new Date('2016-10-27T19:00:00').getTime(),
+    endDate: new Date('2016-10-29T21:00:00').getTime(),
     isActive: true,
   },
   {

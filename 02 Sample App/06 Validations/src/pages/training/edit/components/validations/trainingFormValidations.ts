@@ -4,15 +4,20 @@ import {TrainingErrors} from '../../../../../models/trainingErrors';
 import {trainingFormConstraints} from './trainingFormConstraints';
 
 class TrainingFormValidations {
-  public validateField(fieldName, value): string {
-    const errors = validate.single(value, trainingFormConstraints[fieldName]);
+  public validateField(training: Training, fieldName: string, value): string {
+    const updatedTraining = {
+      ...training,
+      [fieldName]: value,
+    };
 
-    return this.getSingleError(errors);
+    const errors = validate(updatedTraining, trainingFormConstraints);
+
+    return this.getSingleError(fieldName, errors);
   }
 
-  private getSingleError(errors: string[]): string {
-    return (errors && errors.length > 0) ?
-      errors[0] :
+  private getSingleError(fieldName:string, errors: string[]): string {
+    return (errors && errors[fieldName] && errors[fieldName].length > 0) ?
+      errors[fieldName][0] :
       '';
   }
 
@@ -26,10 +31,9 @@ class TrainingFormValidations {
     const trainingErrors = new TrainingErrors();
 
     if(errors) {
-      trainingErrors.name = this.getSingleError(errors.name);
-      trainingErrors.url = this.getSingleError(errors.url);
-      trainingErrors.startDate = this.getSingleError(errors.startDate);
-      trainingErrors.endDate = this.getSingleError(errors.endDate);
+      trainingErrors.name = this.getSingleError('name', errors);
+      trainingErrors.url = this.getSingleError('url', errors);
+      trainingErrors.endDate = this.getSingleError('endDate', errors);
     }
 
     return trainingErrors;

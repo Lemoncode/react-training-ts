@@ -10,15 +10,11 @@ export const trainingFormConstraints = {
     presence: true,
     url: true,
   },
-  startDate: {
-    presence: true,
-  },
   endDate: (value: number, training: Training) => {
     const startDateFormatted = moment(training.startDate)
       .format(formatConstants.shortDate);
 
     return {
-      presence: true,
       numericality: {
         greaterThan: training.startDate,
         message: `must be greater than ${startDateFormatted}`,

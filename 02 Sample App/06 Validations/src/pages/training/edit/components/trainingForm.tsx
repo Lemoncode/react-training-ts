@@ -56,23 +56,19 @@ export const TrainingFormComponent = (props: Props) => {
       </div>
 
       <div className="row">
-        <ValidationComponent
+        <InputButtonComponent
           className="col-md-6"
-          error={props.trainingErrors.startDate}
-        >
-          <InputButtonComponent
-            type="text"
-            label="Start date"
-            name="startDate"
-            placeholder="Start date"
-            value={moment(props.training.startDate).format(formatConstants.shortDate)}
-            onChange={props.onChange}
-            disabled
-            buttonClassName="btn btn-default"
-            onClick={props.toggleOpenStartDateModal}
-            icon="glyphicon glyphicon-calendar"
-          />
-        </ValidationComponent>
+          type="text"
+          label="Start date"
+          name="startDate"
+          placeholder="Start date"
+          value={moment(props.training.startDate).format(formatConstants.shortDate)}
+          onChange={props.onChange}
+          disabled
+          buttonClassName="btn btn-default"
+          onClick={props.toggleOpenStartDateModal}
+          icon="glyphicon glyphicon-calendar"
+        />
 
         <DatePickerModalComponent
           isOpen={props.isOpenStartDateModal}

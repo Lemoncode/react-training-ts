@@ -83,7 +83,6 @@ export const ValidationComponent = (props: Props) => {
 export class TrainingErrors {
   name: string;
   url: string;
-  startDate: string;
   endDate: string;
 }
 
@@ -152,24 +151,19 @@ export const TrainingFormComponent = (props: Props) => {
       </div>
 
       <div className="row">
-+       <ValidationComponent
-+         className="col-md-6"
-+         error={props.trainingErrors.startDate}
-+       >
-          <InputButtonComponent
--           className="col-md-6"
-            type="text"
-            label="Start date"
-            name="startDate"
-            placeholder="Start date"
-            value={moment(props.training.startDate).format(formatConstants.shortDate)}
-            onChange={props.onChange}
-            disabled
-            buttonClassName="btn btn-default"
-            onClick={props.toggleOpenStartDateModal}
-            icon="glyphicon glyphicon-calendar"
-          />
-+       </ValidationComponent>
+        <InputButtonComponent
+          className="col-md-6"
+          type="text"
+          label="Start date"
+          name="startDate"
+          placeholder="Start date"
+          value={moment(props.training.startDate).format(formatConstants.shortDate)}
+          onChange={props.onChange}
+          disabled
+          buttonClassName="btn btn-default"
+          onClick={props.toggleOpenStartDateModal}
+          icon="glyphicon glyphicon-calendar"
+        />
 
         <DatePickerModalComponent
           isOpen={props.isOpenStartDateModal}
@@ -407,15 +401,11 @@ export const trainingFormConstraints = {
     presence: true,
     url: true,
   },
-  startDate: {
-    presence: true,
-  },
   endDate: (value: number, training: Training) => {
     const startDateFormatted = moment(training.startDate)
       .format(formatConstants.shortDate);
 
     return {
-      presence: true,
       numericality: {
         greaterThan: training.startDate,
         message: `must be greater than ${startDateFormatted}`,
@@ -434,15 +424,20 @@ import {TrainingErrors} from '../../../../../models/trainingErrors';
 import {trainingFormConstraints} from './trainingFormConstraints';
 
 class TrainingFormValidations {
-  public validateField(fieldName, value): string {
-    const errors = validate.single(value, trainingFormConstraints[fieldName]);
+  public validateField(training: Training, fieldName: string, value): string {
+    const updatedTraining = {
+      ...training,
+      [fieldName]: value,
+    };
 
-    return this.getSingleError(errors);
+    const errors = validate(updatedTraining, trainingFormConstraints);
+
+    return this.getSingleError(fieldName, errors);
   }
 
-  private getSingleError(errors: string[]): string {
-    return (errors && errors.length > 0) ?
-      errors[0] :
+  private getSingleError(fieldName:string, errors: string[]): string {
+    return (errors && errors[fieldName] && errors[fieldName].length > 0) ?
+      errors[fieldName][0] :
       '';
   }
 
@@ -456,10 +451,9 @@ class TrainingFormValidations {
     const trainingErrors = new TrainingErrors();
 
     if(errors) {
-      trainingErrors.name = this.getSingleError(errors.name);
-      trainingErrors.url = this.getSingleError(errors.url);
-      trainingErrors.startDate = this.getSingleError(errors.startDate);
-      trainingErrors.endDate = this.getSingleError(errors.endDate);
+      trainingErrors.name = this.getSingleError('name', errors);
+      trainingErrors.url = this.getSingleError('url', errors);
+      trainingErrors.endDate = this.getSingleError('endDate', errors);
     }
 
     return trainingErrors;
@@ -528,7 +522,8 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
   }
 
   private onChange(fieldName, value) {
-+   const error = trainingFormValidations.validateField(fieldName, value);
++   const error = trainingFormValidations
++     .validateField(this.state.training, fieldName, value);
 
     this.setState({
       training: {

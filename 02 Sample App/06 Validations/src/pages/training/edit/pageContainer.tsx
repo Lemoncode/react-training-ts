@@ -47,7 +47,8 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
   }
 
   private onChange(fieldName, value) {
-    const error = trainingFormValidations.validateField(fieldName, value);
+    const error = trainingFormValidations
+      .validateField(this.state.training, fieldName, value);
 
     this.setState({
       training: {
@@ -68,7 +69,7 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
         ...trainingErrors,
       },
     });
-    
+
     if(trainingFormValidations.isValidForm(trainingErrors)) {
       toastr.remove();
       trainingAPI.save(training)

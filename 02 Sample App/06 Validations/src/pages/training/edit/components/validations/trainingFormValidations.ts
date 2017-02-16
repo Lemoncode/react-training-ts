@@ -19,12 +19,20 @@ class TrainingFormValidations {
   public validateForm(training: Training): TrainingErrors {
     const errors = validate(training, trainingFormConstraints);
 
-    return {
-      name: this.getSingleError(errors.name),
-      url: this.getSingleError(errors.url),
-      startDate: this.getSingleError(errors.startDate),
-      endDate: this.getSingleError(errors.endDate),
+    return this.getTrainingErrors(errors);
+  }
+
+  private getTrainingErrors(errors): TrainingErrors {
+    const trainingErrors = new TrainingErrors();
+
+    if(errors) {
+      trainingErrors.name = this.getSingleError(errors.name);
+      trainingErrors.url = this.getSingleError(errors.url);
+      trainingErrors.startDate = this.getSingleError(errors.startDate);
+      trainingErrors.endDate = this.getSingleError(errors.endDate);
     }
+
+    return trainingErrors;
   }
 
   public isValidForm(trainingErrors: TrainingErrors): boolean {

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import * as toastr from 'toastr';
 import {hashHistory} from 'react-router';
-const validate: any = require('validate.js');
 import {Training} from '../../../models/training';
 import {TrainingErrors} from '../../../models/trainingErrors';
 import {TrainingEditPage} from './page';
 import {trainingAPI} from '../../../rest-api/training/trainingAPI';
-import {trainingFormConstraints} from './components/trainingFormConstraints';
+import {trainingFormValidations} from './components/validations/trainingFormValidations';
 
 interface Props {
   params: any
@@ -48,32 +47,46 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
   }
 
   private onChange(fieldName, value) {
-    const errors = validate.single(value, trainingFormConstraints[fieldName]);
+    const error = trainingFormValidations.validateField(fieldName, value);
 
     this.setState({
       training: {
         ...this.state.training,
         [fieldName]: value
-      }
+      },
+      trainingErrors: {
+        ...this.state.trainingErrors,
+        [fieldName]: error,
+      },
     });
   }
 
   private save(training: Training) {
-    toastr.remove();
-    trainingAPI.save(training)
-      .then((message) => {
-        toastr.success(message);
-        hashHistory.goBack();
-      })
-      .catch((error) => {
-        toastr.error(error);
-      });
+    const trainingErrors = trainingFormValidations.validateForm(training);
+    this.setState({
+      trainingErrors: {
+        ...trainingErrors,
+      },
+    });
+    
+    if(trainingFormValidations.isValidForm(trainingErrors)) {
+      toastr.remove();
+      trainingAPI.save(training)
+        .then((message) => {
+          toastr.success(message);
+          hashHistory.goBack();
+        })
+        .catch((error) => {
+          toastr.error(error);
+        });
+    }
   }
 
   public render() {
     return (
       <TrainingEditPage
         training={this.state.training}
+        trainingErrors={this.state.trainingErrors}
         onChange={this.onChange}
         save={this.save}
       />

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import {Training} from '../../../../models/training';
+import {TrainingErrors} from '../../../../models/trainingErrors';
 import {InputComponent} from '../../../../common/components/form/input';
 import {CheckBoxComponent} from '../../../../common/components/form/checkBox';
 import {InputButtonComponent} from '../../../../common/components/form/inputButton';
@@ -10,6 +11,7 @@ import {ValidationComponent} from '../../../../common/components/form/validation
 
 interface Props {
   training: Training;
+  trainingErrors: TrainingErrors;
   onChange: (event) => void;
   save: (event) => void;
   isOpenStartDateModal: boolean;
@@ -26,7 +28,7 @@ export const TrainingFormComponent = (props: Props) => {
       <div className="row">
         <ValidationComponent
           className="col-md-6"
-          error="test"
+          error={props.trainingErrors.name}
         >
           <InputComponent
             type="text"
@@ -38,21 +40,25 @@ export const TrainingFormComponent = (props: Props) => {
           />
         </ValidationComponent>
 
-        <InputComponent
+        <ValidationComponent
           className="col-md-6"
-          type="text"
-          label="Url"
-          name="url"
-          onChange={props.onChange}
-          value={props.training.url}
-          placeholder="Url"
-        />
+          error={props.trainingErrors.url}
+        >
+          <InputComponent
+            type="text"
+            label="Url"
+            name="url"
+            onChange={props.onChange}
+            value={props.training.url}
+            placeholder="Url"
+          />
+        </ValidationComponent>
       </div>
 
       <div className="row">
         <ValidationComponent
           className="col-md-6"
-          error="test"
+          error={props.trainingErrors.startDate}
         >
           <InputButtonComponent
             type="text"
@@ -75,19 +81,23 @@ export const TrainingFormComponent = (props: Props) => {
           onChange={props.onChangeStartDate}
         />
 
-        <InputButtonComponent
+        <ValidationComponent
           className="col-md-6"
-          type="text"
-          label="End date"
-          name="endDate"
-          placeholder="End date"
-          value={moment(props.training.endDate).format(formatConstants.shortDate)}
-          onChange={props.onChange}
-          disabled
-          buttonClassName="btn btn-default"
-          onClick={props.toggleOpenEndDateModal}
-          icon="glyphicon glyphicon-calendar"
-        />
+          error={props.trainingErrors.endDate}
+        >
+          <InputButtonComponent
+            type="text"
+            label="End date"
+            name="endDate"
+            placeholder="End date"
+            value={moment(props.training.endDate).format(formatConstants.shortDate)}
+            onChange={props.onChange}
+            disabled
+            buttonClassName="btn btn-default"
+            onClick={props.toggleOpenEndDateModal}
+            icon="glyphicon glyphicon-calendar"
+          />
+        </ValidationComponent>
 
         <DatePickerModalComponent
           isOpen={props.isOpenEndDateModal}

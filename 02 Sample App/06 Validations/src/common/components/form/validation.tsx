@@ -1,4 +1,5 @@
 import * as React from 'react';
+const classNames: any = require('./validationStyles');
 
 interface Props {
   className?: string;
@@ -16,7 +17,7 @@ export const ValidationComponent = (props: Props) => {
   return (
     <div className={wrapperClass}>
       {props.children}
-      <div className="help-block">
+      <div className={`help-block ${classNames.error}`}>
         {props.error}
       </div>
     </div>

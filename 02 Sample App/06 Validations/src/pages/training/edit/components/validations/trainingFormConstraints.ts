@@ -6,10 +6,10 @@ export const trainingFormConstraints = {
     presence: true,
     url: true,
   },
-  startDate: {
-    datetime: true,
-  },
-  endDate: {
-    datetime: true,
-  },
+  // startDate: {
+  //   datetime: true,
+  // },
+  // endDate: {
+  //   datetime: true,
+  // },
 };

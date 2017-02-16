@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import {Training} from '../../../../models/training';
+import {TrainingErrors} from '../../../../models/trainingErrors';
 import {TrainingFormComponent} from './trainingForm';
 
 interface Props {
   training: Training;
+  trainingErrors: TrainingErrors;
   onChange: (fieldName: string, value: any) => void;
   save: (training: Training) => void;
 }
@@ -79,6 +81,7 @@ export class TrainingFormComponentContainer extends React.Component<Props, State
     return (
       <TrainingFormComponent
         training={this.props.training}
+        trainingErrors={this.props.trainingErrors}
         onChange={this.onChange}
         save={this.save}
         isOpenStartDateModal={this.state.isOpenStartDateModal}

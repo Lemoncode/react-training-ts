@@ -1,4 +1,4 @@
-# 01 Properties
+# 02 State
 
 []()
 This sample reuses the modal component from sample [01 React Concepts](../01\ React\ Concepts) and makes it interactive using a button.

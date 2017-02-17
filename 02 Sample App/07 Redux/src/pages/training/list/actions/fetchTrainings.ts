@@ -1,7 +1,7 @@
 import * as toastr from 'toastr';
 import {Training} from '../../../../models/training';
 import {trainingAPI} from '../../../../rest-api/training/trainingAPI';
-import {trainingActionConstants} from '../../../../common/constants/actionConstants';
+import {trainingActionConstants} from '../../../../common/constants/actionConstants/trainingActionConstants';
 
 export const fetchTrainingsStartAction = () => {
   return (dispatcher) => {

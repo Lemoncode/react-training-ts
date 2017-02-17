@@ -1,96 +1,26 @@
 import * as React from 'react';
-import * as toastr from 'toastr';
-import {hashHistory} from 'react-router';
+import {connect} from 'react-redux';
+import {AppState} from '../../../reducers';
 import {Training} from '../../../models/training';
-import {TrainingErrors} from '../../../models/trainingErrors';
+import {fetchTrainingStartAction} from './actions/fetchTraining';
+import {trainingContentChangedAction} from './actions/trainingContentChanged';
+import {saveTrainingStartAction} from './actions/saveTraining';
 import {TrainingEditPage} from './page';
-import {trainingAPI} from '../../../rest-api/training/trainingAPI';
-import {trainingFormValidations} from './components/validations/trainingFormValidations';
 
-interface Props {
-  params: any
-}
+const mapStateToProps = (state: AppState, ownProps) => ({
+  trainingId: Number(ownProps.params.id) || 0,
+  training: state.training.edit.training,
+  trainingErrors: state.training.edit.trainingErrors,
+});
 
-interface State {
-  training: Training;
-  trainingErrors: TrainingErrors;
-}
+const mapDispatchToProps = (dispatch) => ({
+  fetchTrainingById: (id: number) => dispatch(fetchTrainingStartAction(id)),
+  onChange: (training: Training, fieldName: string, value: any) =>
+    dispatch(trainingContentChangedAction(training, fieldName, value)),
+  save: (training: Training) => dispatch(saveTrainingStartAction(training)),
+});
 
-export class TrainingEditPageContainer extends React.Component<Props, State> {
-  constructor() {
-    super();
-
-    this.state = {
-      training: new Training(),
-      trainingErrors: new TrainingErrors(),
-    };
-    this.onChange = this.onChange.bind(this);
-    this.save = this.save.bind(this);
-  }
-
-  public componentDidMount() {
-    this.fetchTraining();
-  }
-
-  private fetchTraining() {
-    const trainingId = Number(this.props.params.id) || 0;
-    trainingAPI.fetchTrainingById(trainingId)
-      .then((training) => {
-        this.setState({
-          training: {...training}
-        })
-      })
-      .catch((error) => {
-        toastr.remove();
-        toastr.error(error);
-      });
-  }
-
-  private onChange(fieldName, value) {
-    const error = trainingFormValidations
-      .validateField(this.state.training, fieldName, value);
-
-    this.setState({
-      training: {
-        ...this.state.training,
-        [fieldName]: value
-      },
-      trainingErrors: {
-        ...this.state.trainingErrors,
-        [fieldName]: error,
-      },
-    });
-  }
-
-  private save(training: Training) {
-    const trainingErrors = trainingFormValidations.validateForm(training);
-    this.setState({
-      trainingErrors: {
-        ...trainingErrors,
-      },
-    });
-
-    if(trainingFormValidations.isValidForm(trainingErrors)) {
-      toastr.remove();
-      trainingAPI.save(training)
-        .then((message) => {
-          toastr.success(message);
-          hashHistory.goBack();
-        })
-        .catch((error) => {
-          toastr.error(error);
-        });
-    }
-  }
-
-  public render() {
-    return (
-      <TrainingEditPage
-        training={this.state.training}
-        trainingErrors={this.state.trainingErrors}
-        onChange={this.onChange}
-        save={this.save}
-      />
-    );
-  }
-}
+export const TrainingEditPageContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TrainingEditPage);

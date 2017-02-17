@@ -1,5 +1,5 @@
 import {LoginCredentials} from '../../models/loginCredentials';
-import {loginActionConstants} from '../../common/constants/actionConstants';
+import {loginActionConstants} from '../../common/constants/actionConstants/loginActionConstants';
 import {LoginContentChangedPayload} from '../../pages/login/actions/loginContentChanged';
 
 export class LoginState {

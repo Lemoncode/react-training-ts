@@ -3,7 +3,7 @@ import {hashHistory} from 'react-router';
 import {LoginCredentials} from '../../../models/loginCredentials';
 import {UserProfile} from '../../../models/userProfile';
 import {loginAPI} from '../../../rest-api/login/loginAPI';
-import {loginActionConstants} from '../../../common/constants/actionConstants';
+import {loginActionConstants} from '../../../common/constants/actionConstants/loginActionConstants';
 import {routeConstants} from '../../../common/constants/routeConstants';
 
 export const loginRequestAction = (loginCredentials: LoginCredentials) => {

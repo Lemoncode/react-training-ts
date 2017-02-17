@@ -1,5 +1,5 @@
 import {LoginCredentials} from '../../../models/loginCredentials';
-import {loginActionConstants} from '../../../common/constants/actionConstants';
+import {loginActionConstants} from '../../../common/constants/actionConstants/loginActionConstants';
 
 export interface LoginContentChangedPayload {
   fieldName: string;

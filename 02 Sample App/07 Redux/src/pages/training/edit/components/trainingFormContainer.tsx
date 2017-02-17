@@ -7,7 +7,7 @@ import {TrainingFormComponent} from './trainingForm';
 interface Props {
   training: Training;
   trainingErrors: TrainingErrors;
-  onChange: (fieldName: string, value: any) => void;
+  onChange: (training: Training, fieldName: string, value: any) => void;
   save: (training: Training) => void;
 }
 
@@ -39,7 +39,7 @@ export class TrainingFormComponentContainer extends React.Component<Props, State
       event.target.checked :
       event.target.value;
 
-    this.props.onChange(fieldName, value);
+    this.props.onChange(this.props.training, fieldName, value);
   }
 
   private onChangeStartDate(date: moment.Moment) {
@@ -54,7 +54,7 @@ export class TrainingFormComponentContainer extends React.Component<Props, State
 
   private onChangeDate(fieldName: string, date: moment.Moment) {
     const milliseconds = date.valueOf();
-    this.props.onChange(fieldName, milliseconds);
+    this.props.onChange(this.props.training, fieldName, milliseconds);
   }
 
   private toggleOpenStartDateModal() {

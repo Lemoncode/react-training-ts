@@ -38,7 +38,7 @@ npm install @types/react-modal --save-dev
 - Add libraries as vendor and vendorStyles:
 
 ### ./webpack.config.js
-```javascript
+```diff
 entry: {
   ...
   vendor: [
@@ -77,7 +77,7 @@ export const TrainingEditPage = () => {
 - Add route constant:
 
 ### ./src/common/constants/routeConstants.ts
-```javascript
+```diff
 const trainingRoute = '/training';
 
 export const routeConstants = {
@@ -94,7 +94,7 @@ export const routeConstants = {
 - And route:
 
 ### ./src/routes.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Route, IndexRoute} from 'react-router';
 import {routeConstants} from './common/constants/routeConstants';
@@ -116,7 +116,7 @@ export const AppRoutes = (
 - Finally, update _TrainingRowComponent_ to navigate to TrainingEditPage by training Id:
 
 ### ./src/pages/training/list/components/trainingRow.tsx
-```javascript
+```diff
 import * as React from 'react';
 + import {Link} from 'react-router';
 import {Training} from '../../../../models/training';
@@ -157,20 +157,10 @@ export const TrainingRowComponent = (props: Props) => {
 ```
 
 - Once we have navigation, we can start with creating _TrainingFormComponent_.
-  We're going to move input component to _./src/common/components/form_ folder because we'll create some form components
-  and group them in this folder.
-
-### ./src/pages/login/components/form.tsx
-```javascript
-import * as React from 'react';
-import {LoginCredentials} from '../../../models/loginCredentials';
-- import {InputComponent} from '../../../common/components/input';
-+ import {InputComponent} from '../../../common/components/form/input';
-
-```
+  We're going to start with form components:
 
 ### ./src/common/components/form/input.tsx
-```javascript
+```diff
 import * as React from 'react';
 
 - interface Props {
@@ -372,7 +362,7 @@ export class TrainingFormComponent extends React.Component<Props, {}> {
             onChange={this.onChange}
             disabled
             buttonClassName="btn btn-default"
-            onClick={() => {})}
+            onClick={() => {}}
             icon="glyphicon glyphicon-calendar"
           />
 
@@ -386,7 +376,7 @@ export class TrainingFormComponent extends React.Component<Props, {}> {
             onChange={this.onChange}
             disabled
             buttonClassName="btn btn-default"
-            onClick={() => {})}
+            onClick={() => {}}
             icon="glyphicon glyphicon-calendar"
           />
         </div>
@@ -414,6 +404,27 @@ export class TrainingFormComponent extends React.Component<Props, {}> {
     );
   }
 };
+
+```
+
+- We can use it in _TrainingEditPage_ to see how our form is going on:
+
+### ./src/pages/training/edit/page.tsx
+```diff
+import * as React from 'react';
++ import {Training} from '../../../models/training';
++ import {TrainingFormComponent} from './components/trainingForm';
+
+export const TrainingEditPage = () => {
+  return (
+-   <div>Training Edit page</div>
++   <TrainingFormComponent
++     training={new Training()}
++     onChange={() => {}}
++     save={() => {}}
++   />
+  );
+}
 
 ```
 
@@ -466,6 +477,35 @@ export const DatePickerModalComponent = (props: Props) => {
   z-index: 1040;
   background-color: rgba(0,0,0,0.5);
 }
+
+```
+
+### ./src/pages/training/edit/components/trainingForm.tsx
+```diff
++ import {DatePickerModalComponent} from '../../../../common/components/datePickerModal';
+...
+    <InputButtonComponent
+      className="col-md-6"
+      type="text"
+      label="Start date"
+      name="startDate"
+      placeholder="Start date"
+      value={moment(this.props.training.startDate).format('YYYY-MM-DD')}
+      onChange={this.onChange}
+      disabled
+      buttonClassName="btn btn-default"
+      onClick={() => {}}
+      icon="glyphicon glyphicon-calendar"
+    />
+
++   <DatePickerModalComponent
++     isOpen={true}
++     onClose={() => {}}
++     selectedDate={0}
++     onChange={() => {}}
++   />
+
+...
 
 ```
 
@@ -526,7 +566,7 @@ export const DatePickerComponent = (props: Props) => {
 - Updating _DatePickerModalComponent_:
 
 ### ./src/common/components/datePickerModal/datePickerModal.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as Modal from 'react-modal';
 import {Moment} from 'moment';
@@ -549,11 +589,12 @@ export const DatePickerModalComponent = (props: Props) => {
       className={`${classNames.modal} modal-dialog modal-open`}
       overlayClassName={classNames.overlay}
     >
-      <DatePickerComponent
-        onClose={props.onClose}
-        selectedDate={props.selectedDate}
-        onChange={props.onChange}
-      />
+-     <h1>This is a modal</h1>
++     <DatePickerComponent
++       onClose={props.onClose}
++       selectedDate={props.selectedDate}
++       onChange={props.onChange}
++     />
     </Modal>
   );
 };
@@ -573,14 +614,14 @@ export const formatConstants = {
 - Updating _TrainingFormComponent_:
 
 ### ./src/pages/training/edit/components/trainingForm.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as moment from 'moment';
 import {Training} from '../../../../models/training';
 import {InputComponent} from '../../../../common/components/form/input';
 import {CheckBoxComponent} from '../../../../common/components/form/checkBox';
 import {InputButtonComponent} from '../../../../common/components/form/inputButton';
-+ import {DatePickerModalComponent} from '../../../../common/components/datePickerModal';
+import {DatePickerModalComponent} from '../../../../common/components/datePickerModal';
 + import {formatConstants} from '../../../../common/constants/formatConstants';
 
 interface Props {
@@ -688,20 +729,26 @@ interface Props {
             label="Start date"
             name="startDate"
             placeholder="Start date"
-            value={moment(this.props.training.startDate).format('YYYY-MM-DD')}
+-           value={moment(this.props.training.startDate).format('YYYY-MM-DD')}
++           value={moment(this.props.training.startDate).format(formatConstants.shortDate)}
             onChange={this.onChange}
             disabled
             buttonClassName="btn btn-default"
-            onClick={() => {})}
+-           onClick={() => {}}
++           onClick={this.toggleOpenStartDateModal}
             icon="glyphicon glyphicon-calendar"
           />
 
-+         <DatePickerModalComponent
+          <DatePickerModalComponent
+-           isOpen={true}
 +           isOpen={this.state.isOpenStartDateModal}
+-           onClose={() => {}}
 +           onClose={this.toggleOpenStartDateModal}
+-           selectedDate={0}
 +           selectedDate={this.props.training.startDate}
+-           onChange={() => {}}
 +           onChange={this.onChangeStartDate}
-+         />
+          />
 
           <InputButtonComponent
             className="col-md-6"
@@ -709,11 +756,13 @@ interface Props {
             label="End date"
             name="endDate"
             placeholder="End date"
-            value={moment(this.props.training.endDate).format('YYYY-MM-DD')}
+-           value={moment(this.props.training.endDate).format('YYYY-MM-DD')}
++           value={moment(this.props.training.endDate).format(formatConstants.shortDate)}
             onChange={this.onChange}
             disabled
             buttonClassName="btn btn-default"
-            onClick={() => {})}
+-           onClick={() => {}}
++           onClick={this.toggleOpenEndDateModal}
             icon="glyphicon glyphicon-calendar"
           />
 
@@ -755,7 +804,7 @@ interface Props {
 
 ### ./src/rest-api/training/trainingAPI.ts
 
-```javascript
+```diff
 import {Training} from '../../models/training';
 import {trainingsMockData} from './trainingMockData';
 
@@ -888,7 +937,7 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
 - Update route:
 
 ### ./src/routes.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Route, IndexRoute} from 'react-router';
 import {routeConstants} from './common/constants/routeConstants';
@@ -912,11 +961,10 @@ export const AppRoutes = (
 - Update _TrainingEditPage_:
 
 ### ./src/pages/training/edit/page.tsx
-
-```javascript
+```diff
 import * as React from 'react';
-+ import {Training} from '../../../models/training';
-+ import {TrainingFormComponent} from './components/trainingForm';
+import {Training} from '../../../models/training';
+import {TrainingFormComponent} from './components/trainingForm';
 
 + interface Props {
 +   training: Training;
@@ -927,7 +975,11 @@ import * as React from 'react';
 - export const TrainingEditPage = () => {
 + export const TrainingEditPage = (props: Props) => {
     return (
--     <div>Training Edit page</div>
+-     <TrainingFormComponent
+-       training={new Training()}
+-       onChange={() => {}}
+-       save={() => {}}
+-     />
 +     <div>
 +       <h2 className="jumbotron">Edit Training</h2>
 +       <TrainingFormComponent
@@ -944,7 +996,7 @@ import * as React from 'react';
 - Too much lines on _TrainingFormComponent_? Ok, let's go to create container:
 
 ### ./src/pages/training/edit/components/trainingForm.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as moment from 'moment';
 import {Training} from '../../../../models/training';
@@ -1112,7 +1164,7 @@ interface Props {
 
             <DatePickerModalComponent
 -             isOpen={this.state.isOpenEndDateModal}
-              isOpen={props.isOpenEndDateModal}
++             isOpen={props.isOpenEndDateModal}
 -             onClose={this.toggleOpenEndDateModal}
 +             onClose={props.toggleOpenEndDateModal}
 -             selectedDate={this.props.training.endDate}
@@ -1258,7 +1310,7 @@ export class TrainingFormComponentContainer extends React.Component<Props, State
 - Update _TrainingEditPage_:
 
 ### ./src/pages/training/edit/page.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Training} from '../../../models/training';
 - import {TrainingFormComponent} from './components/trainingForm';

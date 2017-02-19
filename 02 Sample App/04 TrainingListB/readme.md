@@ -22,7 +22,7 @@ npm install @types/react-virtualized --save-dev
 - Add lib as vendor and vendorStyles:
 
 ### ./webpack.config.js
-```javascript
+```diff
 entry: {
   ...
   vendor: [
@@ -45,7 +45,7 @@ entry: {
 - Column is a Table child component to render each columns.
 
 ### ./src/pages/training/list/components/trainingList.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Training} from '../../../../models/training';
 import {TrainingHeadComponent} from './trainingHead';
@@ -124,10 +124,12 @@ export const TrainingListComponent = (props: Props) => {
 - With previous code, we are render 4 columns but only render data. Table component has a `rowRenderer` property where we can pass a Row component and customize each row:
 
 ### ./src/pages/training/list/components/trainingRow.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Training} from '../../../../models/training';
 
++ // https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md
++ // https://github.com/bvaughn/react-virtualized/blob/master/source/Table/defaultRowRenderer.js
 interface Props {
 - training: Training;
 + rowData: Training;
@@ -249,30 +251,75 @@ export const TableRowComponent = (props: Props) => {
 ```
 
 ### ./src/pages/training/list/components/trainingRow.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Training} from '../../../../models/training';
 import {TableRowProps, TableRowComponent} from '../../../../common/components/tableRow';
 
 // https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md
 // https://github.com/bvaughn/react-virtualized/blob/master/source/Table/defaultRowRenderer.js
-interface Props extends TableRowProps {
-  rowData: Training;
-}
+- interface Props {
+-  training: Training;
+-  rowData: Training;
+-  className: string;
+-  style: React.CSSProperties;
+-  columns: any[];
+-  index: number;
+-  key: any;
+-  isScrolling: boolean;
+-  onRowClick?: () => void;
+-  onRowDoubleClick?: () => void;
+-  onRowMouseOver?: () => void;
+-  onRowMouseOut?: () => void;
+- }
 
-// We can use spread operator for React properties too
-// https://facebook.github.io/react/docs/jsx-in-depth.html#spread-attributes
++ interface Props extends TableRowProps {
++   rowData: Training;
++ }
+
++ // We can use spread operator for React properties too
++ // https://facebook.github.io/react/docs/jsx-in-depth.html#spread-attributes
 export const TrainingRowComponent = (props: Props) => {
   return (
-    <TableRowComponent
-      {...props}
-      rowKey={props.key}
-    >
-      <input type="checkbox" checked={props.rowData.isActive} disabled/>
-      <span>{props.rowData.name}</span>
-      <a href={props.rowData.url} target="blank">{props.rowData.url}</a>
-      <a className=" btn btn-primary"><i className="glyphicon glyphicon-pencil" /></a>
-    </TableRowComponent>
+-   <div className={props.className} key={props.key} style={props.style}>
+-     <div
+-       className={props.colums[0].props.className}
+-       style={props.columns[0].props.style}
+-     >
+-       <input
+-         type="checkbox"
+-         checked={props.rowData.isActive}
+-         disabled
+-       />
+-     </div>
+-     <div
+-       className={props.columns[1].props.className}
+-       style={props.columns[1].props.style}
+-     >
+-       <span>{props.rowData.name}</span>
+-     </div>
+-     <div
+-       className={props.columns[2].props.className}
+-       style={props.columns[2].props.style}
+-     >
+-       <a href={props.rowData.url} target="blank">{props.rowData.url}</a>
+-     </div>
+-     <div
+-       className={`${props.columns[3].props.className}`}
+-       style={props.columns[3].props.style}
+-     >
+-       <a className=" btn btn-primary"><i className="glyphicon glyphicon-pencil" /></a>
+-     </div>
+-   </div>
++   <TableRowComponent
++     {...props}
++     rowKey={props.key}
++   >
++     <input type="checkbox" checked={props.rowData.isActive} disabled/>
++     <span>{props.rowData.name}</span>
++     <a href={props.rowData.url} target="blank">{props.rowData.url}</a>
++     <a className=" btn btn-primary"><i className="glyphicon glyphicon-pencil" /></a>
++   </TableRowComponent>
   );
 }
 
@@ -281,7 +328,7 @@ export const TrainingRowComponent = (props: Props) => {
 - We can use _TrainingRowComponent_ in trainingList:
 
 ### ./src/pages/training/list/components/trainingList.tsx
-```javascript
+```diff
 ...
 <Table
   width={width}
@@ -300,7 +347,7 @@ export const TrainingRowComponent = (props: Props) => {
 - And of course, we don't need _TrainingHeadComponent_ any more:
 
 ### ./src/pages/training/list/components/trainingList.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Training} from '../../../../models/training';
 - import {TrainingHeadComponent} from './trainingHead';
@@ -322,7 +369,7 @@ import {TrainingRowComponent} from './trainingRow';
 ```
 
 ### ./src/pages/training/list/components/trainingList.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Training} from '../../../../models/training';
 import {TrainingRowComponent} from './trainingRow';
@@ -358,7 +405,7 @@ import {AutoSizer, Table, Column} from 'react-virtualized';
 ```
 
 ### ./src/pages/training/list/components/trainingRow.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Training} from '../../../../models/training';
 import {TableRowProps, TableRowComponent} from '../../../../common/components/tableRow';
@@ -377,8 +424,8 @@ export const TrainingRowComponent = (props: Props) => {
     <TableRowComponent
       {...props}
       rowKey={props.key}
-+      // We have enable camelCase parser in webpack.config.js
-+      className={`${props.className} ${classNames.rowStriped}`}
++     // We have enable camelCase parser in webpack.config.js
++     className={`${props.className} ${classNames.rowStriped}`}
     >
       <input type="checkbox" checked={props.rowData.isActive} disabled/>
       <span>{props.rowData.name}</span>
@@ -408,6 +455,6 @@ export const TrainingRowComponent = (props: Props) => {
   rowGetter={({index}) => props.trainings[index]}
   rowRenderer={TrainingRowComponent}
   rowClassName={classNames.row}
-+ overscanRowCount={3}
++ overscanRowCount={0}
 ...
 ```

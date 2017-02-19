@@ -5,7 +5,7 @@ interface State {
   isModalOpen: boolean;
 }
 
-class App extends React.Component<{}, State> {
+export class App extends React.Component<{}, State> {
   constructor(props) {
     super(props);
 
@@ -16,12 +16,15 @@ class App extends React.Component<{}, State> {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
+
   openModal() {
     this.setState({ isModalOpen: true });
   }
+
   closeModal() {
     this.setState({ isModalOpen: false });
   }
+  
   render() {
     return (
       <div className="container text-center" style={{ marginTop: '50px' }}>
@@ -30,8 +33,4 @@ class App extends React.Component<{}, State> {
       </div>
     );
   }
-}
-
-export {
-  App
 };

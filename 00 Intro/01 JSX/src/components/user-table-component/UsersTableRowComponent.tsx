@@ -5,7 +5,7 @@ interface Props {
   user: User;
 }
 
-const UsersTableRowComponent = (props: Props) => (
+export const UsersTableRowComponent = (props: Props) => (
   <tr className="form-group">
     <td>{props.user.name}</td>
     <td>{props.user.dateRegistered}</td>
@@ -25,8 +25,4 @@ const getLabelStatus = function (status: string) {
   };
 
   return statusList[status] || label;
-};
-
-export {
-  UsersTableRowComponent
 };

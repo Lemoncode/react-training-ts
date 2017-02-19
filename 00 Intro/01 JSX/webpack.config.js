@@ -27,26 +27,16 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
+        exclude: /node_modules/,
         loader: 'awesome-typescript-loader',
       },
-      // Load css from src with CSS Modules
       {
         test: /\.css$/,
-        exclude: /node_modules/,
         loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: {
             loader: 'css-loader',
           },
-        }),
-      },
-      // Load css from node_modules
-      {
-        test: /\.css$/,
-        include: /node_modules/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader',
         }),
       },
       // Loading glyphicons => https://github.com/gowravshekar/bootstrap-webpack
@@ -70,7 +60,7 @@ module.exports = {
     ],
   },
   // For development https://webpack.js.org/configuration/devtool/#for-development
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     port: 8080,

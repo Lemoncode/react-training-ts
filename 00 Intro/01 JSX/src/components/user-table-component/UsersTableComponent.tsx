@@ -6,7 +6,7 @@ interface Props {
   users: User[]
 }
 
-const UsersTableComponent = (props: Props) => (
+export const UsersTableComponent = (props: Props) => (
   <table className="table table-stripped table-condensed">
     <thead>
       <tr>
@@ -21,7 +21,3 @@ const UsersTableComponent = (props: Props) => (
     </tbody>
   </table>
 );
-
-export {
-  UsersTableComponent
-};

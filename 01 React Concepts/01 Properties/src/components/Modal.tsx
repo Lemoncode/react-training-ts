@@ -11,7 +11,7 @@ const getStyles = (visible: boolean) => {
   return { opacity, visibility };
 }
 
-const Modal: React.StatelessComponent<Props> = (props) => {
+export const Modal: React.StatelessComponent<Props> = (props) => {
   const modalClassName = props.visible ? 'in' : '';
   const style = getStyles(props.visible);
   return (
@@ -35,8 +35,4 @@ const Modal: React.StatelessComponent<Props> = (props) => {
 Modal.defaultProps = {
   visible: false,
   text: `You did not give me text`
-};
-
-export {
-  Modal
 };

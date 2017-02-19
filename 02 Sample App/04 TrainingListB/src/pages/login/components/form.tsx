@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {LoginCredentials} from '../../../models/loginCredentials';
-import {InputComponent} from '../../../common/components/input';
+import {InputComponent} from '../../../common/components/form/input';
 
 interface Props {
   loginCredentials: LoginCredentials;

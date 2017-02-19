@@ -43,6 +43,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
+        exclude: /node_modules/,
         loader: 'awesome-typescript-loader',
       },
       // Load css from src with CSS Modules

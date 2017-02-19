@@ -11,8 +11,9 @@ const getStyles = (isVisible: boolean) => {
   return { opacity, visibility };
 }
 
-const Modal: React.StatelessComponent<Props> = (props) => {
+export const Modal: React.StatelessComponent<Props> = (props) => {
   const modalClassName = props.visible ? 'in' : '';
+
   return (
     <div className="animated" style={getStyles(props.visible)}>
       <div
@@ -36,8 +37,4 @@ const Modal: React.StatelessComponent<Props> = (props) => {
 
 Modal.defaultProps = {
   visible: false
-};
-
-export {
-  Modal
 };

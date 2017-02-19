@@ -26,14 +26,14 @@ export const trainingEditReducer = (state = new TrainingEditState(), action) => 
   }
 };
 
-export const handleFetchTrainingEntity = (state: TrainingEditState, payload: Training) => ({
+const handleFetchTrainingEntity = (state: TrainingEditState, payload: Training) => ({
   ...state,
   training: {
     ...payload,
   },
 });
 
-export const handleTrainingContentChanged = (state: TrainingEditState, payload: TrainingContentChangedPayload) => ({
+const handleTrainingContentChanged = (state: TrainingEditState, payload: TrainingContentChangedPayload) => ({
   ...state,
   training: {
     ...state.training,
@@ -45,7 +45,7 @@ export const handleTrainingContentChanged = (state: TrainingEditState, payload: 
   }
 });
 
-export const handleSaveTraining = (state: TrainingEditState, payload: TrainingErrors) => ({
+const handleSaveTraining = (state: TrainingEditState, payload: TrainingErrors) => ({
   ...state,
   trainingErrors: {
     ...payload,

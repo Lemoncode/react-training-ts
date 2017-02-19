@@ -4,7 +4,7 @@
   "description": "Sample showing how state works with React components",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --inline"
   },
   "author": "Lemoncode",
   "license": "ISC",

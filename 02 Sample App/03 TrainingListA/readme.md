@@ -147,6 +147,11 @@ interface State {
 export class TrainingListPageContainer extends React.Component <{}, State> {
   constructor() {
     super();
+
+    this.state = {
+      trainings: [],
+    };
+
     this.fetchTrainings();
   }
 
@@ -275,7 +280,7 @@ export const TrainingListComponent = (props: Props) => {
 - Use all components in TrainingListPage:
 
 ### ./src/pages/training/list/page.tsx
-```javascript
+```diff
 import * as React from 'react';
 + import {Training} from '../../../models/training';
 + import {TrainingListComponent} from './components/trainingList';
@@ -295,7 +300,7 @@ import * as React from 'react';
 - And of course, update route:
 
 ### ./src/routes.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Route, IndexRoute} from 'react-router';
 import {routeConstants} from './common/constants/routeConstants';

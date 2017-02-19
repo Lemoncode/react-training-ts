@@ -7,7 +7,7 @@ interface State {
   users: User[];
 }
 
-class App extends React.Component<{}, State> {
+export class App extends React.Component<{}, State> {
   constructor(props) {
     super(props);
 
@@ -29,7 +29,3 @@ class App extends React.Component<{}, State> {
     )
   }
 }
-
-export {
-  App
-};

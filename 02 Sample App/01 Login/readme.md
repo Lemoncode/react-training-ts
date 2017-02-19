@@ -22,13 +22,11 @@ import * as React from 'react';
 
 export const LoginPage = () => {
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-4 col-md-offset-4">
-          <div className="panel panel-default">
-            <div>Header Component</div>
-            <div>Form Component</div>
-          </div>
+    <div className="row">
+      <div className="col-md-4 col-md-offset-4">
+        <div className="panel panel-default">
+          <div>Header Component</div>
+          <div>Form Component</div>
         </div>
       </div>
     </div>
@@ -66,7 +64,7 @@ export const App = () => {
 - Update _./src/index.tsx_ to use App component:
 
 ### ./src/index.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 - import {HelloComponent} from './hello';
@@ -102,20 +100,18 @@ export const HeaderComponent = () => {
 - And using it in LoginPage
 
 ### ./src/pages/login/page.tsx
-```javascript
+```diff
 import * as React from 'react';
 + import {HeaderComponent} from './components/header';
 
 export const LoginPage = () => {
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-4 col-md-offset-4">
-          <div className="panel panel-default">
+    <div className="row">
+      <div className="col-md-4 col-md-offset-4">
+        <div className="panel panel-default">
 -            <div>Header Component</div>
 +            <HeaderComponent />
-            <div>Form Component</div>
-          </div>
+          <div>Form Component</div>
         </div>
       </div>
     </div>
@@ -204,7 +200,7 @@ export const FormComponent = (props: Props) => {
 - Now it's time to give state to our **Login Page** and pass properties to **FormComponent**:
 
 ### ./src/pages/login/page.tsx
-```javascript
+```diff
 import * as React from 'react';
 + import {LoginCredentials} from '../../models/loginCredentials';
 import {HeaderComponent} from './components/header';
@@ -302,10 +298,10 @@ export const InputComponent = (props: Props) => {
 - Now, we can reuse InputComponent:
 
 ### ./src/pages/login/components/form.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {LoginCredentials} from '../../../models/loginCredentials';
-+ import {InputComponent} from '../../../common/components/input';
++ import {InputComponent} from '../../../common/components/form/input';
 
 interface Props {
   loginCredentials: LoginCredentials;
@@ -441,7 +437,7 @@ export const loginAPI = new LoginAPI();
 - Now, we can request login in LoginPage using this API:
 
 ### ./src/pages/login/page.tsx
-```javascript
+```diff
 import * as React from 'react';
 + import * as toastr from 'toastr';
 + import {loginAPI} from '../../rest-api/login/loginAPI';
@@ -506,10 +502,10 @@ export class LoginPage extends React.Component <{}, State> {
 - And update form to has loginRequest property:
 
 ### ./src/pages/login/components/form.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {LoginCredentials} from '../../../models/loginCredentials';
-import {InputComponent} from '../../../common/components/input';
+import {InputComponent} from '../../../common/components/form/input';
 
 interface Props {
   loginCredentials: LoginCredentials;
@@ -565,7 +561,7 @@ export const FormComponent = (props: Props) => {
 - Finally, we can go one step over, and create a wrapper to keep LoginPage as stateless component:
 
 ### ./src
-```javascript
+```diff
 import * as React from 'react';
 - import * as toastr from 'toastr';
 - import {loginAPI} from '../../rest-api/login/loginAPI';
@@ -618,11 +614,12 @@ import {FormComponent} from './components/form';
           <div className="panel panel-default">
             <HeaderComponent />
             <FormComponent
-              loginCredentials={this.state.loginCredentials}
--              updateLoginInfo={this.updateLoginInfo.bind(this)}
--              loginRequest={this.loginRequest.bind(this)}
-+              updateLoginInfo={props.updateLoginInfo}
-+              loginRequest={props.loginRequest}
+-             loginCredentials={this.state.loginCredentials}
++             loginCredentials={props.loginCredentials}
+-             updateLoginInfo={this.updateLoginInfo.bind(this)}
++             updateLoginInfo={props.updateLoginInfo}
+-             loginRequest={this.loginRequest.bind(this)}
++             loginRequest={props.loginRequest}
             />
           </div>
         </div>
@@ -657,6 +654,16 @@ export class LoginPageContainer extends React.Component <{}, State> {
     };
   }
 
+  // Other way to assign new object to loginCredentials to avoid mutation is:
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+  /*
+    var newLoginCredentiasl = Object.assign({}, this.state.loginCredentials, {
+      [fieldName]: value,
+    });
+  */
+  // We are use a JavaScript proposal named object spread operator
+  // https://github.com/sebmarkbage/ecmascript-rest-spread
+  // http://stackoverflow.com/questions/32925460/spread-operator-vs-object-assign
   private updateLoginInfo(fieldName: string, value: string) {
     this.setState({
       loginCredentials: {
@@ -693,7 +700,7 @@ export class LoginPageContainer extends React.Component <{}, State> {
 - And of course, calls LoginPageContainer instead LoginPage in App component:
 
 ### ./src/app.tsx
-```javascript
+```diff
 import * as React from 'react';
 - import {LoginPage} from './pages/login/page';
 + import {LoginPageContainer} from './pages/login/pageContainer';

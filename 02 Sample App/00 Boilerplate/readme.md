@@ -66,10 +66,17 @@ our webpack configuration (handling CSS, TypeScript...).
  npm install typescript --save-dev
  ```
 
-- We need as well to drop a **tsconfig.json** file in the root folder of our project
+- Let's install core-js and typings to enable es6 polyfills:
 
- ```json
- {
+ ```
+ npm install core-js --save
+ npm install @types/core-js
+ ```
+
+ - We need as well to drop a **tsconfig.json** file in the root folder of our project
+
+  ```json
+  {
     "compilerOptions": {
       "target": "es5",
       "module": "commonjs",
@@ -79,21 +86,15 @@ our webpack configuration (handling CSS, TypeScript...).
       "sourceMap": true,
       "noLib": false,
       "suppressImplicitAnyIndexErrors": true,
-      "types": ["webpack-env"]
+      "types": ["webpack-env", "core-js"]
     },
     "compileOnSave": false,
     "exclude": [
       "node_modules"
     ]
   }
- ```
 
-- Let's install core-js and typings to enable es6 polyfills:
-
- ```
- npm install core-js --save
- npm install @types/core-js
- ```
+  ```
 
 - Let's install bootstrap:
 
@@ -276,6 +277,7 @@ export const HelloComponent = () => {
      ],
      vendorStyles: [
        '../node_modules/bootstrap/dist/css/bootstrap.css',
+       '../node_modules/toastr/build/toastr.css',
      ],
    },
    output: {
@@ -286,6 +288,7 @@ export const HelloComponent = () => {
      rules: [
        {
          test: /\.tsx?$/,
+         exclude: /node_modules/,
          loader: 'awesome-typescript-loader',
        },
        // Load css from src with CSS Modules

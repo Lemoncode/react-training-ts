@@ -15,7 +15,8 @@ module.exports = {
     app: './index.tsx',
     vendor: [
       'react',
-      'react-dom'
+      'react-dom',
+      'jQuery'
     ],
     styles: [
       '../node_modules/bootstrap/dist/css/bootstrap.css',

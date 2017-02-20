@@ -20,7 +20,8 @@
     "bootstrap": "^3.3.7",
     "jquery": "^3.1.1",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "bootstrap-colorpicker": "git://github.com/zzzhan/bootstrap-colorpicker-plus#master"
   },
   "keywords": [
     "react",

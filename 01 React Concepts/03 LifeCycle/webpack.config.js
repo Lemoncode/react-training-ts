@@ -16,7 +16,6 @@ module.exports = {
     vendor: [
       'react',
       'react-dom',
-      'jQuery'
     ],
     styles: [
       '../node_modules/bootstrap/dist/css/bootstrap.css',

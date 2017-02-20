@@ -13,13 +13,16 @@ interface State {
   blue: number;
 }
 
+
 class ColorPicker extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
+
+    const color = this.getColor(props.color);
     this.state = {
-      red: 0,
-      green: 0,
-      blue: 0,
+      red: color.red || 0,
+      green: color.green || 0,
+      blue: color.blue || 0,
     };
 
     this.onChangeRed = this.onChangeRed.bind(this);
@@ -27,6 +30,10 @@ class ColorPicker extends React.Component<Props, State> {
     this.onChangeBlue = this.onChangeBlue.bind(this);
     this.pickColor = this.pickColor.bind(this);
   }
+
+  static defaultProps = {
+    color: ''
+  };
 
   onChangeRed(event: React.ChangeEvent<HTMLInputElement>) {
     const red = +event.currentTarget.value;
@@ -67,10 +74,7 @@ class ColorPicker extends React.Component<Props, State> {
     );
   }
 
-  private hex2RGB(color: string) {
-    if (!color) {
-      return null;
-    }
+  private getColor(color: string) {
     const splitColor = color.slice(1);
     return {
       red: parseInt(splitColor.slice(0, 2), 16),
@@ -82,7 +86,7 @@ class ColorPicker extends React.Component<Props, State> {
   componentWillReceiveProps(nextProps: Props) {
     console.log('Colorpicker --> componentWillReceiveProps', nextProps);
     if (nextProps.color) {
-      const {red, green, blue} = this.hex2RGB(nextProps.color);
+      const {red, green, blue} = this.getColor(nextProps.color || '');
       this.setState({ red, green, blue });
     }
   }

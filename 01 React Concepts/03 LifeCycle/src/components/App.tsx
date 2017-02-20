@@ -21,8 +21,8 @@ class App extends React.Component<{}, State> {
     super(props);
     this.state = {
       isColorPickerOpen: false,
-      color: null,
-      editingColor: null,
+      color: '',
+      editingColor: '',
     };
     this.openColorPicker = this.openColorPicker.bind(this);
     this.closeColorPicker = this.closeColorPicker.bind(this);
@@ -44,7 +44,9 @@ class App extends React.Component<{}, State> {
                 <div className="col-sm-7">
                   <input id="txtSkin" type="text" className="form-control readonly" readOnly
                     placeholder="Pick a color"
-                    onClick={this.openColorPicker} />
+                    onClick={this.openColorPicker}
+                    value={this.state.color || ''}
+                     />
                 </div>
               </div>
               <div className="form-group">
@@ -104,7 +106,9 @@ class App extends React.Component<{}, State> {
 
   openColorPicker() {
     console.log('App --> openColorPicker');
-    this.setState({ isColorPickerOpen: true });
+    const editingColor = this.state.color
+    const isColorPickerOpen = true;
+    this.setState({ isColorPickerOpen, editingColor });
   }
 
   closeColorPicker() {
@@ -121,8 +125,11 @@ class App extends React.Component<{}, State> {
   }
 
   shouldComponentUpdate(nextProps, nextState: State) {
-    console.log('App --> shouldComponentUpdate', this.state, nextState, this.state.isColorPickerOpen !== nextState.isColorPickerOpen);
-    return this.state.isColorPickerOpen !== nextState.isColorPickerOpen;
+    console.log('App --> shouldComponentUpdate', this.state, nextState);
+    return (
+      this.state.isColorPickerOpen !== nextState.isColorPickerOpen
+      || this.state.editingColor !== nextState.editingColor
+    );
   }
 
   componentWillUpdate() {

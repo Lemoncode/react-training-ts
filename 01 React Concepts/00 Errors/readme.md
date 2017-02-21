@@ -29,7 +29,7 @@ Nowadays, when we were adding HTML to our JavaScript code, we insert a _string_:
 
 ![alt text](./readme_img/01B HTML inside JS.png "HTML inside JS result")
 
-If we were more ES56 aligned, we would do it using backticks or HTML templates:
+If we were more ES6 aligned, we would do it using backticks or HTML templates:
 
 ![alt text](./readme_img/02A HTML inside JS backticks.png "HTML inside JS backticks")
 

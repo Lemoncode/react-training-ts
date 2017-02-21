@@ -38,16 +38,17 @@ class App extends React.Component<{}, State> {
         </header>
         <form className="form-horizontal">
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-8">
               <div className="form-group">
-                <label className="control-label col-sm-5" htmlFor="txtSkin">Color</label>
+                <ColorPicker color={this.state.editingColor} onColorPick={this.saveColor} />
+                {/*<label className="control-label col-sm-5" htmlFor="txtColor">Color</label>
                 <div className="col-sm-7">
-                  <input id="txtSkin" type="text" className="form-control readonly" readOnly
+                  <input id="txtColor" type="text" className="form-control readonly" readOnly
                     placeholder="Pick a color"
                     onClick={this.openColorPicker}
                     value={this.state.color || ''}
                      />
-                </div>
+                </div>*/}
               </div>
               <div className="form-group">
                 <label className="control-label col-sm-5" htmlFor="txtSkin">Common colors</label>
@@ -75,19 +76,19 @@ class App extends React.Component<{}, State> {
                 </div>
               </div>
               <div className="form-group">
-                <div className="col-sm-6 col-sm-offset-5">
+                <div className="col-sm-4 col-sm-offset-5">
                   <button type="submit" className="btn btn-success btn-block">Submit</button>
                 </div>
               </div>
             </div>
             <div className="col-sm-6">
               <div className="col-sm-6">
-                {this.state.isColorPickerOpen && <ColorPicker color={this.state.editingColor} onColorPick={this.saveColor} />}
+                {/*this.state.isColorPickerOpen && <ColorPicker color={this.state.editingColor} onColorPick={this.saveColor} />*/}
               </div>
             </div>
           </div>
         </form>
-      </main>
+      </main >
     );
   }
 

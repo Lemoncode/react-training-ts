@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Slider } from './Slider';
 import { Color } from '../entity/Color';
+import * as $ from 'jquery';
+import 'bootstrap-colorpicker';
 
 interface Props {
   onColorPick: (color: string) => void;
@@ -13,8 +15,8 @@ interface State {
   blue: number;
 }
 
-
 class ColorPicker extends React.Component<Props, State> {
+  private inputPicker;
   constructor(props: Props) {
     super(props);
 
@@ -61,17 +63,29 @@ class ColorPicker extends React.Component<Props, State> {
     const backgroundColor = `rgb(${this.state.red}, ${this.state.green}, ${this.state.blue})`;
     return (
       <div>
-        <div className="form-control" style={{ backgroundColor }}></div>
-        <Slider id="red" value={this.state.red} onChange={this.onChangeRed} />
-        <Slider id="green" value={this.state.green} onChange={this.onChangeGreen} />
-        <Slider id="blue" value={this.state.blue} onChange={this.onChangeBlue} />
-        <div className="row">
-          <div className="col-xs-12" style={{ marginTop: 25 }}>
-            <button onClick={this.pickColor} className="btn btn-primary btn-block btn-sm">Pick</button>
+        {/*<div className="form-control" style={{ backgroundColor }}></div>
+          <Slider id="red" value={this.state.red} onChange={this.onChangeRed} />
+          <Slider id="green" value={this.state.green} onChange={this.onChangeGreen} />
+          <Slider id="blue" value={this.state.blue} onChange={this.onChangeBlue} />
+          <div className="row">
+            <div className="col-xs-12" style={{ marginTop: 25 }}>
+              <button onClick={this.pickColor} className="btn btn-primary btn-block btn-sm">Pick</button>
+            </div>
+          </div>
+        */}
+        <div className="form-group">
+          <label className="control-label col-sm-5" htmlFor="txtColor">Color</label>
+          <div className="col-sm-7">
+            <input id="txtColor" ref={(inputPicker) => this.inputPicker = inputPicker} type="text" className="form-control readonly" readOnly
+              placeholder="Pick a color" onBlur={this.onBlur.bind(this)} />
           </div>
         </div>
       </div>
     );
+  }
+
+  onBlur() {
+    console.log('onBlur triggered');
   }
 
   private getColor(color: string) {
@@ -83,16 +97,28 @@ class ColorPicker extends React.Component<Props, State> {
     };
   }
 
+  componentDidMount() {
+    console.log('Colorpicker --> componentDidMount');
+    //console.log($('body')['colorpicker']);
+    $(this.inputPicker)['colorpicker']({
+      color: this.props.color,
+      align: 'right'
+    });
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     console.log('Colorpicker --> componentWillReceiveProps', nextProps);
     if (nextProps.color) {
       const {red, green, blue} = this.getColor(nextProps.color || '');
+      $(this.inputPicker)['colorpicker']('setValue', nextProps.color);
+      $(this.inputPicker)['colorpicker']('show');
       this.setState({ red, green, blue });
     }
   }
 
   componentWillUnmount() {
     console.log('Colorpicker --> componentWillUnmount');
+    $(this.inputPicker)['colorpicker']('destroy');
   }
 }
 

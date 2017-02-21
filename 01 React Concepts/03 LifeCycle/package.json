@@ -18,10 +18,10 @@
   "homepage": "https://github.com/Lemoncode/react-training-ts#readme",
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "bootstrap-colorpicker": "^2.5.1",
     "jquery": "^3.1.1",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "bootstrap-colorpicker": "git://github.com/zzzhan/bootstrap-colorpicker-plus#master"
+    "react-dom": "^15.4.2"
   },
   "keywords": [
     "react",
@@ -29,6 +29,8 @@
     "typescript"
   ],
   "devDependencies": {
+    "@types/jquery": "^2.0.40",
+    "@types/node": "^7.0.5",
     "@types/react": "^15.0.9",
     "@types/react-dom": "^0.14.23",
     "awesome-typescript-loader": "^3.0.4-rc.2",

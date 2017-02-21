@@ -16,9 +16,11 @@ module.exports = {
     vendor: [
       'react',
       'react-dom',
+      'bootstrap'
     ],
     styles: [
       '../node_modules/bootstrap/dist/css/bootstrap.css',
+      '../node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css',
       './css/styles.css',
     ],
   },
@@ -66,6 +68,10 @@ module.exports = {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
       },
+      {
+        test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file-loader'
+      },
     ]
   },
   plugins: [
@@ -77,6 +83,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html', //Name of file in ./dist/
       template: 'index.html' //Name of template in ./src
+    }),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
     }),
   ]
 };

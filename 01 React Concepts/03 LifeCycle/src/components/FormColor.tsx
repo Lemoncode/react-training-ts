@@ -65,6 +65,7 @@ export class FormColor extends React.Component<Props, State> {
 
   submitForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    event.currentTarget.reset();
     this.props.onSubmit(this.state.editingColor);
     this.setState({ editingColor: '' });
   }

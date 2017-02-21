@@ -5,6 +5,7 @@ import 'bootstrap-colorpicker';
 interface Props {
   onColorPick: (color: string) => void;
   color?: string;
+  open?: boolean;
 }
 
 export class ColorPicker extends React.Component<Props, {}> {
@@ -16,6 +17,10 @@ export class ColorPicker extends React.Component<Props, {}> {
     this.pickColor = this.pickColor.bind(this);
     this.setInputPicker = this.setInputPicker.bind(this);
   }
+
+  static defaultProps = {
+    open: false
+  };
 
   render() {
     return (
@@ -49,10 +54,14 @@ export class ColorPicker extends React.Component<Props, {}> {
   }
 
   componentDidUpdate() {
-    // Apply the new value in colorpicker
+    // Apply the new color in jQuery colorpicker
     $(this.inputPicker)['colorpicker']('setValue', this.props.color);
-    $(this.inputPicker)['colorpicker']('show');
 
+    // Show colorpicker popover if needs to be open
+    if (this.props.open) {
+      this.inputPicker.focus();
+      $(this.inputPicker)['colorpicker']('show');
+    }
   }
 
   componentWillUnmount() {

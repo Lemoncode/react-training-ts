@@ -1,6 +1,5 @@
 # 01 Properties
 
-[]()
 This sample reuses the modal component from sample [01 React Concepts](../01\ React\ Concepts) and makes it interactive using a button.
 
 The `<Modal/>` component is wrapped in an `<App />` coponent that stores in its state when to show the modal through a `visible` flag. It also has two methods: `openModal` and `closeModal`. The `<Modal` /> component receives via `props` the `closeModal` method and `visible` to do some rendering logic and binds the `closeModal` to the modal.

@@ -4,6 +4,7 @@ import { ColorPicker } from './ColorPicker';
 interface State {
   color: string;
   sent: boolean;
+  isColorPickerOpen: boolean;
 }
 
 const commonColors = {
@@ -20,10 +21,12 @@ export class App extends React.Component<{}, State> {
 
     this.state = {
       color: '',
+      isColorPickerOpen: false,
       sent: false,
     };
 
     this.saveColor = this.saveColor.bind(this);
+    this.sendForm = this.sendForm.bind(this);
   }
 
   render() {
@@ -32,11 +35,11 @@ export class App extends React.Component<{}, State> {
         <header>
           <h2 className="col-sm-6 col-sm-offset-1">React component lifecycle methods</h2>
         </header>
-        <form className="form-horizontal">
+        <form className="form-horizontal" onSubmit={this.sendForm}>
           <div className="row">
             <div className="col-sm-8">
               <div className="form-group">
-                <ColorPicker color={this.state.color} onColorPick={this.saveColor} />
+                <ColorPicker open={this.state.isColorPickerOpen} color={this.state.color} onColorPick={this.saveColor} />
               </div>
               <div className="form-group">
                 <label className="control-label col-sm-5" htmlFor="txtSkin">Common colors</label>
@@ -66,7 +69,8 @@ export class App extends React.Component<{}, State> {
               </div>
               <div className="form-group">
                 <div className="col-sm-4 col-sm-offset-5">
-                  <button type="submit" className="btn btn-success btn-block">Submit</button>
+                  <button type="submit" className="btn btn-success btn-block"
+                    disabled={this.state.color.length < 1}>Submit</button>
                 </div>
               </div>
             </div>
@@ -80,12 +84,19 @@ export class App extends React.Component<{}, State> {
     // Create a new function based on color parameter to set it in the state
     return (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
-      this.saveColor(color);
+      const isColorPickerOpen = true;
+      this.setState({ color, isColorPickerOpen });
     }
   }
 
   saveColor(color: string) {
-    this.setState({ color });
+    const isColorPickerOpen = false;
+    this.setState({ color, isColorPickerOpen });
+  }
+
+  sendForm(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    alert(`Form sent with ${this.state.color} color`);
   }
 
   shouldComponentUpdate(nextProps, nextState: State) {

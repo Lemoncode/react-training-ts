@@ -9,14 +9,16 @@ var SRC_DIR = path.join(__dirname, 'src');
 module.exports = {
   context: SRC_DIR,
   resolve: {
-    extensions: ['.js', '.ts', '.tsx']
+    extensions: ['.js', '.ts', '.tsx'],
+    alias: {
+      jquery: 'jquery/src/jquery'
+    }
   },
   entry: {
     app: './index.tsx',
     vendor: [
       'react',
-      'react-dom',
-      'bootstrap'
+      'react-dom'
     ],
     styles: [
       '../node_modules/bootstrap/dist/css/bootstrap.css',
@@ -85,8 +87,9 @@ module.exports = {
       template: 'index.html' //Name of template in ./src
     }),
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
     }),
   ]
 };

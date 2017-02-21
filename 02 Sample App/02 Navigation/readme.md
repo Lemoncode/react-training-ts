@@ -43,7 +43,7 @@ export const AppRoutes = (
 - Due to we are render LoginPageContainer inside App component via React-Router, we need to update App component:
 
 ### ./src/app.tsx
-```javascript
+```diff
 import * as React from 'react';
 - import {LoginPageContainer} from './pages/login/pageContainer';
 const classNames: any = require('./appStyles');
@@ -67,7 +67,7 @@ const classNames: any = require('./appStyles');
 - And finally, we only need to update _index.tsx_ entry point:
 
 ### ./src/index.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 - import {App} from './app';
@@ -99,7 +99,7 @@ export const TrainingListPage = () => {
 - For navigate to this component we are define a new route:
 
 ### ./src/common/constants/routeConstants.ts
-```javascript
+```diff
 + const trainingRoute = '/training';
 
 export const routeConstants = {
@@ -112,7 +112,7 @@ export const routeConstants = {
 ```
 
 ### ./src/routes.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Route, IndexRoute} from 'react-router';
 import {routeConstants} from './common/constants/routeConstants';
@@ -132,7 +132,7 @@ export const AppRoutes = (
 - Lastly, we need to do something to navigate to TrainingListPage component. But instead of using [Link component from React-Router](https://github.com/reactjs/react-router-tutorial/tree/master/lessons/03-navigating-with-link) we need navigate after check loginCredentials:
 
 ### ./src/pages/login/pageContainer.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as toastr from 'toastr';
 + import {hashHistory} from 'react-router';

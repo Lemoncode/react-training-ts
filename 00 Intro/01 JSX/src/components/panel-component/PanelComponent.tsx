@@ -5,7 +5,7 @@ interface Props {
   children?: React.ReactNode | React.ReactNode[];
 }
 
-const PanelComponent = (props: Props) => (
+export const PanelComponent = (props: Props) => (
   <div className="panel panel-primary">
     <div className="panel-heading">
       <div className="panel-title"><strong>{props.title}</strong></div>
@@ -15,7 +15,3 @@ const PanelComponent = (props: Props) => (
     </div>
   </div>
 );
-
-export {
-  PanelComponent
-};

@@ -11,6 +11,7 @@ interface State {
 export class TrainingListPageContainer extends React.Component <{}, State> {
   constructor() {
     super();
+    
     this.state = {
       trainings: [],
     };

@@ -23,7 +23,7 @@ Summary steps:
  - Add lib as vendor:
 
  ### ./webpack.config.js
- ```javascript
+ ```diff
  entry: {
    ...
    vendor: [
@@ -91,7 +91,7 @@ export class TrainingErrors {
 - Now we can use it, in _TrainingFormComponent_:
 
 ### ./src/pages/training/edit/components/trainingForm.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as moment from 'moment';
 import {Training} from '../../../../models/training';
@@ -101,6 +101,7 @@ import {CheckBoxComponent} from '../../../../common/components/form/checkBox';
 import {InputButtonComponent} from '../../../../common/components/form/inputButton';
 import {DatePickerModalComponent} from '../../../../common/components/datePickerModal';
 import {formatConstants} from '../../../../common/constants/formatConstants';
++ import {ValidationComponent} from '../../../../common/components/form/validation';
 
 interface Props {
   training: Training;
@@ -231,7 +232,7 @@ export const TrainingFormComponent = (props: Props) => {
 - Updating _TrainingFormComponentContainer_:
 
 ### ./src/pages/training/edit/components.trainingFormContainer.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as moment from 'moment';
 import {Training} from '../../../../models/training';
@@ -270,7 +271,7 @@ interface Props {
 - Updating _TrainingEditPage_:
 
 ### ./src/pages/training/edit/page.tsx
-```javascript
+```diff
 import * as React from 'react';
 import {Training} from '../../../models/training';
 + import {TrainingErrors} from '../../../models/trainingErrors';
@@ -302,7 +303,7 @@ export const TrainingEditPage = (props: Props) => {
 - And _TrainingEditPageContainer_:
 
 ### ./src/pages/training/edit/pageContainer.tsx
-```javascript
+```diff
 import * as React from 'react';
 import * as toastr from 'toastr';
 import {hashHistory} from 'react-router';
@@ -332,44 +333,7 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
     this.save = this.save.bind(this);
   }
 
-  public componentDidMount() {
-    this.fetchTraining();
-  }
-
-  private fetchTraining() {
-    const trainingId = Number(this.props.params.id) || 0;
-    trainingAPI.fetchTrainingById(trainingId)
-      .then((training) => {
-        this.setState({
-          training: {...training}
-        })
-      })
-      .catch((error) => {
-        toastr.remove();
-        toastr.error(error);
-      });
-  }
-
-  private onChange(fieldName, value) {
-    this.setState({
-      training: {
-        ...this.state.training,
-        [fieldName]: value
-      }
-    });
-  }
-
-  private save(training: Training) {
-    toastr.remove();
-    trainingAPI.save(training)
-      .then((message) => {
-        toastr.success(message);
-        hashHistory.goBack();
-      })
-      .catch((error) => {
-        toastr.error(error);
-      });
-  }
+  ...
 
   public render() {
     return (
@@ -385,7 +349,7 @@ export class TrainingEditPageContainer extends React.Component<Props, State> {
 
 ```
 
-- Now it's time to create validations to feed these error:
+- Now it's time to create validations to feed this error:
 
 ### ./src/pages/training/edit/components/validations/trainingFormConstraints.ts
 ```javascript
@@ -472,7 +436,7 @@ export const trainingFormValidations = new TrainingFormValidations();
 
 - Then we can use it in _TrainingEditPageContainer_:
 
-```javascript
+```diff
 import * as React from 'react';
 import * as toastr from 'toastr';
 import {hashHistory} from 'react-router';
@@ -482,44 +446,7 @@ import {TrainingEditPage} from './page';
 import {trainingAPI} from '../../../rest-api/training/trainingAPI';
 + import {trainingFormValidations} from './components/validations/trainingFormValidations';
 
-interface Props {
-  params: any
-}
-
-interface State {
-  training: Training;
-+ trainingErrors: TrainingErrors;
-}
-
-export class TrainingEditPageContainer extends React.Component<Props, State> {
-  constructor() {
-    super();
-
-    this.state = {
-      training: new Training(),
-      trainingErrors: new TrainingErrors(),
-    };
-    this.onChange = this.onChange.bind(this);
-    this.save = this.save.bind(this);
-  }
-
-  public componentDidMount() {
-    this.fetchTraining();
-  }
-
-  private fetchTraining() {
-    const trainingId = Number(this.props.params.id) || 0;
-    trainingAPI.fetchTrainingById(trainingId)
-      .then((training) => {
-        this.setState({
-          training: {...training}
-        })
-      })
-      .catch((error) => {
-        toastr.remove();
-        toastr.error(error);
-      });
-  }
+...
 
   private onChange(fieldName, value) {
 +   const error = trainingFormValidations

@@ -47,8 +47,9 @@ export class ColorPicker extends React.Component<Props, {}> {
 
   componentDidMount() {
     // Initialize jQuery colorpicker
+    // Ref: https://itsjavi.com/bootstrap-colorpicker/
     $(this.inputPicker)['colorpicker']({
-      color: this.props.color,
+      color: this.props.color || false,
       align: 'right'
     });
   }
@@ -56,6 +57,13 @@ export class ColorPicker extends React.Component<Props, {}> {
   componentDidUpdate() {
     // Apply the new color in jQuery colorpicker
     $(this.inputPicker)['colorpicker']('setValue', this.props.color);
+
+    // Remove input value if no color because it won't use fallbackColor/fallbackFormat
+    // See https://github.com/itsjavi/bootstrap-colorpicker/issues/207
+    // There is actually no way to apply 'false' in setValue method to reset colorpicker.
+    if (!this.props.color) {
+      this.inputPicker.value = '';
+    }
 
     // Show colorpicker popover if needs to be open
     if (this.props.open) {

@@ -10,9 +10,6 @@ module.exports = {
   context: SRC_DIR,
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
-    alias: {
-      jquery: 'jquery/src/jquery'
-    }
   },
   entry: {
     app: './index.tsx',

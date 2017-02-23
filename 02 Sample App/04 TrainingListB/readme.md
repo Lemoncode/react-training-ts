@@ -254,7 +254,7 @@ export const TableRowComponent = (props: Props) => {
 ```diff
 import * as React from 'react';
 import {Training} from '../../../../models/training';
-import {TableRowProps, TableRowComponent} from '../../../../common/components/tableRow';
++ import {TableRowProps, TableRowComponent} from '../../../../common/components/tableRow';
 
 // https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md
 // https://github.com/bvaughn/react-virtualized/blob/master/source/Table/defaultRowRenderer.js

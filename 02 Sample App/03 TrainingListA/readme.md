@@ -285,6 +285,10 @@ import * as React from 'react';
 + import {Training} from '../../../models/training';
 + import {TrainingListComponent} from './components/trainingList';
 
++ interface Props {
++   trainings: Training[];
++ }
+
 - export const TrainingListPage = () => {
 + export const TrainingListPage = (props: Props) => {
     return (

@@ -646,8 +646,8 @@ interface Props {
 +   };
 
     this.onChange = this.onChange.bind(this);
-    this.onChangeStartDate = this.onChangeStartDate.bind(this);
-    this.onChangeEndDate = this.onChangeEndDate.bind(this);
++   this.onChangeStartDate = this.onChangeStartDate.bind(this);
++   this.onChangeEndDate = this.onChangeEndDate.bind(this);
 +   this.toggleOpenStartDateModal = this.toggleOpenStartDateModal.bind(this);
 +   this.toggleOpenEndDateModal = this.toggleOpenEndDateModal.bind(this);
     this.save = this.save.bind(this);
@@ -662,20 +662,20 @@ interface Props {
     this.props.onChange(fieldName, value);
   }
 
-  private onChangeStartDate(date: moment.Moment) {
-    this.onChangeDate('startDate', date);
-    this.toggleOpenStartDateModal();
-  }
++ private onChangeStartDate(date: moment.Moment) {
++   this.onChangeDate('startDate', date);
++   this.toggleOpenStartDateModal();
++ }
 
-  private onChangeEndDate(date: moment.Moment) {
-    this.onChangeDate('endDate', date);
-    this.toggleOpenEndDateModal();
-  }
++ private onChangeEndDate(date: moment.Moment) {
++   this.onChangeDate('endDate', date);
++   this.toggleOpenEndDateModal();
++ }
 
-  private onChangeDate(fieldName: string, date: moment.Moment) {
-    const milliseconds = date.valueOf();
-    this.props.onChange(fieldName, milliseconds);
-  }
++ private onChangeDate(fieldName: string, date: moment.Moment) {
++   const milliseconds = date.valueOf();
++   this.props.onChange(fieldName, milliseconds);
++ }
 
 + private toggleOpenStartDateModal() {
 +   this.toggleOpenModal('isOpenStartDateModal');
